@@ -1,0 +1,134 @@
+﻿@model netcore.Models.Invent.SalesOrderLine
+
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcorePopup.cshtml";
+}
+@System.Globalization.CultureInfo.CurrentUICulture
+
+
+    <div class="row" lang="en">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SalesOrderLineId" />
+            <div class="form-group hidden">
+                <label asp-for="SalesOrderId" class="control-label"></label>
+                <select asp-for="SalesOrderId" id="salesorderId" class="form-control select2" asp-items="ViewBag.salesOrderId"></select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProductId" class="control-label"></label>
+                        <select asp-for="ProductId" id="productList" class="form-control select2" asp-items="ViewBag.productId"></select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" id="price" class="form-control" lang="el" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Qty" class="control-label"></label>
+                        <input asp-for="Qty" class="form-control" />
+                        <span asp-validation-for="Qty" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="DiscountAmount" class="control-label"></label>
+                        <input asp-for="DiscountAmount" class="form-control" />
+                        <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SpecialTaxDiscount" class="control-label"></label>
+                        <input asp-for="SpecialTaxDiscount" id="specialtaxdiscount" class="form-control" lang="el" />
+                        <span asp-validation-for="SpecialTaxDiscount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="SpecialTaxAmount" class="control-label"></label>
+                        <input asp-for="SpecialTaxAmount" class="form-control" />
+                        <span asp-validation-for="SpecialTaxAmount" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProductVAT" class="control-label"></label>
+                        <input asp-for="ProductVAT" class="form-control" />
+                        <span asp-validation-for="ProductVAT" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProductVATAmount" class="control-label"></label>
+                        <input asp-for="ProductVATAmount" class="form-control" />
+                        <span asp-validation-for="ProductVATAmount" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <label asp-for="TotalAmount" class="control-label"></label>
+                        <input asp-for="TotalAmount" class="form-control" />
+                        <span asp-validation-for="TotalAmount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <label asp-for="UnitCost" class="control-label"></label>
+                        <input asp-for="UnitCost" id="unitcost" class="form-control" />
+                        <span asp-validation-for="UnitCost" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group ">
+                        <label asp-for="Discount" class="control-label"></label>
+                        <input asp-for="Discount" class="form-control" />
+                        <span asp-validation-for="Discount" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+            <script type="text/javascript">
+                $("#productList").change(function () {
+                    var productId = $("#productList").val();
+                    var salesorderId = $("#salesorderId").val();
+                    var url = "/SalesOrderLine/GetProductPrice";
+
+                    $.getJSON(url, { productId: productId }, function (data) {
+                        $("#price").empty();
+                        $.each(data, function (i, productLine) {
+                            $("#price").val(productLine.text);
+                        });
+                    });
+
+                    $.getJSON("/SalesOrderLine/GetProductCost", { productId: productId }, function (data) {
+                        data = data.toString().replace('.', ',');
+                        $("#unitcost").val(data);
+                    });
+
+                    $.getJSON("/SalesOrderLine/GetSpecialTaxDiscount", { salesorderId: salesorderId }, function (data) {
+                        data = data.toString().replace('.', ',');
+                        $("#specialtaxdiscount").val(data);
+                    });
+
+                });
+            </script>
+        }

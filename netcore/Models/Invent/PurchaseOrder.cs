@@ -1,0 +1,97 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace netcore.Models.Invent
+{
+    public class PurchaseOrder : INetcoreMasterChild
+    {
+        public PurchaseOrder()
+        {
+            this.createdAt = DateTime.UtcNow;
+            this.purchaseOrderNumber = DateTime.UtcNow.Date.ToString("yyyyMMdd") + Guid.NewGuid().ToString().Substring(0, 5).ToUpper() + "#PO";
+            this.poDate = DateTime.Today;
+            this.deliveryDate = this.poDate.AddDays(5);
+            this.purchaseOrderStatus = PurchaseOrderStatus.Draft;
+            this.totalDiscountAmount = 0m;
+            this.totalOrderAmount = 0m;
+        }
+
+        [StringLength(38)]
+        [Display(Name = "Id Παραγγελίας Αγοράς")]
+        public string purchaseOrderId { get; set; }
+
+        [StringLength(20)]
+        [Required]
+        [Display(Name = "Αριθμός Παραγγελίας Αγοράς")]
+        public string purchaseOrderNumber { get; set; }
+        
+        [Display(Name = "Οροι πληρωμής (TOP)")]
+        public TOP top { get; set; }
+
+        [Display(Name = "Ημερομηνία Παραγγελίας Αγοράς")]
+        public DateTime poDate { get; set; }
+
+        [Display(Name = "Ημερομηνία παράδοσης")]
+        public DateTime deliveryDate { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Διεύθυνση παράδοσης")]
+        public string deliveryAddress { get; set; }
+
+        [StringLength(30)]
+        [Display(Name = "Αριθμός Αναφοράς (Εσωτερικός)")]
+        public string referenceNumberInternal { get; set; }
+
+        [StringLength(30)]
+        [Display(Name = "Αριθμός Αναφοράς (Εξωτερικός)")]
+        public string referenceNumberExternal { get; set; }
+
+        [StringLength(100)]
+        [Display(Name = "Περιγραφή")]
+        public string description { get; set; }
+
+        [StringLength(38)]
+        [Required]
+        [Display(Name = "Id Υποκαταστήματος")]
+        public string branchId { get; set; }
+
+        [Display(Name = "Υποκατάστημα")]
+        public Branch branch { get; set; }
+
+        [StringLength(38)]
+        [Required]
+        [Display(Name = "Id Προμηθευτή")]
+        public string vendorId { get; set; }
+
+        [Display(Name = "Προμηθευτής")]
+        public Vendor vendor { get; set; }
+
+        [StringLength(30)]
+        [Required]
+        [Display(Name = "PIC Εσωτερικό")]
+        public string picInternal { get; set; }
+
+        [StringLength(30)]
+        [Required]
+        [Display(Name = "PIC Προμηθευτή")]
+        public string picVendor { get; set; }
+
+        [Display(Name = "Κατάσταση Παραγγελίας Αγοράς")]
+        public PurchaseOrderStatus purchaseOrderStatus { get; set; }
+
+        [Display(Name = "Συνολική έκπτωση")]
+        public decimal totalDiscountAmount { get; set; }
+
+        [Display(Name = "Σύνολο Παραγγελίας")]
+        public decimal totalOrderAmount { get; set; }
+
+        [Display(Name = "Αριθμός παραλαβής αγοράς")]
+        public string purchaseReceiveNumber { get; set; }
+
+        [Display(Name = "Στοιχεία Παραγγελίας")]
+        public List<PurchaseOrderLine> purchaseOrderLine { get; set; } = new List<PurchaseOrderLine>();
+    }
+}

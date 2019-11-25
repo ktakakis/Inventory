@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Απενεργοποιήστε τον έλεγχο ταυτότητας δύο παραγόντων (2FA)";
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>Αυτή η ενέργεια απενεργοποιεί μόνο το 2FA.</strong>
+    </p>
+    <p>
+        Η απενεργοποίηση του 2FA δεν αλλάζει τα κλειδιά που χρησιμοποιούνται στις εφαρμογές ελέγχου ταυτότητας. Αν θέλετε να αλλάξετε το κλειδί
+        που χρησιμοποιείται σε μια εφαρμογή ελέγχου ταυτότητας, θα πρέπει να <a rel="un-action=" ResetAuthenticatorWarning">
+            επαναφέρετε τις ρυθμίσεις σας
+            κλειδιά ελέγχου ταυτότητας.
+        </a>
+    </p>
+</div>
+
+<div>
+    <form asp-action="Disable2fa" method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">Απενεργοποίηση 2FA</button>
+    </form>
+</div>

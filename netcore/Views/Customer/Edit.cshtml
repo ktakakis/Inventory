@@ -1,0 +1,162 @@
+﻿@model netcore.Models.Invent.Customer
+
+@{
+    ViewData["Title"] = "Επεξεργασία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreEdit.cshtml";
+    ViewData["EntityIcon"] = "fa fa-bank";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="customerId" />
+        <div class="row">
+            <div class="col-md-12">
+                <small class="text-yellow"><i>Περίληψη</i></small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group has-success">
+                    <label asp-for="customerName" class="control-label"></label>
+                    <input asp-for="customerName" class="form-control" />
+                    <span asp-validation-for="customerName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CompanyActivity" class="control-label"></label>
+                    <input asp-for="CompanyActivity" class="form-control" />
+                    <span asp-validation-for="CompanyActivity" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="description" class="control-label"></label>
+            <textarea asp-for="description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <small class="text-yellow"><i>Διεύθυνση</i></small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group has-success">
+                    <label asp-for="VATRegNumber" class="control-label"></label>
+                    <input asp-for="VATRegNumber" class="form-control" />
+                    <span asp-validation-for="VATRegNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="TaxOffice" class="control-label"></label>
+                    <input asp-for="TaxOffice" class="form-control" />
+                    <span asp-validation-for="TaxOffice" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="OrderDiscount" class="control-label"></label>
+                    <input asp-for="OrderDiscount" class="form-control" />
+                    <span asp-validation-for="OrderDiscount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="TaxDiscount" class="control-label"></label>
+                    <input asp-for="TaxDiscount" class="form-control" />
+                    <span asp-validation-for="TaxDiscount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="SalesCount" class="control-label"></label>
+                    <input type="checkbox" asp-for="SalesCount" class="checkbox" />
+                    <span asp-validation-for="SalesCount" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <small class="text-yellow"><i>Επικοινωνία</i></small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="officePhone" class="control-label"></label>
+                    <input asp-for="officePhone" class="form-control" />
+                    <span asp-validation-for="officePhone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="mobilePhone" class="control-label"></label>
+                    <input asp-for="mobilePhone" class="form-control" />
+                    <span asp-validation-for="mobilePhone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="fax" class="control-label"></label>
+                    <input asp-for="fax" class="form-control" />
+                    <span asp-validation-for="fax" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group has-success">
+                    <label asp-for="workEmail" class="control-label"></label>
+                    <input asp-for="workEmail" class="form-control" />
+                    <span asp-validation-for="workEmail" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="WebSite" class="control-label"></label>
+                    <input asp-for="WebSite" class="form-control" />
+                    <span asp-validation-for="WebSite" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <small class="text-yellow"><i>Property</i></small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="size" class="control-label"></label>
+                    <select asp-for="size" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.BusinessSize>()"></select>
+                    <span asp-validation-for="size" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Active" class="control-label"></label>
+                    <input type="checkbox" asp-for="Active" class="checkbox" />
+                    <span asp-validation-for="Active" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+

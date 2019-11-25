@@ -1,0 +1,83 @@
+﻿@model IEnumerable<netcore.Models.Invent.Customer>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-bank";
+    ViewData["ListTitle"] = "Λίστα Πελατών";
+    ViewData["IndexInfo"] = "Ο πελάτης είναι ένας οργανισμός που αγοράζει προϊόντα από την εταιρεία σας. Πουλάτε προϊόντα σε αυτούς.";
+}
+
+
+<table class="table table-hover table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.customerName)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.size)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.CompanyActivity)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.WebSite)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.officePhone)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.mobilePhone)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.workEmail)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.customerId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.customerId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.customerId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+               
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.customerName)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.size)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.CompanyActivity)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.WebSite)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.officePhone)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.mobilePhone)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.workEmail)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>

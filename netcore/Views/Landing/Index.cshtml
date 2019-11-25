@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "KAFFA HELLAS E.E.";
+    Layout = "~/Views/Shared/Landing/_Layout.cshtml";
+}
+
+<!-- start banner Area -->
+<section class="banner-area relative" id="home">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex align-items-center justify-content-center">
+            <div class="banner-content col-lg-12 col-md-12">
+                <h6 class="text-uppercase">Μην ψάχνετε άλλο, εδώ είναι το κλειδί</h6>
+                <h1>
+                    Δίνουμε την καλύτερη ποιότητα καφέ, στην χαμηλότερη δυνατή τιμή
+                </h1>
+                <p class="text-white">
+                    Έχουμε τις καλύτερες ποικιλίες και τις συνδιάζουμε, για να σας δώσουμε γεύσεις που θα θυμάστε.
+                </p>
+                <a href="@Url.Action("Index", "Home")" class="primary-btn header-btn text-uppercase">Ξεκινήστε</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+<!-- Start cat Area -->
+<section class="cat-area section-gap" id="feature">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="single-cat d-flex flex-column">
+                    <a href="#" class="hb-sm-margin mx-auto d-block"><span class="hb hb-sm inv hb-facebook-inv"><span class="lnr lnr-magic-wand"></span></span></a>
+                    <h4 class="mb-20" style="margin-top: 23px;">Απόθεμα</h4>
+                    <p>
+                        Διατηρούμε τον καφέ σε ιδανικές συνθήκες, ώστε να είναι πάντα φρέσκος.  Ποτέ δεν έχουμε περισσότερο, ποτέ δεν έχουμε λιγότερο, ακολουθούμε τους ρυθμούς της φύσης και της κατανάλωσης των πελατών μας.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-cat">
+                    <a href="#" class="hb-sm-margin mx-auto d-block"><span class="hb hb-sm inv hb-facebook-inv"><span class="lnr lnr-rocket"></span></span></a>
+                    <h4 class="mt-40 mb-20">Παραγελίες</h4>
+                    <p>
+                        Δεχόμαστε παραγγελίες από σημεία πώλησης καφέ (καφετέριες, take away, φούρνους...κτλ), και από χονδρέμπορους καφέ που έχουν το ίδιο πάθος και ζήλο με μας.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-cat">
+                    <a href="#" class="hb-sm-margin mx-auto d-block"><span class="hb hb-sm inv hb-facebook-inv"><span class="lnr lnr-bug"></span></span></a>
+                    <h4 class="mt-40 mb-20">Διαχείριση</h4>
+                    <p>
+                        Η διαχείριση γίνεται με ηλεκτρονικά μέσα και διαδικασίες, ώστε να εξασφαλίζεται η συνέπεια και να ελαχιστοποιούνται τα λάθη.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End cat Area -->
+<!-- Start service Area -->
+<section class="service-area section-gap" id="service">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 pb-30 header-text text-center">
+                <h1 class="mb-10">Τομείς αγοράς</h1>
+                <p>
+                    Αξιοπιστία, Σταθερότητα, Σεβασμός στο περιβάλλον και τον άνθρωπο είναι οι βασικότερες αξίες που διέπουν την σχέση μας με την αγορά.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="single-service">
+                    <div class="thumb">
+                        <img src="/landing/industry/img/s1.jpg" alt="">
+                    </div>
+                    <h4>Αντιπρόσωποι</h4>
+                    <p>
+                        Κάθε αντιπρόσωπος ή διανομέας που συνεργάζεται μαζί μας, μοιράζεται και ακολουθεί τις ίδιες αξίες με μας, εξασφαλίζοντας έτσι την διατήρηση της ποιότητας και της συνέπειας.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-service">
+                    <div class="thumb">
+                        <img src="/landing/industry/img/s2.jpg" alt="">
+                    </div>
+                    <h4>Καφετέριες-Take away</h4>
+                    <p>
+                        Σημεία Πώλησης  καφέ σε όλη την Ελλάδα
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="single-service">
+                    <div class="thumb">
+                        <img src="/landing/industry/img/s3.jpg" alt="">
+                    </div>
+                    <h4>Ξενοδοχεία-Εστιατόρια</h4>
+                    <p>
+                        Μεγάλες ξενοδοχειακές μονάδες και γνωστά εστιατόρια, μας προτιμούν για να κάνουν τους πελάτες τους χαρούμενους.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End service Area -->
+<!-- Start faq Area -->
+<section class="faq-area section-gap relative">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-3 col-md-6">
+                <div class="single-faq">
+                    <div class="circle">
+                        <div class="inner"></div>
+                    </div>
+                    <h5><span class="counter">2</span>K+</h5>
+                    <p>
+                        Παραγγελίες
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-faq">
+                    <div class="circle">
+                        <div class="inner"></div>
+                    </div>
+                    <h5><span class="counter">5.5</span>K</h5>
+                    <p>
+                        Μεταφορές
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-faq">
+                    <div class="circle">
+                        <div class="inner"></div>
+                    </div>
+                    <h5 class="counter">959</h5>
+                    <p>
+                        Πελάτες
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="single-faq">
+                    <div class="circle">
+                        <div class="inner"></div>
+                    </div>
+                    <h5 class="counter">367</h5>
+                    <p>
+                        Προμηθευτές
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End faq Area -->
+
+

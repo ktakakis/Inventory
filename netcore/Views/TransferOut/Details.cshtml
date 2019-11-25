@@ -1,0 +1,261 @@
+﻿@model netcore.Models.Invent.TransferOut
+
+@{
+    ViewData["Title"] = "Λεπτομέρειες";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
+    ViewData["EntityIcon"] = "fa fa-upload";
+}
+
+
+
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="transferOutId" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-yellow"><i>Περίληψη</i></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="transferOutNumber" class="control-label"></label>
+                                    <input disabled asp-for="transferOutNumber" class="form-control" />
+                                    <span asp-validation-for="transferOutNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="transferOutDate" class="control-label"></label>
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input disabled asp-for="transferOutDate" value="@Model.transferOutDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                                    </div>
+                                    <span asp-validation-for="transferOutDate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="transferOrderId" class="control-label">Transfer Order #</label>
+                                    <select disabled asp-for="transferOrderId" class="form-control select2" asp-items="ViewBag.transferOrderId"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-success">
+                            <label asp-for="description" class="control-label"></label>
+                            <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="description" class="text-danger"></span>
+                        </div>
+                        <div class="row hidden">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="branchIdFrom" class="control-label"></label>
+                                    <select disabled asp-for="branchIdFrom" class="form-control select2" asp-items="ViewBag.branchIdFrom"></select>
+                                    <span asp-validation-for="branchIdFrom" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="branchIdTo" class="control-label"></label>
+                                    <select disabled asp-for="branchIdTo" class="form-control select2" asp-items="ViewBag.branchIdTo"></select>
+                                    <span asp-validation-for="branchIdTo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row hidden">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="warehouseIdFrom" class="control-label"></label>
+                                    <select disabled asp-for="warehouseIdFrom" class="form-control select2" asp-items="ViewBag.warehouseIdFrom"></select>
+                                    <span asp-validation-for="warehouseIdFrom" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="warehouseIdTo" class="control-label"></label>
+                                    <select disabled asp-for="warehouseIdTo" class="form-control select2" asp-items="ViewBag.warehouseIdTo"></select>
+                                    <span asp-validation-for="warehouseIdTo" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group">
+                    <a asp-action="ShowTransferOut" asp-route-id="@Model.transferOutId" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Εκτύπωση Παράδοσης Αγαθών</a>
+                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="grid" name="grid" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-6">Προϊόν</th>
+                                    <th class="col-lg-5">Ποσ</th>
+                                    <th class="col-lg-1"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group hidden">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("Create","TransferOutLine", new { masterid = Model.transferOutId })')"><i class="fa fa-plus"></i> Προσθήκη νέου στοιχείου μεταφοράς</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+
+    </div>
+</div>
+
+
+
+    <!--modal placeholder-->
+    <div class="modal modal-primary fade" id="modalDefault">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+@section Scripts{
+      <script>
+        var popup, dataTable;
+        var entity = 'TransferOutLine';
+        var apiurl = '/api/' + entity;
+
+        $(document).ready(function () {
+            dataTable = $('#grid').DataTable({
+                "ajax": {
+                    "url": apiurl + '?masterid=@Model.transferOutId',
+                    "type": 'GET',
+                    "datatype": 'json'
+                },
+                "columns": [
+                    { "data": "product.productCode" },
+                    { "data": "qty" },
+                    {
+                        "data": "transferOutLineId",
+                        "render": function (data) {
+                            var btnEdit = "<a class='btn btn-default btn-xs' onclick=ShowPopup('/" + entity + "/Create/" + data + "')><i class='fa fa-pencil'></i></a>";
+                            var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:2px' onclick=Delete('" + data + "')><i class='fa fa-trash'></i></a>";
+                            return ""; //btnEdit + btnDelete;
+                        }
+                    }
+                ],
+                "language": {
+                    "emptyTable": "δε βρέθηκαν δεδομένα."
+                },
+                "lengthChange": false,
+                "info": false,
+                "searching": false,
+                "paging": false,
+            });
+        });
+
+        function ShowPopup(url) {
+            var modalId = 'modalDefault';
+            var modalPlaceholder = $('#' + modalId + ' .modal-dialog .modal-content');
+            $.get(url)
+                .done(function (response) {
+                    modalPlaceholder.html(response);
+                    popup = $('#' + modalId + '').modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                });
+        }
+
+
+        function SubmitAddEdit(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                var data = $(form).serializeJSON();
+                data = JSON.stringify(data);
+                $.ajax({
+                    type: 'POST',
+                    url: apiurl,
+                    data: data,
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.success) {
+                            popup.modal('hide');
+                            ShowMessage(data.message);
+                            dataTable.ajax.reload();
+                        } else {
+                            ShowMessageError(data.message);
+                        }
+                    }
+                });
+
+            }
+            return false;
+        }
+
+        function Delete(id) {
+            swal({
+                title: "Είστε βέβαιοι ότι θέλετε να γίνει Διαγραφή;",
+                text: "Δεν θα μπορείτε να επαναφέρετε τα δεδομένα!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dd4b39",
+                confirmButtonText: "Ναι, διαγράψτε το!",
+                closeOnConfirm: true
+            }, function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: apiurl + '/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            ShowMessage(data.message);
+                            dataTable.ajax.reload();
+                        } else {
+                            ShowMessageError(data.message);
+                        }
+                    }
+                });
+            });
+
+
+        }
+
+      </script>
+}
+

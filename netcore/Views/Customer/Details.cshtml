@@ -1,0 +1,333 @@
+﻿@model netcore.Models.Invent.Customer
+
+@{
+    ViewData["Title"] = "Λεπτομέρειες";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
+    ViewData["EntityIcon"] = "fa fa-bank";
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="customerId" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-yellow"><i>Περίληψη</i></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <label asp-for="customerName" class="control-label"></label>
+                                    <input disabled asp-for="customerName" class="form-control" />
+                                    <span asp-validation-for="customerName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CompanyActivity" class="control-label"></label>
+                                    <input disabled asp-for="CompanyActivity" class="form-control" />
+                                    <span asp-validation-for="CompanyActivity" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="description" class="control-label"></label>
+                            <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="description" class="text-danger"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-yellow"><i>Διεύθυνση</i></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <label asp-for="VATRegNumber" class="control-label"></label>
+                                    <input disabled asp-for="VATRegNumber" class="form-control" />
+                                    <span asp-validation-for="VATRegNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="TaxOffice" class="control-label"></label>
+                                    <input disabled asp-for="TaxOffice" class="form-control" />
+                                    <span asp-validation-for="TaxOffice" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="OrderDiscount" class="control-label"></label>
+                                    <input disabled asp-for="OrderDiscount" class="form-control" />
+                                    <span asp-validation-for="OrderDiscount" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="TaxDiscount" class="control-label"></label>
+                                    <input disabled asp-for="TaxDiscount" class="form-control" />
+                                    <span asp-validation-for="TaxDiscount" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="SalesCount" class="control-label"></label>
+                                    <input disabled type="checkbox" asp-for="SalesCount" class="checkbox" />
+                                    <span asp-validation-for="SalesCount" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-yellow"><i>Επικοινωνία</i></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="officePhone" class="control-label"></label>
+                                    <input disabled asp-for="officePhone" class="form-control" />
+                                    <span asp-validation-for="officePhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="mobilePhone" class="control-label"></label>
+                                    <input disabled asp-for="mobilePhone" class="form-control" />
+                                    <span asp-validation-for="mobilePhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="fax" class="control-label"></label>
+                                    <input disabled asp-for="fax" class="form-control" />
+                                    <span asp-validation-for="fax" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <label asp-for="workEmail" class="control-label"></label>
+                                    <input disabled asp-for="workEmail" class="form-control" />
+                                    <span asp-validation-for="workEmail" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="WebSite" class="control-label"></label>
+                                    <input disabled asp-for="WebSite" class="form-control" />
+                                    <span asp-validation-for="WebSite" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-yellow"><i>Property</i></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="size" class="control-label"></label>
+                                    <select disabled asp-for="size" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.BusinessSize>()"></select>
+                                    <span asp-validation-for="size" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Active" class="control-label"></label>
+                                    <input disabled type="checkbox" asp-for="Active" class="checkbox" />
+                                    <span asp-validation-for="Active" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.customerId" class="btn btn-primary">Επεξεργασία</a>
+                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+        @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
+    </div>
+</div>
+
+<!--Contacts Child-->
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="grid" name="grid" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-3">Διεύθυνση</th>
+                                    <th class="col-lg-3">Πόλη</th>
+                                    <th class="col-lg-3">Νομός</th>
+                                    <th class="col-lg-1"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("Create","CustomerLine", new { masterid = Model.customerId })')"><i class="fa fa-plus"></i> Προσθήκη Διεύθυνσης</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+
+    </div>
+</div>
+
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <!--customerLine-->
+    <script>
+        var popup, dataTable;
+        var entity = 'CustomerLine';
+        var apiurl = '/api/' + entity;
+
+        $(document).ready(function () {
+            dataTable = $('#grid').DataTable({
+                "ajax": {
+                    "url": apiurl + '?masterid=@Model.customerId',
+                    "type": 'GET',
+                    "datatype": 'json'
+                },
+                "columns": [
+                    { "data": "street1" },
+                    { "data": "city" },
+                    { "data": "province" },
+                    {
+                        "data": "customerLineId",
+                        "render": function (data) {
+                            var btnEdit = "<a class='btn btn-primary btn-xs' onclick=ShowPopup('/" + entity + "/Create/" + data + "')><i class='fa fa-pencil'></i></a>";
+                            var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:2px' onclick=Delete('" + data + "')><i class='fa fa-trash'></i></a>";
+
+                            return "<div class='tools pull-right'>" + btnEdit + btnDelete + "</div>";
+                        }
+                    }
+                ],
+                "language": {
+                    "emptyTable": "Δεν υπάρχουν δεδομένα."
+                },
+                "lengthChange": false,
+                "info": false,
+                "searching": false,
+                "paging": false,
+            });
+        });
+
+        function ShowPopup(url) {
+            var modalId = 'modalDefault';
+            var modalPlaceholder = $('#' + modalId + ' .modal-dialog .modal-content');
+            $.get(url)
+                .done(function (response) {
+                    modalPlaceholder.html(response);
+                    popup = $('#' + modalId + '').modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                });
+        }
+
+
+        function SubmitAddEdit(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                var data = $(form).serializeJSON();
+                data = JSON.stringify(data);
+                $.ajax({
+                    type: 'POST',
+                    url: apiurl,
+                    data: data,
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.success) {
+                            popup.modal('hide');
+                            ShowMessage(data.message);
+                            dataTable.ajax.reload();
+                        } else {
+                            ShowMessageError(data.message);
+                        }
+                    }
+                });
+
+            }
+            return false;
+        }
+
+        function Delete(id) {
+            swal({
+                title: "Είστε βέβαιοι ότι θέλετε να γίνει Διαγραφή;",
+                text: "Δεν θα μπορείτε να επαναφέρετε τα δεδομένα!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dd4b39",
+                confirmButtonText: "Ναι, διαγράψτε το!",
+                closeOnConfirm: true
+            }, function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: apiurl + '/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            ShowMessage(data.message);
+                            dataTable.ajax.reload();
+                        } else {
+                            ShowMessageError(data.message);
+                        }
+                    }
+                });
+            });
+
+
+        }
+
+    </script>
+}
+

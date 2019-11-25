@@ -1,0 +1,463 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-netcore-FE586822-D2E5-4D23-BE70-C9D2856D4FF5</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191022073037_ProductCategories.cs" />
+    <Compile Remove="Migrations\20191022073037_ProductCategories.Designer.cs" />
+    <Compile Remove="Migrations\20191028134930_updatecustomersactive.cs" />
+    <Compile Remove="Migrations\20191028134930_updatecustomersactive.Designer.cs" />
+    <Compile Remove="Migrations\20191030110225_CustomerAddressLine.cs" />
+    <Compile Remove="Migrations\20191030110225_CustomerAddressLine.Designer.cs" />
+    <Compile Remove="Migrations\20191101120118_UpdateCustomerLine.cs" />
+    <Compile Remove="Migrations\20191101120118_UpdateCustomerLine.Designer.cs" />
+    <Compile Remove="Migrations\20191101224740_VendorUpdate.cs" />
+    <Compile Remove="Migrations\20191101224740_VendorUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20191124203237_LastUpdate.cs" />
+    <Compile Remove="Migrations\20191124203237_LastUpdate.Designer.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="LocalizationCultureCore" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Sendgrid" Version="9.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.2" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.1" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\cldrjs\.bowerrc" />
+    <None Include="wwwroot\lib\cldrjs\.gitignore" />
+    <None Include="wwwroot\lib\cldrjs\.jshintrc" />
+    <None Include="wwwroot\lib\cldrjs\CHANGELOG.md" />
+    <None Include="wwwroot\lib\cldrjs\chore\release.sh" />
+    <None Include="wwwroot\lib\cldrjs\DCO.md" />
+    <None Include="wwwroot\lib\cldrjs\dist\cldr.js" />
+    <None Include="wwwroot\lib\cldrjs\dist\cldr\event.js" />
+    <None Include="wwwroot\lib\cldrjs\dist\cldr\supplemental.js" />
+    <None Include="wwwroot\lib\cldrjs\dist\cldr\unresolved.js" />
+    <None Include="wwwroot\lib\cldrjs\dist\node_main.js" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\core\attributes.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\core\constructor.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\core\get.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\core\load.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\core\main.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\event\event_get.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\event\global_off.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\event\global_on.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\event\global_once.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\event\off.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\event\on.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\event\once.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\supplemental.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\supplemental\time_data_allowed.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\supplemental\time_data_preferred.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\supplemental\week_data_first_day.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\supplemental\week_data_min_days.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\api\unresolved\get.md" />
+    <None Include="wwwroot\lib\cldrjs\doc\bundle_lookup_matcher.md" />
+    <None Include="wwwroot\lib\cldrjs\Gruntfile.js" />
+    <None Include="wwwroot\lib\cldrjs\LICENSE-MIT" />
+    <None Include="wwwroot\lib\cldrjs\README.md" />
+    <None Include="wwwroot\lib\cldrjs\src\.dist_jshintrc" />
+    <None Include="wwwroot\lib\cldrjs\src\.jshintrc" />
+    <None Include="wwwroot\lib\cldrjs\src\build\intro.min.js" />
+    <None Include="wwwroot\lib\cldrjs\src\build\intro_core.js" />
+    <None Include="wwwroot\lib\cldrjs\src\build\intro_event.js" />
+    <None Include="wwwroot\lib\cldrjs\src\build\intro_supplemental.js" />
+    <None Include="wwwroot\lib\cldrjs\src\build\intro_unresolved.js" />
+    <None Include="wwwroot\lib\cldrjs\src\build\node_main.js" />
+    <None Include="wwwroot\lib\cldrjs\src\build\outro.js" />
+    <None Include="wwwroot\lib\cldrjs\src\bundle\lookup.js" />
+    <None Include="wwwroot\lib\cldrjs\src\bundle\parent_lookup.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\create_error.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\validate.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\validate\presence.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\validate\type.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\validate\type\function.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\validate\type\path.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\validate\type\plain_object.js" />
+    <None Include="wwwroot\lib\cldrjs\src\common\validate\type\string.js" />
+    <None Include="wwwroot\lib\cldrjs\src\core.js" />
+    <None Include="wwwroot\lib\cldrjs\src\core\likely_subtags.js" />
+    <None Include="wwwroot\lib\cldrjs\src\core\load.js" />
+    <None Include="wwwroot\lib\cldrjs\src\core\remove_likely_subtags.js" />
+    <None Include="wwwroot\lib\cldrjs\src\core\set_available_bundles.js" />
+    <None Include="wwwroot\lib\cldrjs\src\core\subtags.js" />
+    <None Include="wwwroot\lib\cldrjs\src\event.js" />
+    <None Include="wwwroot\lib\cldrjs\src\item\get_resolved.js" />
+    <None Include="wwwroot\lib\cldrjs\src\item\lookup.js" />
+    <None Include="wwwroot\lib\cldrjs\src\path\normalize.js" />
+    <None Include="wwwroot\lib\cldrjs\src\resource\get.js" />
+    <None Include="wwwroot\lib\cldrjs\src\resource\set.js" />
+    <None Include="wwwroot\lib\cldrjs\src\supplemental.js" />
+    <None Include="wwwroot\lib\cldrjs\src\supplemental\main.js" />
+    <None Include="wwwroot\lib\cldrjs\src\unresolved.js" />
+    <None Include="wwwroot\lib\cldrjs\src\util\always_array.js" />
+    <None Include="wwwroot\lib\cldrjs\src\util\array\for_each.js" />
+    <None Include="wwwroot\lib\cldrjs\src\util\array\is_array.js" />
+    <None Include="wwwroot\lib\cldrjs\src\util\array\some.js" />
+    <None Include="wwwroot\lib\cldrjs\src\util\is_plain_object.js" />
+    <None Include="wwwroot\lib\cldrjs\src\util\json\merge.js" />
+    <None Include="wwwroot\lib\cldrjs\src\util\object\keys.js" />
+    <None Include="wwwroot\lib\cldrjs\test\.jshintrc" />
+    <None Include="wwwroot\lib\cldrjs\test\functional.js" />
+    <None Include="wwwroot\lib\cldrjs\test\functional\core.js" />
+    <None Include="wwwroot\lib\cldrjs\test\functional\event.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\bundle\lookup.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\bundle\parent_lookup.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\core.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\core\likely_subtags.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\core\load.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\core\remove_likely_subtags.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\core\set_available_bundles.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\core\subtags.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\item\lookup.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\path\normalize.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\resource\get.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\resource\set.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\supplemental.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit\util\json\merge.js" />
+    <None Include="wwwroot\lib\cldrjs\test\unit_unresolved.js" />
+    <None Include="wwwroot\lib\cldrjs\test\util.js" />
+    <None Include="wwwroot\lib\globalize\.bowerrc" />
+    <None Include="wwwroot\lib\globalize\.gitattributes" />
+    <None Include="wwwroot\lib\globalize\.gitignore" />
+    <None Include="wwwroot\lib\globalize\.jscsrc" />
+    <None Include="wwwroot\lib\globalize\.jshintrc" />
+    <None Include="wwwroot\lib\globalize\.mailmap" />
+    <None Include="wwwroot\lib\globalize\.travis.yml" />
+    <None Include="wwwroot\lib\globalize\CONTRIBUTING.md" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime\currency.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime\date.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime\message.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime\number.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime\plural.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime\relative-time.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize-runtime\unit.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize\currency.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize\date.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize\message.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize\number.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize\plural.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize\relative-time.js" />
+    <None Include="wwwroot\lib\globalize\dist\globalize\unit.js" />
+    <None Include="wwwroot\lib\globalize\dist\node-main.js" />
+    <None Include="wwwroot\lib\globalize\doc\api\core\constructor.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\core\load.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\core\locale.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\currency\currency-formatter.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\date\date-formatter.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\date\date-parser.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\date\date-to-parts-formatter.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\date\load-iana-time-zone.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\message\load-messages.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\message\message-formatter.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\number\number-formatter.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\number\number-parser.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\plural\plural-generator.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\relative-time\relative-time-formatter.md" />
+    <None Include="wwwroot\lib\globalize\doc\api\unit\unit-formatter.md" />
+    <None Include="wwwroot\lib\globalize\doc\blog-post\2017-07-xx-1.3.0-announcement.md" />
+    <None Include="wwwroot\lib\globalize\doc\cldr.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-default-locale-not-defined.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-invalid-cldr.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-invalid-par-type.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-invalid-par-value.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-missing-cldr.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-missing-parameter.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-missing-plural-module.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-par-missing-key.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-par-out-of-range.md" />
+    <None Include="wwwroot\lib\globalize\doc\error\e-unsupported.md" />
+    <None Include="wwwroot\lib\globalize\doc\migrating-from-0.x.md" />
+    <None Include="wwwroot\lib\globalize\examples\amd-bower\.bowerrc" />
+    <None Include="wwwroot\lib\globalize\examples\amd-bower\.gitignore" />
+    <None Include="wwwroot\lib\globalize\examples\amd-bower\main.js" />
+    <None Include="wwwroot\lib\globalize\examples\amd-bower\README.md" />
+    <None Include="wwwroot\lib\globalize\examples\app-npm-webpack\.gitignore" />
+    <None Include="wwwroot\lib\globalize\examples\app-npm-webpack\app\index.js" />
+    <None Include="wwwroot\lib\globalize\examples\app-npm-webpack\README.md" />
+    <None Include="wwwroot\lib\globalize\examples\app-npm-webpack\webpack-config.js" />
+    <None Include="wwwroot\lib\globalize\examples\globalize-compiler\.gitignore" />
+    <None Include="wwwroot\lib\globalize\examples\globalize-compiler\app.js" />
+    <None Include="wwwroot\lib\globalize\examples\globalize-compiler\README.md" />
+    <None Include="wwwroot\lib\globalize\examples\node-npm\main.js" />
+    <None Include="wwwroot\lib\globalize\examples\node-npm\README.md" />
+    <None Include="wwwroot\lib\globalize\examples\plain-javascript\.gitignore" />
+    <None Include="wwwroot\lib\globalize\examples\plain-javascript\README.md" />
+    <None Include="wwwroot\lib\globalize\Gruntfile.js" />
+    <None Include="wwwroot\lib\globalize\jquery.validate.globalize.js" />
+    <None Include="wwwroot\lib\globalize\jquery.validate.globalize.min.js" />
+    <None Include="wwwroot\lib\globalize\LICENSE" />
+    <None Include="wwwroot\lib\globalize\README.md" />
+    <None Include="wwwroot\lib\globalize\script\lib\version_inc.js" />
+    <None Include="wwwroot\lib\globalize\script\lib\version_update.js" />
+    <None Include="wwwroot\lib\globalize\script\release.sh" />
+    <None Include="wwwroot\lib\globalize\src\.dist-jshintrc" />
+    <None Include="wwwroot\lib\globalize\src\.jshintrc" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-core-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-core.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-currency-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-currency.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-date-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-date.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-message-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-message.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-number-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-number.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-plural-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-plural.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-relative-time-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-relative-time.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-unit-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro-unit.js" />
+    <None Include="wwwroot\lib\globalize\src\build\intro.min.js" />
+    <None Include="wwwroot\lib\globalize\src\build\node-main.js" />
+    <None Include="wwwroot\lib\globalize\src\build\outro.js" />
+    <None Include="wwwroot\lib\globalize\src\common\create-error.js" />
+    <None Include="wwwroot\lib\globalize\src\common\create-error\invalid-parameter-value.js" />
+    <None Include="wwwroot\lib\globalize\src\common\create-error\plural-module-presence.js" />
+    <None Include="wwwroot\lib\globalize\src\common\create-error\unsupported-feature.js" />
+    <None Include="wwwroot\lib\globalize\src\common\format-message.js" />
+    <None Include="wwwroot\lib\globalize\src\common\runtime-bind.js" />
+    <None Include="wwwroot\lib\globalize\src\common\runtime-cache-data-bind.js" />
+    <None Include="wwwroot\lib\globalize\src\common\runtime-key.js" />
+    <None Include="wwwroot\lib\globalize\src\common\runtime-stringify.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\cldr.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\default-locale.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\message-bundle.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\message-presence.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\message-type.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-presence.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-range.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\array.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\currency.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\date.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\locale.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\message-variables.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\number.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\plain-object.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\plural-type.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\parameter-type\string.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\skeleton.js" />
+    <None Include="wwwroot\lib\globalize\src\common\validate\skeleton\fields-pos-map.js" />
+    <None Include="wwwroot\lib\globalize\src\core-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\core.js" />
+    <None Include="wwwroot\lib\globalize\src\currency-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\currency.js" />
+    <None Include="wwwroot\lib\globalize\src\currency\code-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\currency\formatter-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\currency\name-format.js" />
+    <None Include="wwwroot\lib\globalize\src\currency\name-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\currency\supplemental-override.js" />
+    <None Include="wwwroot\lib\globalize\src\currency\symbol-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\currency\unit-patterns.js" />
+    <None Include="wwwroot\lib\globalize\src\date-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\date.js" />
+    <None Include="wwwroot\lib\globalize\src\date\day-of-week.js" />
+    <None Include="wwwroot\lib\globalize\src\date\day-of-year.js" />
+    <None Include="wwwroot\lib\globalize\src\date\distance-in-days.js" />
+    <None Include="wwwroot\lib\globalize\src\date\expand-pattern.js" />
+    <None Include="wwwroot\lib\globalize\src\date\expand-pattern\augment-format.js" />
+    <None Include="wwwroot\lib\globalize\src\date\expand-pattern\compare-formats.js" />
+    <None Include="wwwroot\lib\globalize\src\date\expand-pattern\get-best-match-pattern.js" />
+    <None Include="wwwroot\lib\globalize\src\date\expand-pattern\normalize-pattern-type.js" />
+    <None Include="wwwroot\lib\globalize\src\date\expand-pattern\similar-fields-map.js" />
+    <None Include="wwwroot\lib\globalize\src\date\fields-map.js" />
+    <None Include="wwwroot\lib\globalize\src\date\first-day-of-week.js" />
+    <None Include="wwwroot\lib\globalize\src\date\format-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\date\format.js" />
+    <None Include="wwwroot\lib\globalize\src\date\formatter-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\date\get-time-zone-name.js" />
+    <None Include="wwwroot\lib\globalize\src\date\is-leap-year.js" />
+    <None Include="wwwroot\lib\globalize\src\date\last-day-of-month.js" />
+    <None Include="wwwroot\lib\globalize\src\date\milliseconds-in-day.js" />
+    <None Include="wwwroot\lib\globalize\src\date\parse-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\date\parse.js" />
+    <None Include="wwwroot\lib\globalize\src\date\parser-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\date\pattern-re.js" />
+    <None Include="wwwroot\lib\globalize\src\date\start-of.js" />
+    <None Include="wwwroot\lib\globalize\src\date\timezone-hour-format.js" />
+    <None Include="wwwroot\lib\globalize\src\date\timezone-hour-format\h.js" />
+    <None Include="wwwroot\lib\globalize\src\date\timezone-hour-format\hm.js" />
+    <None Include="wwwroot\lib\globalize\src\date\to-parts-formatter-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\date\tokenizer-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\date\tokenizer.js" />
+    <None Include="wwwroot\lib\globalize\src\date\week-days.js" />
+    <None Include="wwwroot\lib\globalize\src\message-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\message.js" />
+    <None Include="wwwroot\lib\globalize\src\message\formatter-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\message\formatter-runtime-bind.js" />
+    <None Include="wwwroot\lib\globalize\src\number-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\number.js" />
+    <None Include="wwwroot\lib\globalize\src\number\compact-pattern-re.js" />
+    <None Include="wwwroot\lib\globalize\src\number\compact.js" />
+    <None Include="wwwroot\lib\globalize\src\number\format-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\number\format.js" />
+    <None Include="wwwroot\lib\globalize\src\number\formatter-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\number\format\grouping-separator.js" />
+    <None Include="wwwroot\lib\globalize\src\number\format\integer-fraction-digits.js" />
+    <None Include="wwwroot\lib\globalize\src\number\format\significant-digits.js" />
+    <None Include="wwwroot\lib\globalize\src\number\numbering-system-digits-map.js" />
+    <None Include="wwwroot\lib\globalize\src\number\numbering-system.js" />
+    <None Include="wwwroot\lib\globalize\src\number\parse-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\number\parse.js" />
+    <None Include="wwwroot\lib\globalize\src\number\parser-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\number\pattern-properties.js" />
+    <None Include="wwwroot\lib\globalize\src\number\pattern-re.js" />
+    <None Include="wwwroot\lib\globalize\src\number\pattern.js" />
+    <None Include="wwwroot\lib\globalize\src\number\symbol.js" />
+    <None Include="wwwroot\lib\globalize\src\number\symbol\inverted-map.js" />
+    <None Include="wwwroot\lib\globalize\src\number\symbol\map.js" />
+    <None Include="wwwroot\lib\globalize\src\number\symbol\name.js" />
+    <None Include="wwwroot\lib\globalize\src\plural-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\plural.js" />
+    <None Include="wwwroot\lib\globalize\src\plural\generator-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\relative-time-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\relative-time.js" />
+    <None Include="wwwroot\lib\globalize\src\relative-time\format.js" />
+    <None Include="wwwroot\lib\globalize\src\relative-time\formatter-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\relative-time\properties.js" />
+    <None Include="wwwroot\lib\globalize\src\unit-runtime.js" />
+    <None Include="wwwroot\lib\globalize\src\unit.js" />
+    <None Include="wwwroot\lib\globalize\src\unit\categories.js" />
+    <None Include="wwwroot\lib\globalize\src\unit\format.js" />
+    <None Include="wwwroot\lib\globalize\src\unit\formatter-fn.js" />
+    <None Include="wwwroot\lib\globalize\src\unit\get.js" />
+    <None Include="wwwroot\lib\globalize\src\unit\properties.js" />
+    <None Include="wwwroot\lib\globalize\src\util\always-array.js" />
+    <None Include="wwwroot\lib\globalize\src\util\always-cldr.js" />
+    <None Include="wwwroot\lib\globalize\src\util\date\set-date.js" />
+    <None Include="wwwroot\lib\globalize\src\util\date\set-month.js" />
+    <None Include="wwwroot\lib\globalize\src\util\function-name.js" />
+    <None Include="wwwroot\lib\globalize\src\util\is-plain-object.js" />
+    <None Include="wwwroot\lib\globalize\src\util\loose-matching.js" />
+    <None Include="wwwroot\lib\globalize\src\util\number\round.js" />
+    <None Include="wwwroot\lib\globalize\src\util\number\to-precision.js" />
+    <None Include="wwwroot\lib\globalize\src\util\number\truncate.js" />
+    <None Include="wwwroot\lib\globalize\src\util\object\extend.js" />
+    <None Include="wwwroot\lib\globalize\src\util\object\filter.js" />
+    <None Include="wwwroot\lib\globalize\src\util\object\invert.js" />
+    <None Include="wwwroot\lib\globalize\src\util\object\map.js" />
+    <None Include="wwwroot\lib\globalize\src\util\object\omit.js" />
+    <None Include="wwwroot\lib\globalize\src\util\object\values.js" />
+    <None Include="wwwroot\lib\globalize\src\util\out-of-range.js" />
+    <None Include="wwwroot\lib\globalize\src\util\regexp\cf-g.js" />
+    <None Include="wwwroot\lib\globalize\src\util\regexp\dash-g.js" />
+    <None Include="wwwroot\lib\globalize\src\util\regexp\escape.js" />
+    <None Include="wwwroot\lib\globalize\src\util\regexp\not-s.js" />
+    <None Include="wwwroot\lib\globalize\src\util\regexp\zs-g.js" />
+    <None Include="wwwroot\lib\globalize\src\util\remove-literal-quotes.js" />
+    <None Include="wwwroot\lib\globalize\src\util\string\hash.js" />
+    <None Include="wwwroot\lib\globalize\src\util\string\pad.js" />
+    <None Include="wwwroot\lib\globalize\src\util\string\repeat.js" />
+    <None Include="wwwroot\lib\globalize\src\util\to-string.js" />
+    <None Include="wwwroot\lib\globalize\test\.jshintrc" />
+    <None Include="wwwroot\lib\globalize\test\compiler\cases\currency.js" />
+    <None Include="wwwroot\lib\globalize\test\compiler\cases\date.js" />
+    <None Include="wwwroot\lib\globalize\test\compiler\cases\message.js" />
+    <None Include="wwwroot\lib\globalize\test\compiler\cases\number.js" />
+    <None Include="wwwroot\lib\globalize\test\compiler\cases\plural.js" />
+    <None Include="wwwroot\lib\globalize\test\compiler\cases\relative-time.js" />
+    <None Include="wwwroot\lib\globalize\test\compiler\cases\unit.js" />
+    <None Include="wwwroot\lib\globalize\test\compiler\test.js" />
+    <None Include="wwwroot\lib\globalize\test\config.js" />
+    <None Include="wwwroot\lib\globalize\test\functional.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\core.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\core\load.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\core\locale.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\currency\currency-formatter.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\currency\format-currency.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\date\date-formatter.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\date\date-parser.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\date\date-to-parts-formatter.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\date\format-date-to-parts.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\date\format-date.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\date\parse-date.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\message\format-message.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\message\message-formatter.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\number\format-number.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\number\number-formatter.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\number\number-parser.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\number\parse-number.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\plural\plural-generator.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\plural\plural.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\relative-time\format-relative-time.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\relative-time\relative-time-formatter.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\unit\format-unit.js" />
+    <None Include="wwwroot\lib\globalize\test\functional\unit\unit-formatter.js" />
+    <None Include="wwwroot\lib\globalize\test\unit.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\common\runtime-bind.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\core.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\core\locale.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\currency\code-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\currency\name-format.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\currency\name-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\currency\symbol-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\expand-pattern.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\expand-pattern\augment-format.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\expand-pattern\compare-formats.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\expand-pattern\get-best-match-pattern.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\format-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\format.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\parse-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\parse.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\timezone-hour-format.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\tokenizer-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\date\tokenizer.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\format-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\format.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\format\grouping-separator.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\format\integer-fraction-digits.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\format\significant-digits.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\parse-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\parse.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\number\pattern-properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\relative-time\format.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\relative-time\properties.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\unit\format.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\unit\get.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\util\object\invert.js" />
+    <None Include="wwwroot\lib\globalize\test\unit\util\regexp\escape.js" />
+    <None Include="wwwroot\lib\globalize\test\util.js" />
+    <None Include="wwwroot\lib\jquery-validation\localization\messages_el.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\adminlte\components\jquery\dist\jquery.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\adminlte\components\jquery\dist\jquery.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\adminlte\components\jquery\dist\jquery.min.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

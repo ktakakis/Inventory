@@ -1,0 +1,77 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Συνδεθείτε";
+    Layout = "_AdminlteNetcoreLogin";
+}
+
+<div class="login-box">
+    
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <div class="login-logo bg-primary">
+            <i class="fa fa-cubes"></i><a href="@netcore.MVC.Pages.HomeIndex.Url" style="color:white"><b>KAFFA </b>HELLAS E.E.</a>
+        </div>
+        <p class="login-box-msg">Συνδεθείτε για να ξεκινήσετε τη συνεδρία σας</p>
+        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <div class="form-group has-feedback">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" type="email" value="kaffahellas@gmail.com" class="form-control" placeholder="Email" />
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" value="" class="form-control" placeholder="Κωδικός πρόσβασης" />
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="checkbox icheck">
+                        <label>
+                            <input type="checkbox" asp-for="RememberMe">  @Html.DisplayNameFor(m => m.RememberMe)
+                        </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Σύνδεση</button>
+                </div>
+                <!-- /.col -->
+            </div>
+            <div class="social-auth-links text-center hidden">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                    <i class="fa fa-facebook"></i> Συνδεθείτε χρησιμοποιώντας το Facebook
+                </a>
+                <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                    <i class="fa fa-google-plus"></i> Συνδεθείτε χρησιμοποιώντας το Google+
+                </a>
+            </div>
+            <!-- /.social-auth-links -->
+            <a asp-action="ForgotPassword">Ξέχασα τον κωδικό μου</a><br>
+            <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="text-center">Εγγραφή νέου μέλους</a>
+        </form>
+
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+}

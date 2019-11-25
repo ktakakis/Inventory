@@ -1,0 +1,40 @@
+﻿@model LoginWith2faViewModel
+@{
+    ViewData["Title"] = "Έλεγχος ταυτότητας δύο παραγόντων";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+<p>Η σύνδεσή σας προστατεύεται με μια εφαρμογή ελέγχου ταυτότητας. Εισαγάγετε τον κωδικό ελέγχου ταυτότητας παρακάτω.</p>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+            <input asp-for="RememberMe" type="hidden" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TwoFactorCode"></label>
+                <input asp-for="TwoFactorCode" class="form-control" autocomplete="off" />
+                <span asp-validation-for="TwoFactorCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label asp-for="RememberMachine">
+                        <input asp-for="RememberMachine" />
+                        @Html.DisplayNameFor(m => m.RememberMachine)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">Συνδεθείτε</button>
+            </div>
+        </form>
+    </div>
+</div>
+<p>
+    Δεν έχετε πρόσβαση στη συσκευή ελέγχου ταυτότητας; Μπορείτε
+    <a asp-action="LoginWithRecoveryCode" asp-route-returnUrl="@ViewData["ReturnUrl"]">συνδεθείτε με έναν κωδικό ανάκτησης</a>.
+</p>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

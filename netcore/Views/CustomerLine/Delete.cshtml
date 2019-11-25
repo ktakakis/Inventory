@@ -1,0 +1,67 @@
+﻿@model netcore.Models.Invent.CustomerLine
+
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+}
+
+<div>
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.street1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.street1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.city)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.city)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.province)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.province)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.country)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocLat)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocLat)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocLong)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LocLong)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.customer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.customer.customerId)
+        </dd>
+    </dl>
+    
+</div>

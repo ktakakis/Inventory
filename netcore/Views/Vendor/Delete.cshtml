@@ -1,0 +1,125 @@
+﻿@model netcore.Models.Invent.Vendor
+@inject netcore.Data.ApplicationDbContext _context;
+
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-industry";
+    ViewData["DeleteInfo"] = "Ο προμηθευτής που έχει ήδη συναλλαγές (PO) δεν μπορεί να διαγραφεί.";
+    netcore.Models.Invent.PurchaseOrder purchaseOrder = _context.PurchaseOrder.Where(x => x.vendorId.Equals(Model.vendorId)).FirstOrDefault();
+    ViewData["IsCanDeleted"] = false;
+    if (purchaseOrder == null)
+    {
+        ViewData["IsCanDeleted"] = true;
+    }
+}
+
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="vendorId" />
+            <div class="row">
+                <div class="col-md-12">
+                    <small class="text-yellow"><i>Περίληψη</i></small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-success">
+                        <label asp-for="vendorName" class="control-label"></label>
+                        <input disabled asp-for="vendorName" class="form-control" />
+                        <span asp-validation-for="vendorName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="description" class="control-label"></label>
+                        <input disabled asp-for="description" class="form-control" />
+                        <span asp-validation-for="description" class="text-danger"></span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-success">
+                        <label asp-for="TaxNumber" class="control-label"></label>
+                        <input asp-for="TaxNumber" class="form-control" />
+                        <span asp-validation-for="TaxNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="TaxOffice" class="control-label"></label>
+                        <input asp-for="TaxOffice" class="form-control" />
+                        <span asp-validation-for="TaxOffice" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <small class="text-yellow"><i>Διεύθυνση</i></small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-success">
+                        <label asp-for="street1" class="control-label"></label>
+                        <input disabled asp-for="street1" class="form-control" />
+                        <span asp-validation-for="street1" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PostCode" class="control-label"></label>
+                        <input disabled asp-for="PostCode" class="form-control" />
+                        <span asp-validation-for="PostCode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="city" class="control-label"></label>
+                        <input disabled asp-for="city" class="form-control" />
+                        <span asp-validation-for="city" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="province" class="control-label"></label>
+                        <input disabled asp-for="province" class="form-control" />
+                        <span asp-validation-for="province" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="country" class="control-label"></label>
+                        <input disabled asp-for="country" class="form-control" />
+                        <span asp-validation-for="country" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <small class="text-yellow"><i>Property</i></small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="size" class="control-label"></label>
+                        <select disabled asp-for="size" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.BusinessSize>()"></select>
+                        <span asp-validation-for="size" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,113 @@
+﻿@model netcore.Models.Invent.Shipment
+
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-plane";
+    ViewData["DeleteInfo"] = "Διαγράφοντας την Παραγγελία παράδοσης (αποστολή) θα επαναφέρετε τη σχετική κατάσταση SO σε [Open]";
+}
+
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="shipmentId" />
+            <div class="form-group hidden">
+                <label asp-for="branchId" class="control-label"></label>
+                <select disabled asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId"></select>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <small class="text-yellow"><i>Περίληψη</i></small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="shipmentNumber" class="control-label"></label>
+                        <input disabled asp-for="shipmentNumber" class="form-control" />
+                        <span asp-validation-for="shipmentNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="salesOrderId" class="control-label">Παραγγελία Πώλησης</label>
+                        <select disabled asp-for="salesOrderId" class="form-control select2" asp-items="ViewBag.salesOrderId"></select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="shipmentDate" class="control-label"></label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input disabled asp-for="shipmentDate" value="@Model.shipmentDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                        </div>
+                        <span asp-validation-for="shipmentDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group hidden">
+                        <label asp-for="customerId" class="control-label"></label>
+                        <select disabled asp-for="customerId" class="form-control select2" asp-items="ViewBag.customerId"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <small class="text-yellow"><i>Property</i></small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="warehouseId" class="control-label">Αποθήκη</label>
+                        <select disabled asp-for="warehouseId" class="form-control select2" asp-items="ViewBag.warehouseId"></select>
+                        <span asp-validation-for="warehouseId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label asp-for="customerPO" class="control-label">Αναφορά PO πελάτη#</label>
+                        <input disabled asp-for="customerPO" class="form-control" />
+                        <span asp-validation-for="customerPO" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label asp-for="invoice" class="control-label">Τιμολόγιο για τον Πελάτη</label>
+                        <input disabled asp-for="invoice" class="form-control" />
+                        <span asp-validation-for="invoice" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="expeditionType" class="control-label"></label>
+                        <select disabled asp-for="expeditionType" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.ExpeditionType>()"></select>
+                        <span asp-validation-for="expeditionType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="expeditionMode" class="control-label"></label>
+                        <select disabled asp-for="expeditionMode" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.ExpeditionMode>()"></select>
+                        <span asp-validation-for="expeditionMode" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

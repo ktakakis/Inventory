@@ -1,0 +1,49 @@
+@model TwoFactorAuthenticationViewModel
+@{
+    ViewData["Title"] = "Έλεγχος ταυτότητας δύο παραγόντων";
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+<h4>@ViewData["Title"]</h4>
+@if (Model.Is2faEnabled)
+{
+    if (Model.RecoveryCodesLeft == 0)
+    {
+        <div class="alert alert-danger">
+            <strong>You have no recovery codes left.</strong>
+            <p>Πρέπει να <a asp-action="GenerateRecoveryCodes">δημιουργήσετε ένα νέο σύνολο κωδικών ανάκτησης </a>, προτού μπορέσετε να συνδεθείτε με έναν κωδικό ανάκτησης.</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft == 1)
+    {
+        <div class="alert alert-danger">
+            <strong>Έχετε 1 κωδικό ανάκτησης υπόλοιπο.</strong>
+            <p>Μπορείτε να <a asp-action="GenerateRecoveryCodes"> δημιουργήσετε ένα νέο σύνολο κωδικών ανάκτησης</a>.</p>
+        </div>
+    }
+    else if (Model.RecoveryCodesLeft <= 3)
+    {
+        <div class="alert alert-warning">
+            <strong>Έχετε @Model.RecoveryCodesLeft κωδικούς επαναφοράς ακόμα.</strong>
+            <p>Θα πρέπει να <a asp-action="GenerateRecoveryCodes">δημιουργήσετε ένα νέο σύνολο των κωδικών ανάκτηση</a>.</p>
+        </div>
+    }
+
+<a asp-action="Disable2faWarning" class="btn btn-default">Απενεργοποίηση 2FA</a>
+<a asp-action="GenerateRecoveryCodesWarning" class="btn btn-default">Επαναφορά κωδικών ανάκτησης</a>
+}
+
+<h5>Εφαρμογή επαληθευτή</h5>
+@if (!Model.HasAuthenticator)
+{
+<a asp-action="EnableAuthenticator" class="btn btn-default">Προσθήκη εφαρμογής ελέγχου ταυτότητας</a>
+}
+else
+{
+<a asp-action="EnableAuthenticator" class="btn btn-default">Ρυθμίστε την εφαρμογή ελέγχου ταυτότητας</a>
+<a asp-action="ResetAuthenticatorWarning" class="btn btn-default">Επαναφορά κλειδιού ελέγχου ταυτότητας</a>
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

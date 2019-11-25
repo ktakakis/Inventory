@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Δημιουργήστε κώδικες ανάκτησης δύο σημείων επαλήθευσης ταυτότητας (2FA)";
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>Αυτή η ενέργεια δημιουργεί νέους κωδικούς ανάκτησης.</strong>
+    </p>
+    <p>
+        Αν χάσετε τη συσκευή σας και δεν έχουν τους κωδικούς ανάκαμψη θα χάσετε την πρόσβαση στο λογαριασμό σας.
+    </p>
+    <p>
+        Η δημιουργία νέων κωδικών ανάκτησης δεν αλλάζει τα κλειδιά που χρησιμοποιούνται στις εφαρμογές ελέγχου ταυτότητας. Αν θέλετε να αλλάξετε το κλειδί
+        που χρησιμοποιείται σε μια εφαρμογή ελέγχου ταυτότητας, πρέπει να <a rel="un-action=" ResetAuthenticatorWarning"> επαναφέρετε τα κλειδιά ελέγχου ταυτότητας.</a>
+    </p>
+</div>
+
+<div>
+    <form asp-action="GenerateRecoveryCodes" method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">Δημιουργία κωδικών ανάκτησης</button>
+    </form>
+</div>

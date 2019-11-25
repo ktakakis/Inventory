@@ -1,0 +1,152 @@
+﻿@model netcore.Models.Invent.Product
+@inject netcore.Data.ApplicationDbContext _context;
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-tags";
+    ViewData["DeleteInfo"] = "Το προϊόν που έχει ήδη συναλλαγές (PO, SO, εντολή μεταφοράς) δεν μπορεί να διαγραφεί.";
+    netcore.Models.Invent.PurchaseOrderLine poline = _context.PurchaseOrderLine.Where(x => x.productId.Equals(Model.productId)).FirstOrDefault();
+    netcore.Models.Invent.SalesOrderLine soline = _context.SalesOrderLine.Where(x => x.ProductId.Equals(Model.productId)).FirstOrDefault();
+    netcore.Models.Invent.TransferOrderLine toline = _context.TransferOrderLine.Where(x => x.productId.Equals(Model.productId)).FirstOrDefault();
+    ViewData["IsCanDeleted"] = false;
+    if (poline == null && soline == null && toline == null)
+    {
+        ViewData["IsCanDeleted"] = true;
+    }
+}
+
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="productId" />
+            <div class="row">
+                <div class="col-md-12">
+                    <small class="text-yellow"><i>Περίληψη</i></small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-success">
+                        <label asp-for="productCode" class="control-label"></label>
+                        <input disabled asp-for="productCode" class="form-control" />
+                        <span asp-validation-for="productCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-success">
+                        <label asp-for="productName" class="control-label"></label>
+                        <input disabled asp-for="productName" class="form-control" />
+                        <span asp-validation-for="productName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="description" class="control-label"></label>
+                <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <small class="text-yellow"><i>Property</i></small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="barcode" class="control-label"></label>
+                        <input disabled asp-for="barcode" class="form-control" />
+                        <span asp-validation-for="barcode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="serialNumber" class="control-label"></label>
+                        <input disabled asp-for="serialNumber" class="form-control" />
+                        <span asp-validation-for="serialNumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="productType" class="control-label"></label>
+                        <select disabled asp-for="productType" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.ProductType>()"></select>
+                        <span asp-validation-for="productType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="uom" class="control-label"></label>
+                        <select disabled asp-for="uom" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.UOM>()"></select>
+                        <span asp-validation-for="uom" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="UnitPrice" class="control-label"></label>
+                        <input disabled asp-for="UnitPrice" class="form-control" />
+                        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label asp-for="UnitCost" class="control-label"></label>
+                            <input disabled asp-for="UnitCost" class="form-control" />
+                            <span asp-validation-for="UnitCost" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label asp-for="SpecialTaxValue" class="control-label"></label>
+                            <input disabled asp-for="SpecialTaxValue" class="form-control" />
+                            <span asp-validation-for="SpecialTaxValue" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProductWeight" class="control-label"></label>
+                        <input disabled asp-for="ProductWeight" class="form-control" />
+                        <span asp-validation-for="ProductWeight" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProductVolume" class="control-label"></label>
+                        <input disabled asp-for="ProductVolume" class="form-control" />
+                        <span asp-validation-for="ProductVolume" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ReorderLevel" class="control-label"></label>
+                        <input disabled asp-for="ReorderLevel" class="form-control" />
+                        <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Discontinued" class="control-label"></label>
+                        <input disabled type="checkbox" asp-for="Discontinued" class="checkbox" />
+                        <span asp-validation-for="Discontinued" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

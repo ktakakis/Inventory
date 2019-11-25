@@ -1,0 +1,90 @@
+﻿@model netcore.Models.Invent.CustomerLine
+
+@{
+    ViewData["Title"] = "Λεπτομέρειες";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div>
+                      <dl class="dl-horizontal">
+                          <dt>
+                              @Html.DisplayNameFor(model => model.street1)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.street1)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.city)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.city)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.PostCode)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.PostCode)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.province)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.province)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.country)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.country)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.LocLat)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.LocLat)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.LocLong)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.LocLong)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.createdAt)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.createdAt)
+                          </dd>
+                          <dt>
+                              @Html.DisplayNameFor(model => model.customer)
+                          </dt>
+                          <dd>
+                              @Html.DisplayFor(model => model.customer.customerId)
+                          </dd>
+                      </dl>                                   
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.customerLineId" class="btn btn-primary">Επεξεργασία</a>
+                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>
+
+
+

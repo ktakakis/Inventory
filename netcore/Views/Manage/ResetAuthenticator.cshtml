@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Επαναφορά κλειδιού ελέγχου ταυτότητας";
+    ViewData.AddActivePage(ManageNavPages.TwoFactorAuthentication);
+}
+
+<h4>@ViewData["Title"]</h4>
+<div class="alert alert-warning" role="alert">
+    <p>
+        <span class="glyphicon glyphicon-warning-sign"></span>
+        <strong>Εάν επαναφέρετε το κλειδί ελέγχου ταυτότητας σας, η εφαρμογή  ελέγχου ταυτότητας δεν θα λειτουργεί μέχρι να ρυθμιστεί ξανά.</strong>
+    </p>
+    <p>
+        Αυτή η διαδικασία απενεργοποιεί το 2FA έως ότου επαληθεύσετε την εφαρμογή ελέγχου ταυτότητας και επίσης θα επαναφέρετε τους κωδικούς ανάκτησης 2FA.
+        Μπορεί να μην έχετε πρόσβαση στο λογαριασμό σας.
+    </p>
+</div>
+<div>
+    <form asp-action="ResetAuthenticator" method="post" class="form-group">
+        <button class="btn btn-danger" type="submit">Επαναφορά κλειδιού ελέγχου ταυτότητας</button>
+    </form>
+</div>

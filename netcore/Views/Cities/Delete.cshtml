@@ -1,0 +1,62 @@
+﻿@model netcore.Models.Invent.City
+@inject netcore.Data.ApplicationDbContext _context;
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-building-o";
+    ViewData["DeleteInfo"] = "Πόλη που αντιστοιχεί σε διευθυνση Πελάτη ή Προμηθευτή ή έχουν γίνει συναλλαγές δεν μπορεί να διαγραφεί.";
+    ViewData["IsCanDeleted"] = false;
+
+}
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div>
+    <div class="row">
+        <div class="col-md-9">
+            <!-- Default box -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="CityName" class="control-label"></label>
+                            <input disabled asp-for="CityName" class="form-control" />
+                            <span asp-validation-for="CityName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProductVAT" class="control-label"></label>
+                            <input disabled asp-for="ProductVAT" class="form-control" />
+                            <span asp-validation-for="ProductVAT" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="createdAt" class="control-label"></label>
+                            <input disabled asp-for="createdAt" class="form-control" />
+                            <span asp-validation-for="createdAt" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</div>    
+@section Styles{
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
+}
+@section Scripts {
+    <!-- iCheck -->
+    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+
+}

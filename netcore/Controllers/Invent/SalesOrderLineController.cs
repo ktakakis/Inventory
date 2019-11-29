@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 using netcore.Data;
 using netcore.Models.Invent;
+using Newtonsoft.Json;
 
 namespace netcore.Controllers.Invent
 {
@@ -62,9 +63,12 @@ namespace netcore.Controllers.Invent
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber");
             if (check == null)
             {
-                SalesOrderLine objline = new SalesOrderLine();
-                objline.SalesOrder = selected;
-                objline.SalesOrderId = masterid;
+                SalesOrderLine objline = new SalesOrderLine
+                {
+                    SalesOrder = selected,
+                    SalesOrderId = masterid,
+                    Qty = 1,
+                };
                 return View(objline);
             }
             else
@@ -185,32 +189,31 @@ namespace netcore.Controllers.Invent
         {
             return _context.SalesOrderLine.Any(e => e.SalesOrderLineId == id);
         }
-
         [HttpGet]
-        public JsonResult GetProductPrice(string productId)
+        public JsonResult GetOrderLineNumbers(string productId, string salesorderId,decimal qty)
         {
-            var productPrice = new SelectList(_context.Product.Where(p => p.productId == productId), "productId", "UnitPrice");
-            return Json(productPrice);
-        }
-        [HttpGet]
-        public JsonResult GetProductCost(string productId)
-        {
-            var productCost = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitCost;
-            return Json(productCost);
-        }
-
-        [HttpGet]
-        public JsonResult GetSpecialTaxDiscount(string salesorderId)
-        {
+            var sa = new JsonSerializerSettings();
             var custId = _context.SalesOrder.Where(s => s.salesOrderId == salesorderId).FirstOrDefault().customerId;
+            var productPrice = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitPrice;
             var specialtaxDiscount = _context.Customer.Where(c => c.customerId == custId.ToString()).FirstOrDefault().TaxDiscount;
-            return Json(specialtaxDiscount);
+            var specialtaxamount = _context.Product.Where(p => p.productId == productId).FirstOrDefault().SpecialTaxValue;
+            var productVAT = _context.Product.Where(s => s.productId == productId).FirstOrDefault().ProductVAT;
+            var productCost = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitCost;
+            var productvatamount = (productPrice + specialtaxamount *(1- specialtaxDiscount)) * productVAT * qty;
+            var result = new { 
+                Price = productPrice,
+                ProductVATAmount=productvatamount,
+                SpecialTaxDiscount = specialtaxDiscount,
+                SpecialTaxAmount=specialtaxamount,
+                ProductVAT=productVAT,
+                ProductCost=productCost,
+                Qty=qty
+            };
+            return Json(result, sa);
         }
+
     }
 }
-
-
-
 
 
 namespace netcore.MVC

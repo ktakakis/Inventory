@@ -75,63 +75,74 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="UnitPrice" class="control-label"></label>
-                    <input asp-for="UnitPrice" class="form-control" />
-                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="UnitPrice" class="control-label"></label>
+                            <input asp-for="UnitPrice" class="form-control" />
+                            <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ProductVAT" class="control-label"></label>
+                            <input asp-for="ProductVAT" class="form-control" />
+                            <span asp-validation-for="ProductVAT" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="UnitCost" class="control-label"></label>
+                            <input asp-for="UnitCost" class="form-control" />
+                            <span asp-validation-for="UnitCost" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="SpecialTaxValue" class="control-label"></label>
+                            <input asp-for="SpecialTaxValue" class="form-control" />
+                            <span asp-validation-for="SpecialTaxValue" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="UnitCost" class="control-label"></label>
-                        <input asp-for="UnitCost" class="form-control" />
-                        <span asp-validation-for="UnitCost" class="text-danger"></span>
+                        <label asp-for="ProductWeight" class="control-label"></label>
+                        <input asp-for="ProductWeight" class="form-control" />
+                        <span asp-validation-for="ProductWeight" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label asp-for="SpecialTaxValue" class="control-label"></label>
-                        <input asp-for="SpecialTaxValue" class="form-control" />
-                        <span asp-validation-for="SpecialTaxValue" class="text-danger"></span>
+                        <label asp-for="ProductVolume" class="control-label"></label>
+                        <input asp-for="ProductVolume" class="form-control" />
+                        <span asp-validation-for="ProductVolume" class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="ProductWeight" class="control-label"></label>
-                    <input asp-for="ProductWeight" class="form-control" />
-                    <span asp-validation-for="ProductWeight" class="text-danger"></span>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ReorderLevel" class="control-label"></label>
+                        <input asp-for="ReorderLevel" class="form-control" />
+                        <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Discontinued" class="control-label"></label>
+                        <input type="checkbox" asp-for="Discontinued" class="checkbox" />
+                        <span asp-validation-for="Discontinued" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="ProductVolume" class="control-label"></label>
-                    <input asp-for="ProductVolume" class="form-control" />
-                    <span asp-validation-for="ProductVolume" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="ReorderLevel" class="control-label"></label>
-                    <input asp-for="ReorderLevel" class="form-control" />
-                    <span asp-validation-for="ReorderLevel" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="Discontinued" class="control-label"></label>
-                    <input type="checkbox" asp-for="Discontinued" class="checkbox" />
-                    <span asp-validation-for="Discontinued" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
 
     </div>
 </div>

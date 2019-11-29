@@ -64,7 +64,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("productId,barcode,createdAt,description,productCode,productName,productType,serialNumber,uom,Discontinued,ProductVolume,ProductWeight,ReorderLevel,UnitCost,UnitPrice,SpecialTaxValue")] Product product)
+        public async Task<IActionResult> Create([Bind("productId,barcode,createdAt,description,productCode,productName,productType,serialNumber,uom,Discontinued,ProductVolume,ProductWeight,ReorderLevel,UnitCost,UnitPrice,SpecialTaxValue,ProductVAT")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("productId,barcode,createdAt,description,productCode,productName,productType,serialNumber,uom,Discontinued,ProductVolume,ProductWeight,ReorderLevel,UnitCost,UnitPrice,SpecialTaxValue")] Product product)
+        public async Task<IActionResult> Edit(string id, [Bind("productId,barcode,createdAt,description,productCode,productName,productType,serialNumber,uom,Discontinued,ProductVolume,ProductWeight,ReorderLevel,UnitCost,UnitPrice,SpecialTaxValue,ProductVAT")] Product product)
         {
             if (id != product.productId)
             {

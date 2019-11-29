@@ -51,6 +51,9 @@ namespace netcore.Models.Invent
         [Display(Name = "Κόστος Αγοράς")]
         public decimal? UnitCost { get; set; }
 
+        [Display(Name ="Φ.Π.Α.")]
+        public decimal ProductVAT { get; set; }
+
         [Display(Name = "Ειδικός Φόρος")]
         public decimal SpecialTaxValue { get; set; }
 

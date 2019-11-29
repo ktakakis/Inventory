@@ -52,7 +52,6 @@ namespace netcore.Controllers.Api
                 return Json(new { success = false, message = "Σφάλμα. Δεν μπορεί να γίνει Επεξεργασία Παραγγελίας που είναι [Ολοκληρωμένη]." });
             }
             
-            salesOrderLine.TotalAmount = (decimal)salesOrderLine.Qty * salesOrderLine.Price;
 
             if (string.IsNullOrEmpty(salesOrderLine.SalesOrderLineId))
             {

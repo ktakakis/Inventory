@@ -152,14 +152,19 @@
                         <span asp-validation-for="size" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
+                        <select disabled asp-for="EmployeeId" id="customerList" class="form-control select2" asp-items="ViewBag.EmployeeId"></select>
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <div class="form-group">
                         <label asp-for="Active" class="control-label"></label>
                         <input disabled type="checkbox" asp-for="Active" class="checkbox" />
                         <span asp-validation-for="Active" class="text-danger"></span>
                     </div>
                 </div>
-
             </div>
 
         </div>

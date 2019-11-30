@@ -12,6 +12,7 @@ namespace netcore.Models.Invent
         {
             this.createdAt = DateTime.UtcNow;
         }
+
         [StringLength(38)]
         [Display(Name = "Id Στοιχείου Πελάτη")]
         public string customerLineId { get; set; }

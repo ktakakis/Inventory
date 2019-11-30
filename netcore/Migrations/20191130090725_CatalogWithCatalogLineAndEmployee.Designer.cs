@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191130090725_CatalogWithCatalogLineAndEmployee")]
+    partial class CatalogWithCatalogLineAndEmployee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,8 +154,6 @@ namespace netcore.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("EmployeeRole");
 
                     b.Property<bool>("HomeRole");
 
@@ -355,9 +354,6 @@ namespace netcore.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("EmployeeId")
-                        .HasMaxLength(38);
-
                     b.Property<string>("HasChild");
 
                     b.Property<decimal?>("OrderDiscount");
@@ -399,8 +395,6 @@ namespace netcore.Migrations
                         .HasMaxLength(50);
 
                     b.HasKey("customerId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Customer");
                 });
@@ -452,9 +446,6 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<string>("DisplayName")
-                        .HasMaxLength(50);
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -467,33 +458,7 @@ namespace netcore.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("city")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("country")
-                        .HasMaxLength(30);
-
                     b.Property<DateTime>("createdAt");
-
-                    b.Property<string>("fax");
-
-                    b.Property<string>("mobilePhone");
-
-                    b.Property<string>("officePhone");
-
-                    b.Property<string>("personalEmail");
-
-                    b.Property<string>("province")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("street1")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("street2")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("workEmail");
 
                     b.HasKey("EmployeeId");
 
@@ -1401,7 +1366,7 @@ namespace netcore.Migrations
             modelBuilder.Entity("netcore.Models.Invent.Catalog", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Customer", "Customer")
-                        .WithMany("Catalog")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -1415,13 +1380,6 @@ namespace netcore.Migrations
                     b.HasOne("netcore.Models.Invent.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("netcore.Models.Invent.Customer", b =>
-                {
-                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.CustomerLine", b =>

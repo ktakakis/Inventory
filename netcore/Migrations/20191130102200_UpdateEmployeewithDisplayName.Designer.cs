@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191130102200_UpdateEmployeewithDisplayName")]
+    partial class UpdateEmployeewithDisplayName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,8 +154,6 @@ namespace netcore.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<bool>("EmployeeRole");
 
                     b.Property<bool>("HomeRole");
 
@@ -467,33 +466,7 @@ namespace netcore.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("city")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("country")
-                        .HasMaxLength(30);
-
                     b.Property<DateTime>("createdAt");
-
-                    b.Property<string>("fax");
-
-                    b.Property<string>("mobilePhone");
-
-                    b.Property<string>("officePhone");
-
-                    b.Property<string>("personalEmail");
-
-                    b.Property<string>("province")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("street1")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("street2")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("workEmail");
 
                     b.HasKey("EmployeeId");
 

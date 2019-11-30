@@ -71,6 +71,12 @@ namespace netcore.Data
         public DbSet<netcore.Models.Invent.TransferInLine> TransferInLine { get; set; }
 
         public DbSet<netcore.Models.Invent.City> City { get; set; }
-        
+        public DbSet<netcore.Models.Invent.Catalog> Catalog { get; set; }
+
+        public DbSet<netcore.Models.Invent.CatalogLine> CatalogLine { get; set; }
+
+        public DbSet<netcore.Models.Invent.Employee> Employee { get; set; }
+
+
     }
 }

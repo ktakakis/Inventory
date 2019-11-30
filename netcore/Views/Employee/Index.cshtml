@@ -1,0 +1,85 @@
+﻿@model IEnumerable<netcore.Models.Invent.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-user";
+    ViewData["ListTitle"] = "Λίστα Συνεργατών";
+    ViewData["IndexInfo"] = "Η Λίστα περιέχει όλους τους Συνεργάτες της εταιρίας";
+}
+
+
+<table class="table table-hover table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.createdAt)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.street1)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.city)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.province)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.country)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.EmployeeId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.EmployeeId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.street1)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.city)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.province)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.country)
+            </td>
+
+        </tr>
+        }
+    </tbody>
+</table>

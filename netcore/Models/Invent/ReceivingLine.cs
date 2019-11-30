@@ -14,7 +14,7 @@ namespace netcore.Models.Invent
         }
 
         [StringLength(38)]
-        [Display(Name = "Ιδ Στοιχείου Παραλαβής")]
+        [Display(Name = "Id Στοιχείου Παραλαβής")]
         public string receivingLineId { get; set; }
 
         [StringLength(38)]

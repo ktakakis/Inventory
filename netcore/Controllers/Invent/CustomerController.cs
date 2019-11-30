@@ -45,7 +45,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", customer.EmployeeId);
             return View(customer);
         }
 
@@ -53,9 +53,10 @@ namespace netcore.Controllers.Invent
         // GET: Customer/Create
         public IActionResult Create()
         {
-            return View();
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+            Customer customer = new Customer();
+            return View(customer);
         }
-
 
 
 
@@ -73,6 +74,7 @@ namespace netcore.Controllers.Invent
                 TempData["TransMessage"] = "Create Customer " + customer.customerName + " Success";
                 return RedirectToAction(nameof(Details), new { id = customer.customerId });
             }
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", customer.EmployeeId);
             return View(customer);
         }
 
@@ -89,6 +91,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", customer.EmployeeId);
             return View(customer);
         }
 
@@ -125,6 +128,7 @@ namespace netcore.Controllers.Invent
                 TempData["TransMessage"] = "Η Επεξεργασία του Πελάτη " + customer.customerName + " έγινε με Επιτυχία";
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", customer.EmployeeId);
             return View(customer);
         }
 
@@ -142,7 +146,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", customer.EmployeeId);
             return View(customer);
         }
 

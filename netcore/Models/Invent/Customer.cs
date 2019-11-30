@@ -74,8 +74,17 @@ namespace netcore.Models.Invent
         [Display(Name = "Μετράνε οι πωλήσεις")]
         public Boolean SalesCount { get; set; }
 
+        [StringLength(38)]
+        [Display(Name = "Id Συνεργάτη")]
+        public string EmployeeId { get; set; }
+         
+        [Display(Name = "Συνεργάτης")]
+        public Employee Employee { get; set; }
+
         [Display(Name = "Διευθύνσεις πελάτη")]
         public List<CustomerLine> CustomerLine { get; set; } = new List<CustomerLine>();
+        [Display(Name = "Κατάλογοι πελάτη")]
+        public List<Catalog> Catalog { get; set; } = new List<Catalog>();
 
     }
 }

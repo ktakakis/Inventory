@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
+
 using netcore.Data;
 using netcore.Models.Invent;
+using System.Globalization;
+using System.Threading;
 
 namespace netcore.Controllers.Invent
 {
@@ -37,7 +40,10 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
 
-            var catalog = await _context.Catalog.SingleOrDefaultAsync(m => m.CatalogId == id);
+            var catalog = await _context.Catalog
+                    .Include(x => x.CatalogLine)
+                    .Include(s => s.Customer)
+                        .SingleOrDefaultAsync(m => m.CatalogId == id);
             if (catalog == null)
             {
                 return NotFound();
@@ -81,7 +87,7 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
 
-            var catalog = await _context.Catalog.SingleOrDefaultAsync(m => m.CatalogId == id);
+            var catalog = await _context.Catalog.Include(x => x.CatalogLine).SingleOrDefaultAsync(m => m.CatalogId == id);
             if (catalog == null)
             {
                 return NotFound();
@@ -136,6 +142,7 @@ namespace netcore.Controllers.Invent
             }
 
             var catalog = await _context.Catalog
+                .Include(x => x.CatalogLine)
                 .Include(c => c.Customer)
                 .SingleOrDefaultAsync(m => m.CatalogId == id);
             if (catalog == null)

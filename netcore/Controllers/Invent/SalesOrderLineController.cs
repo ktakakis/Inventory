@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 
 namespace netcore.Controllers.Invent
 {
+    
     [Authorize(Roles = "SalesOrderLine")]
     public class SalesOrderLineController : Controller
     {

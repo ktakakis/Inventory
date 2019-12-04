@@ -27,6 +27,7 @@ namespace netcore.Controllers.Api
 
         // GET: api/CatalogLine
         [HttpGet]
+        [Authorize]
         public IActionResult GetCatalogLine(string masterid)
         {
             return Json(new { data = _context.CatalogLine.Include(x => x.Product).Where(x => x.CatalogId.Equals(masterid)).ToList() });
@@ -34,6 +35,7 @@ namespace netcore.Controllers.Api
 
         // POST: api/CatalogLine
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> PostCatalogLine([FromBody] CatalogLine catalogLine)
         {
             if (!ModelState.IsValid)
@@ -59,6 +61,7 @@ namespace netcore.Controllers.Api
 
         // DELETE: api/CatalogLine/5
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteCatalogLine([FromRoute] string id)
         {
             if (!ModelState.IsValid)
@@ -79,12 +82,5 @@ namespace netcore.Controllers.Api
 
             return Json(new { success = true, message = "Η Διαγραφή του στοιχείου Έκπτωσης έγινε με επιτυχία." });
         }
-
-        private bool CatalogLineExists(string id)
-        {
-            return _context.CatalogLine.Any(e => e.CatalogLineId == id);
-        }
-
     }
-
 }

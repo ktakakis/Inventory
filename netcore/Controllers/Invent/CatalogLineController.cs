@@ -10,11 +10,12 @@ using System.ComponentModel.DataAnnotations;
 
 using netcore.Data;
 using netcore.Models.Invent;
+using Newtonsoft.Json;
 
 namespace netcore.Controllers.Invent
 {
 
-
+    [Authorize(Roles = "CatalogLine")]
     public class CatalogLineController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +28,7 @@ namespace netcore.Controllers.Invent
         // GET: CatalogLine
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.CatalogLine.Include(c => c.Catalog);
+            var applicationDbContext = _context.CatalogLine.Include(p=>p.Product).Include(c => c.Catalog);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -40,6 +41,7 @@ namespace netcore.Controllers.Invent
             }
 
             var catalogLine = await _context.CatalogLine
+                    .Include(p=>p.Product)
                     .Include(c => c.Catalog)
                         .SingleOrDefaultAsync(m => m.CatalogLineId == id);
             if (catalogLine == null)
@@ -56,12 +58,15 @@ namespace netcore.Controllers.Invent
         {
             var check = _context.CatalogLine.SingleOrDefault(m => m.CatalogLineId == id);
             var selected = _context.Catalog.SingleOrDefault(m => m.CatalogId == masterid);
+            ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode");
             ViewData["catalogId"] = new SelectList(_context.Catalog, "catalogId", "catalogId");
             if (check == null)
             {
-                CatalogLine objline = new CatalogLine();
-                objline.Catalog = selected;
-                objline.CatalogId = masterid;
+                CatalogLine objline = new CatalogLine
+                {
+                    Catalog = selected,
+                    CatalogId = masterid
+                };
                 return View(objline);
             }
             else
@@ -84,6 +89,7 @@ namespace netcore.Controllers.Invent
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode", catalogLine.ProductId);
             ViewData["catalogId"] = new SelectList(_context.Catalog, "catalogId", "catalogId", catalogLine.CatalogId);
             return View(catalogLine);
         }
@@ -101,6 +107,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode", catalogLine.ProductId);
             ViewData["catalogId"] = new SelectList(_context.Catalog, "catalogId", "catalogId", catalogLine.CatalogId);
             return View(catalogLine);
         }
@@ -137,6 +144,7 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode", catalogLine.ProductId);
             ViewData["catalogId"] = new SelectList(_context.Catalog, "catalogId", "catalogId", catalogLine.CatalogId);
             return View(catalogLine);
         }
@@ -150,6 +158,7 @@ namespace netcore.Controllers.Invent
             }
 
             var catalogLine = await _context.CatalogLine
+                    .Include(s => s.Product)
                     .Include(c => c.Catalog)
                     .SingleOrDefaultAsync(m => m.CatalogLineId == id);
             if (catalogLine == null)

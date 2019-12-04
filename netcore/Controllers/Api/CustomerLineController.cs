@@ -77,14 +77,5 @@ namespace netcore.Controllers.Api
 
             return Json(new { success = true, message = "Η Διαγραφή της Διεύθυνσης " + customerLine.street1 + " " + customerLine.city + " έγινε με επιτυχία" });
         }
-
-
-        private bool CustomerLineExists(string id)
-        {
-            return _context.CustomerLine.Any(e => e.customerLineId == id);
-        }
-
-
     }
-
 }

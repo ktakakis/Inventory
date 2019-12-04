@@ -57,8 +57,7 @@ namespace netcore.Controllers.Invent
     {
         var check = _context.CustomerLine.SingleOrDefault(m => m.customerLineId == id);
         var selected = _context.Customer.SingleOrDefault(m => m.customerId == masterid);
-            //ViewData["cityId"] = new SelectList(_context.City, "CityId", "CityName");
-            ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerId");
+        ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerId");
         if (check == null)
         {
             CustomerLine objline = new CustomerLine();

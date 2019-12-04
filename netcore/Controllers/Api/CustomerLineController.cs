@@ -41,7 +41,7 @@ namespace netcore.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            if (customerLine.customerLineId == string.Empty)
+            if (string.IsNullOrEmpty(customerLine.customerLineId))
             {
                 customerLine.customerLineId = Guid.NewGuid().ToString();
                 _context.CustomerLine.Add(customerLine);

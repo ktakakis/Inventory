@@ -14,8 +14,6 @@ using Newtonsoft.Json;
 
 namespace netcore.Controllers.Invent
 {
-
-
     [Authorize(Roles = "SalesOrderLine")]
     public class SalesOrderLineController : Controller
     {
@@ -234,7 +232,7 @@ namespace netcore.Models
 {
     public partial class ApplicationUser
     {
-        [Display(Name = "SalesOrderLine")]
+        [Display(Name = "Στοιχεία Παραγγελίας")]
         public bool SalesOrderLineRole { get; set; } = false;
     }
 }

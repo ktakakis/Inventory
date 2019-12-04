@@ -178,12 +178,11 @@
     </div>
 </div>
 
-<!--Contacts Child-->
+<!--Addresses Child-->
 <div class="row">
     <div class="col-md-9">
         <!-- Default box -->
         <div class="box box-primary">
-
             <div class="box-body">
                 <div class="row">
                     <div class="col-lg-12">
@@ -251,7 +250,6 @@
                         "render": function (data) {
                             var btnEdit = "<a class='btn btn-primary btn-xs' onclick=ShowPopup('/" + entity + "/Create/" + data + "')><i class='fa fa-pencil'></i></a>";
                             var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:2px' onclick=Delete('" + data + "')><i class='fa fa-trash'></i></a>";
-
                             return "<div class='tools pull-right'>" + btnEdit + btnDelete + "</div>";
                         }
                     }

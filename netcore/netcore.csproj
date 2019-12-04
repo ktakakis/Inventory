@@ -20,6 +20,8 @@
     <Compile Remove="Migrations\20191124203237_LastUpdate.Designer.cs" />
     <Compile Remove="Migrations\20191129210850_Catalog.cs" />
     <Compile Remove="Migrations\20191129210850_Catalog.Designer.cs" />
+    <Compile Remove="Migrations\20191202224207_LastUpdate3.cs" />
+    <Compile Remove="Migrations\20191202224207_LastUpdate3.Designer.cs" />
   </ItemGroup>
 
 

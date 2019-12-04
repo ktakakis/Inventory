@@ -1,0 +1,36 @@
+﻿@model netcore.Models.Invent.Catalog
+
+@{    
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
+    ViewData["EntityIcon"] = "fa fa-building-o";
+    ViewData["CreateInfo"] = "Οι κατάλογοι αποτελούν την υλοποίηση της συμφωνίας που έχουμε κάνει τον κάθε πελάτη ξεχωριστά.";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="CatalogId" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group has-success">
+                    <label asp-for="CatalogName" class="control-label"></label>
+                    <input asp-for="CatalogName" class="form-control" />
+                    <span asp-validation-for="CatalogName" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CustomerId" class="control-label">Πελάτης</label>
+                    <select asp-for="CustomerId" class="form-control select2" asp-items="ViewBag.customerId"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

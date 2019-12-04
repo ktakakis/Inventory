@@ -39,8 +39,7 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
 
-            var customer = await _context.Customer
-                        .SingleOrDefaultAsync(m => m.customerId == id);
+            var customer = await _context.Customer.SingleOrDefaultAsync(m => m.customerId == id);
             if (customer == null)
             {
                 return NotFound();
@@ -65,7 +64,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("customerId,HasChild,city,country,customerName,description,province,size,street1,street2,Active,CompanyActivity,OrderDiscount,SalesCount,TaxDiscount,TaxOffice,VATRegNumber,WebSite,fax,mobilePhone,officePhone,workEmail,createdAt")] Customer customer)
+        public async Task<IActionResult> Create([Bind("customerId,HasChild,createdAt,customerName,description,size,Active,CompanyActivity,OrderDiscount,SalesCount,TaxDiscount,TaxOffice,VATRegNumber,WebSite,fax,mobilePhone,officePhone,workEmail,EmployeeId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +99,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("customerId,HasChild,city,country,customerName,description,province,size,street1,street2,Active,CompanyActivity,OrderDiscount,SalesCount,TaxDiscount,TaxOffice,VATRegNumber,WebSite,fax,mobilePhone,officePhone,workEmail,createdAt")] Customer customer)
+        public async Task<IActionResult> Edit(string id, [Bind("customerId,HasChild,createdAt,customerName,description,size,Active,CompanyActivity,OrderDiscount,SalesCount,TaxDiscount,TaxOffice,VATRegNumber,WebSite,fax,mobilePhone,officePhone,workEmail,EmployeeId")] Customer customer)
         {
             if (id != customer.customerId)
             {

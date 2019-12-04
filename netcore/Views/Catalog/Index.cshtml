@@ -1,0 +1,50 @@
+﻿@model IEnumerable<netcore.Models.Invent.Catalog>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-building";
+    ViewData["ListTitle"] = "Λίστα Τιμοκαταλόγων";
+    ViewData["IndexInfo"] = "Ο Τιμοκατάλογος είναι μία λίστα προϊόντων, με τις εκπτώσεις (αν υπάρχουν), που έχουμε συμφωνήσει με τον κάθε πελάτη ξεχωριστά. Όταν δεν αναγράφεται η έκπτωση για κάποιο προϊόν, τότε ισχύει η αρχική τιμή πώλησης.";
+}
+
+
+    <table class="table table-hover table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CatalogName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.createdAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Customer.customerName)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="tools">
+                            <a asp-action="Edit" asp-route-id="@item.CatalogId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                            <a asp-action="Details" asp-route-id="@item.CatalogId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.CatalogId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                        </div>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CatalogName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.createdAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.customerName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

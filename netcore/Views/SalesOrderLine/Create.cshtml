@@ -125,6 +125,11 @@
                 $("#qty").val(data.Qty);
                 data['ProductVATAmount']=data['ProductVATAmount'].toString().replace( '.', ',');
                 $("#productvatamount").val(data.ProductVATAmount);
+                data['Discount']=data['Discount'].toString().replace( '.', ',');
+                $("#discount").val(data.Discount);
+                data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
+                $("#discountamount").val(data.DiscountAmount);
+
             });
         });
     </script>

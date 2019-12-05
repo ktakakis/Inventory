@@ -191,16 +191,19 @@ namespace netcore.Controllers.Invent
         [HttpGet]
         public JsonResult GetOrderLineNumbers(string productId, string salesorderId,decimal qty)
         {
-            var sa = new JsonSerializerSettings();
+            var sa = new JsonSerializerSettings(); 
             var custId = _context.SalesOrder.Where(s => s.salesOrderId == salesorderId).FirstOrDefault().customerId;
             var productPrice = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitPrice;
             var specialtaxDiscount = _context.Customer.Where(c => c.customerId == custId.ToString()).FirstOrDefault().TaxDiscount;
             var specialtaxamount = _context.Product.Where(p => p.productId == productId).FirstOrDefault().SpecialTaxValue;
             var productVAT = _context.Product.Where(s => s.productId == productId).FirstOrDefault().ProductVAT;
             var productCost = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitCost;
+            var discount = _context.CatalogLine.Where(d => d.Catalog.CustomerId == custId ).FirstOrDefault().Discount.GetValueOrDefault(0);
             var productvatamount = (productPrice + specialtaxamount *(1- specialtaxDiscount)) * productVAT * qty;
             var result = new { 
                 Price = productPrice,
+                Discount = discount,
+                DiscountAmount = productPrice*discount,
                 ProductVATAmount=productvatamount,
                 SpecialTaxDiscount = specialtaxDiscount,
                 SpecialTaxAmount=specialtaxamount,

@@ -68,8 +68,8 @@
                         <table id="grid" name="grid" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="col-lg-3">Προϊόν</th>
-                                    <th class="col-lg-3">Έκπτωση</th>
+                                    <th class="col-lg-4">Προϊόν</th>
+                                    <th class="col-lg-4">Έκπτωση</th>
                                     <th class="col-lg-3">Ημερομηνία</th>
                                     <th class="col-lg-1"></th>
                                 </tr>
@@ -123,15 +123,16 @@
                 },
                 "columns": [
                     { "data": "product.productCode" },
-                    { "data": "discount" },
+                    {
+                        "data": "discount",
+                        render: $.fn.dataTable.render.number( '.', ',', 2, '' )
+                    },
                     { "data": "createdAt"},
                     {
                         "data": "catalogLineId",
                         "render": function (data) {
-                            ShowMessage(data);
                             var btnEdit = "<a class='btn btn-primary btn-xs' onclick=ShowPopup('/" + entity + "/Create/" + data + "')><i class='fa fa-pencil'></i></a>";
                             var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:2px' onclick=Delete('" + data + "')><i class='fa fa-trash'></i></a>";
-
                             return "<div class='tools pull-right'>" + btnEdit + btnDelete + "</div>";
                         }
                     }
@@ -146,7 +147,6 @@
         function ShowPopup(url) {
             var modalId = 'modalDefault';
             var modalPlaceholder = $('#' + modalId + ' .modal-dialog .modal-content');
-            
             $.get(url)
                 .done(function (response) {
                     modalPlaceholder.html(response);
@@ -161,6 +161,7 @@
             $.validator.unobtrusive.parse(form);
             if ($(form).valid()) {
                 var data = $(form).serializeJSON();
+                data['Discount'] = data['Discount'].toString().replace(',', '.');
                 data = JSON.stringify(data);
                 $.ajax({
                     type: 'POST',

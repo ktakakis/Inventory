@@ -59,7 +59,7 @@ namespace netcore.Controllers.Invent
             var check = _context.CatalogLine.SingleOrDefault(m => m.CatalogLineId == id);
             var selected = _context.Catalog.SingleOrDefault(m => m.CatalogId == masterid);
             ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode");
-            ViewData["catalogId"] = new SelectList(_context.Catalog, "catalogId", "catalogId");
+            ViewData["catalogId"] = new SelectList(_context.Catalog, "CatalogId", "CatalogId");
             if (check == null)
             {
                 CatalogLine objline = new CatalogLine
@@ -81,7 +81,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CatalogLineId,CatalogId,Discount,ProductId,createdAt")] CatalogLine catalogLine)
+        public async Task<IActionResult> Create([Bind("CatalogLineId,CatalogId,Discount,ProductId,createdAt,EndDate")] CatalogLine catalogLine)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace netcore.Controllers.Invent
                 return RedirectToAction(nameof(Index));
             }
             ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode", catalogLine.ProductId);
-            ViewData["catalogId"] = new SelectList(_context.Catalog, "catalogId", "catalogId", catalogLine.CatalogId);
+            ViewData["catalogId"] = new SelectList(_context.Catalog, "CatalogId", "CatalogId", catalogLine.CatalogId);
             return View(catalogLine);
         }
 
@@ -117,7 +117,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CatalogLineId,CatalogId,Discount,ProductId,createdAt")] CatalogLine catalogLine)
+        public async Task<IActionResult> Edit(string id, [Bind("CatalogLineId,CatalogId,Discount,ProductId,createdAt,EndDate")] CatalogLine catalogLine)
         {
             if (id != catalogLine.CatalogLineId)
             {
@@ -145,7 +145,7 @@ namespace netcore.Controllers.Invent
                 return RedirectToAction(nameof(Index));
             }
             ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode", catalogLine.ProductId);
-            ViewData["catalogId"] = new SelectList(_context.Catalog, "catalogId", "catalogId", catalogLine.CatalogId);
+            ViewData["catalogId"] = new SelectList(_context.Catalog, "CatalogId", "CatalogId", catalogLine.CatalogId);
             return View(catalogLine);
         }
 
@@ -204,7 +204,8 @@ namespace netcore.MVC
             public const string Name = "CatalogLine";
         }
     }
-} 
+}
+
 namespace netcore.Models
 {
     public partial class ApplicationUser
@@ -213,6 +214,5 @@ namespace netcore.Models
         public bool CatalogLineRole { get; set; } = false;
     }
 }
-
 
 

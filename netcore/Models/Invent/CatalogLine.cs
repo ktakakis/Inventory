@@ -35,6 +35,8 @@ namespace netcore.Models.Invent
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? Discount { get; set; }
 
+        [Display(Name = "Ημερ. Λήξης")] 
+        public DateTime EndDate { get; set; }
 
     }
 }

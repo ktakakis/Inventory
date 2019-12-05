@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191205085956_removecatalogline")]
+    partial class removecatalogline
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,8 +140,6 @@ namespace netcore.Migrations
                     b.Property<bool>("ApplicationUserRole");
 
                     b.Property<bool>("BranchRole");
-
-                    b.Property<bool>("CatalogLineRole");
 
                     b.Property<bool>("CatalogRole");
 

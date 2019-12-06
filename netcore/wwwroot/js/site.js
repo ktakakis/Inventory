@@ -10,7 +10,6 @@ function ShowMessageError(msg) {
 $('.select2').each(function (i, obj) {
     if (!$(obj).hasClass("select2-hidden-accessible")) {
         $(obj).select2({
-            placeholder: "Κάντε μια Επιλογή",
             dropdownAutoWidth: 'true',
             width: '100%'
         });

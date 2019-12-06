@@ -58,7 +58,20 @@ namespace netcore.Controllers.Invent
         {
             var check = _context.SalesOrderLine.SingleOrDefault(m => m.SalesOrderLineId == id);
             var selected = _context.SalesOrder.SingleOrDefault(m => m.salesOrderId == masterid);
-            ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode");
+            var catalogProducts = from Catalog in _context.Catalog
+                                  join CatalogLine in _context.CatalogLine on Catalog.CatalogId equals CatalogLine.CatalogId
+                                  join Product in _context.Product on CatalogLine.ProductId equals Product.productId
+                                  select new
+                                  {
+                                      CatalogLine.ProductId,
+                                      Product.productCode,
+                                      CatalogLine.CatalogId,
+                                      CatalogLine.Discount
+                                  };
+            var custId = _context.SalesOrder.Where(s => s.salesOrderId == selected.salesOrderId).FirstOrDefault().customerId;
+            var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
+
+            ViewData["productId"] = new SelectList(catalogProducts.Where(p=>p.CatalogId== catalogId), "ProductId", "productCode");
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber");
             if (check == null)
             {
@@ -193,12 +206,13 @@ namespace netcore.Controllers.Invent
         {
             var sa = new JsonSerializerSettings(); 
             var custId = _context.SalesOrder.Where(s => s.salesOrderId == salesorderId).FirstOrDefault().customerId;
+            var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
             var productPrice = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitPrice;
             var specialtaxDiscount = _context.Customer.Where(c => c.customerId == custId.ToString()).FirstOrDefault().TaxDiscount;
             var specialtaxamount = _context.Product.Where(p => p.productId == productId).FirstOrDefault().SpecialTaxValue;
             var productVAT = _context.Product.Where(s => s.productId == productId).FirstOrDefault().ProductVAT;
             var productCost = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitCost;
-            var discount = _context.CatalogLine.Where(d => d.Catalog.CustomerId == custId ).FirstOrDefault().Discount.GetValueOrDefault(0);
+            var discount = _context.CatalogLine.Where(d => d.CatalogId == catalogId && d.ProductId==productId ).FirstOrDefault().Discount.GetValueOrDefault(0);
             var productvatamount = (productPrice + specialtaxamount *(1- specialtaxDiscount)) * productVAT * qty;
             var result = new { 
                 Price = productPrice,

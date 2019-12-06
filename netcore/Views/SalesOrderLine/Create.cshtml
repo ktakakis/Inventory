@@ -106,13 +106,10 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
-        $("#productList").change(function () {
-
-            var productId = $("#productList").val();
-            var salesorderId = $("#salesorderId").val();
-            var qty = $("#qty").val();
-
-            $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId,qty:qty }, function (data) {
+        var productId = $("#productList").val();
+        var salesorderId = $("#salesorderId").val();
+        var qty = $("#qty").val();
+        $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId,qty:qty }, function (data) {
                 data['Price']=data['Price'].toString().replace( '.', ',');
                 $("#price").val(data.Price);
                 data['SpecialTaxDiscount']=data['SpecialTaxDiscount'].toString().replace( '.', ',');
@@ -129,6 +126,30 @@
                 $("#discount").val(data.Discount);
                 data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
                 $("#discountamount").val(data.DiscountAmount);
+        });
+
+        $("#productList").change(function () {
+            var productId = $("#productList").val();
+            var salesorderId = $("#salesorderId").val();
+            var qty = $("#qty").val();
+
+            $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty }, function (data) {
+                        data['Price']=data['Price'].toString().replace( '.', ',');
+                        $("#price").val(data.Price);
+                        data['SpecialTaxDiscount']=data['SpecialTaxDiscount'].toString().replace( '.', ',');
+                        $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
+                        data['SpecialTaxAmount']=data['SpecialTaxAmount'].toString().replace( '.', ',');
+                        $("#specialtaxamount").val(data.SpecialTaxAmount);
+                        data['ProductVAT']=data['ProductVAT'].toString().replace( '.', ',');
+                        $("#productVAT").val(data.ProductVAT);
+                        data['Qty']=data['Qty'].toString().replace( '.', ',');
+                        $("#qty").val(data.Qty);
+                        data['ProductVATAmount']=data['ProductVATAmount'].toString().replace( '.', ',');
+                        $("#productvatamount").val(data.ProductVATAmount);
+                        data['Discount']=data['Discount'].toString().replace( '.', ',');
+                        $("#discount").val(data.Discount);
+                        data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
+                        $("#discountamount").val(data.DiscountAmount);
 
             });
         });

@@ -68,11 +68,7 @@ namespace netcore.Controllers.Invent
                                       CatalogLine.CatalogId,
                                       CatalogLine.Discount
                                   };
-            var custId = _context.SalesOrder.Where(s => s.salesOrderId == selected.salesOrderId).FirstOrDefault().customerId;
-            var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
-
-            ViewData["productId"] = new SelectList(catalogProducts.Where(p=>p.CatalogId== catalogId), "ProductId", "productCode");
-            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber");
+                ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber");
             if (check == null)
             {
                 SalesOrderLine objline = new SalesOrderLine
@@ -81,10 +77,14 @@ namespace netcore.Controllers.Invent
                     SalesOrderId = masterid,
                     Qty = 1,
                 };
+                var custId = _context.SalesOrder.Where(s => s.salesOrderId == selected.salesOrderId).FirstOrDefault().customerId;
+                var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
+                ViewData["productId"] = new SelectList(catalogProducts.Where(p => p.CatalogId == catalogId), "ProductId", "productCode");
                 return View(objline);
             }
             else
             {
+                ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode"); 
                 return View(check);
             }
         }

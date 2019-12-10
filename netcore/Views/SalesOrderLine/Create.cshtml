@@ -31,24 +31,25 @@
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Price" class="control-label"></label>
-                    <input asp-for="Price"  id="price" class="form-control" lang="el" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
+                    <label asp-for="Qty" class="control-label"></label>
+                    <input asp-for="Qty" id="qty" class="form-control" />
+                    <span asp-validation-for="Qty" class="text-danger"></span>
                 </div>
             </div>
+
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group ">
                     <label asp-for="Discount" class="control-label"></label>
-                    <input asp-for="Discount" id="discount" class="form-control" />
+                    <input readonly="readonly"  asp-for="Discount" id="discount" class="form-control" />
                     <span asp-validation-for="Discount" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="DiscountAmount" class="control-label"></label>
-                    <input asp-for="DiscountAmount"  id="discountamount" class="form-control" />
+                    <input readonly="readonly"  asp-for="DiscountAmount"  id="discountamount" class="form-control" />
                     <span asp-validation-for="DiscountAmount" class="text-danger"></span>
                 </div>
             </div>
@@ -57,14 +58,14 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="SpecialTaxDiscount" class="control-label"></label>
-                    <input asp-for="SpecialTaxDiscount" id="specialtaxdiscount" class="form-control" lang="el" />
+                    <input readonly="readonly"  asp-for="SpecialTaxDiscount" id="specialtaxdiscount" class="form-control" lang="el" />
                     <span asp-validation-for="SpecialTaxDiscount" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="SpecialTaxAmount" class="control-label"></label>
-                    <input asp-for="SpecialTaxAmount"   id="specialtaxamount" class="form-control" />
+                    <input readonly="readonly"  asp-for="SpecialTaxAmount"   id="specialtaxamount" class="form-control" />
                     <span asp-validation-for="SpecialTaxAmount" class="text-danger"></span>
                 </div>
             </div>
@@ -73,14 +74,14 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="ProductVAT" class="control-label"></label>
-                    <input asp-for="ProductVAT" id="productVAT" class="form-control" />
+                    <input readonly="readonly"  asp-for="ProductVAT" id="productVAT" class="form-control" />
                     <span asp-validation-for="ProductVAT" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="ProductVATAmount" class="control-label"></label>
-                    <input asp-for="ProductVATAmount" id="productvatamount" class="form-control" />
+                    <input  readonly="readonly" asp-for="ProductVATAmount" id="productvatamount" class="form-control" />
                     <span asp-validation-for="ProductVATAmount" class="text-danger"></span>
                 </div>
             </div>
@@ -88,14 +89,15 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="Qty" class="control-label"></label>
-                    <input asp-for="Qty" id="qty"  class="form-control" />
-                    <span asp-validation-for="Qty" class="text-danger"></span>
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" readonly="readonly" id="price" class="form-control" lang="el" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
-            </div>                <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
                 <div class="form-group ">
                     <label asp-for="TotalAmount" class="control-label"></label>
-                    <input asp-for="TotalAmount" id="totalamount" class="form-control" />
+                    <input readonly="readonly" asp-for="TotalAmount" id="totalamount" class="form-control" />
                     <span asp-validation-for="TotalAmount" class="text-danger"></span>
                 </div>
             </div>
@@ -126,6 +128,8 @@
                 $("#discount").val(data.Discount);
                 data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
                 $("#discountamount").val(data.DiscountAmount);
+                data['TotalAmount']=data['TotalAmount'].toString().replace( '.', ',');
+                $("#totalamount").val(data.TotalAmount);
         });
 
         $("#productList").change(function () {
@@ -150,6 +154,35 @@
                         $("#discount").val(data.Discount);
                         data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
                         $("#discountamount").val(data.DiscountAmount);
+                        data['TotalAmount']=data['TotalAmount'].toString().replace( '.', ',');
+                        $("#totalamount").val(data.TotalAmount);
+
+            });
+        });
+        $("#qty").change(function () {
+            var productId = $("#productList").val();
+            var salesorderId = $("#salesorderId").val();
+            var qty = $("#qty").val();
+
+            $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty }, function (data) {
+                        data['Price']=data['Price'].toString().replace( '.', ',');
+                        $("#price").val(data.Price);
+                        data['SpecialTaxDiscount']=data['SpecialTaxDiscount'].toString().replace( '.', ',');
+                        $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
+                        data['SpecialTaxAmount']=data['SpecialTaxAmount'].toString().replace( '.', ',');
+                        $("#specialtaxamount").val(data.SpecialTaxAmount);
+                        data['ProductVAT']=data['ProductVAT'].toString().replace( '.', ',');
+                        $("#productVAT").val(data.ProductVAT);
+                        data['Qty']=data['Qty'].toString().replace( '.', ',');
+                        $("#qty").val(data.Qty);
+                        data['ProductVATAmount']=data['ProductVATAmount'].toString().replace( '.', ',');
+                        $("#productvatamount").val(data.ProductVATAmount);
+                        data['Discount']=data['Discount'].toString().replace( '.', ',');
+                        $("#discount").val(data.Discount);
+                        data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
+                        $("#discountamount").val(data.DiscountAmount);
+                        data['TotalAmount']=data['TotalAmount'].toString().replace( '.', ',');
+                        $("#totalamount").val(data.TotalAmount);
 
             });
         });

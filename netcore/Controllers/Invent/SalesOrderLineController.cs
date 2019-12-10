@@ -202,28 +202,33 @@ namespace netcore.Controllers.Invent
             return _context.SalesOrderLine.Any(e => e.SalesOrderLineId == id);
         }
         [HttpGet]
-        public JsonResult GetOrderLineNumbers(string productId, string salesorderId,decimal qty)
+        public JsonResult GetOrderLineNumbers(string productId, string salesorderId, decimal qty)
         {
-            var sa = new JsonSerializerSettings(); 
+            var sa = new JsonSerializerSettings();
             var custId = _context.SalesOrder.Where(s => s.salesOrderId == salesorderId).FirstOrDefault().customerId;
             var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
             var productPrice = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitPrice;
+            var discount = _context.CatalogLine.Where(d => d.CatalogId == catalogId && d.ProductId == productId).FirstOrDefault().Discount.GetValueOrDefault(0);
             var specialtaxDiscount = _context.Customer.Where(c => c.customerId == custId.ToString()).FirstOrDefault().TaxDiscount;
             var specialtaxamount = _context.Product.Where(p => p.productId == productId).FirstOrDefault().SpecialTaxValue;
             var productVAT = _context.Product.Where(s => s.productId == productId).FirstOrDefault().ProductVAT;
             var productCost = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitCost;
-            var discount = _context.CatalogLine.Where(d => d.CatalogId == catalogId && d.ProductId==productId ).FirstOrDefault().Discount.GetValueOrDefault(0);
-            var productvatamount = (productPrice + specialtaxamount *(1- specialtaxDiscount)) * productVAT * qty;
-            var result = new { 
+            var productvatamount = ((productPrice * (1 - discount)) + specialtaxamount * (1 - specialtaxDiscount)) * productVAT * qty;
+
+            var result = new {
+                Qty = qty,
                 Price = productPrice,
+                BeforeDiscountAmount = productPrice * qty,
                 Discount = discount,
-                DiscountAmount = productPrice*discount,
-                ProductVATAmount=productvatamount,
+                DiscountAmount = productPrice * discount * qty,
+                PriceWithDiscount = productPrice * (1 - discount) * qty,
+                SpecialTaxAmount = specialtaxamount,
                 SpecialTaxDiscount = specialtaxDiscount,
-                SpecialTaxAmount=specialtaxamount,
-                ProductVAT=productVAT,
-                ProductCost=productCost,
-                Qty=qty
+                ProductVATAmount = productvatamount,
+                PriceWithTaxes = (qty * specialtaxamount) + (productPrice * (1 + discount)),
+                ProductVAT = productVAT,
+                ProductCost = productCost,
+                TotalAmount = (qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount)) + (((qty * specialtaxamount)+((qty* productPrice) - ((qty * productPrice) * discount))) * productVAT)
             };
             return Json(result, sa);
         }

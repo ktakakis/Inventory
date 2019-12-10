@@ -74,20 +74,28 @@
                             <th>Ποσ</th>
                             <th>Προϊόν</th>
                             <th>Τιμή</th>
-                            <th>Περιγραφή</th>
-                            <th>Υποσύνολο</th>
+                            <th>Φ.Π.Α. %</th>
+                            <th>Ποσό Φ.Π.Α.</th>
+                            <th>Ειδικός Φόρος</th>
+                            <th>Έκπτωση %</th>
+                            <th>Έκπτωση</th>
+                            <th>Σύνολο</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.salesOrderLine)
                         {
-                            <tr>
-                                <td>@item.Qty</td>
-                                <td>@item.Product.productCode</td>
-                                <td>@item.Price.ToString()</td>
-                                <td>@item.Product.productName</td>
-                                <td>@item.TotalAmount €</td>
-                            </tr>
+                        <tr>
+                            <td>@item.Qty</td>
+                            <td>@item.Product.productCode</td>
+                            <td>@item.Price.ToString()</td>
+                            <td>@item.Product.ProductVAT</td>
+                            <td>@item.ProductVATAmount</td>
+                            <td>@item.SpecialTaxAmount</td>
+                            <td>@item.Discount</td>
+                            <td>@item.DiscountAmount</td>
+                            <td>@item.TotalAmount €</td>
+                        </tr>
                         }
 
                     </tbody>

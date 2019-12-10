@@ -38,7 +38,10 @@ namespace netcore.Models.Invent
 
         [Display(Name = "Τιμή Πώλησης")]
         public decimal Price { get; set; }
-        
+
+        [Display(Name = "Αξία προ Έκπτωσης")]
+        public decimal? TotalBeforeDiscount { get; set; }
+
         [Display(Name = "Τιμή Αγοράς")]
         public decimal? UnitCost { get; set; }
 

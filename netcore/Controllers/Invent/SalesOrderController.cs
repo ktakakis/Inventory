@@ -38,6 +38,7 @@ namespace netcore.Controllers.Invent
 
             obj.totalOrderAmount = obj.salesOrderLine.Sum(x => x.TotalAmount);
             obj.totalDiscountAmount = obj.salesOrderLine.Sum(x => x.DiscountAmount);
+            
             _context.Update(obj);
 
             return View(obj);

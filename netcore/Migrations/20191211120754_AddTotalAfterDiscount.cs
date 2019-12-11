@@ -4,22 +4,21 @@ using System.Collections.Generic;
 
 namespace netcore.Migrations
 {
-    public partial class VendorUpdatePostcode : Migration
+    public partial class AddTotalAfterDiscount : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "PostCode",
-                table: "Vendor",
-                maxLength: 6,
+            migrationBuilder.AddColumn<decimal>(
+                name: "TotalAfterDiscount",
+                table: "SalesOrderLine",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PostCode",
-                table: "Vendor");
+                name: "TotalAfterDiscount",
+                table: "SalesOrderLine");
         }
     }
 }

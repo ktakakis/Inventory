@@ -97,7 +97,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SalesOrderLineId,createdAt,DiscountAmount,Price,ProductId,Qty,SalesOrderId,TotalAmount,ProductVAT,Discount,ProductVATAmount,SpecialTaxAmount,UnitCost,SpecialTaxDiscount")] SalesOrderLine salesOrderLine)
+        public async Task<IActionResult> Create([Bind("SalesOrderLineId,Discount,DiscountAmount,Price,TotalBeforeDiscount,ProductId,ProductVAT,ProductVATAmount,Qty,SalesOrderId,SpecialTaxAmount,SpecialTaxDiscount,TotalAmount,UnitCost,createdAt,TotalAfterDiscount")] SalesOrderLine salesOrderLine)
         {
             if (ModelState.IsValid)
             {
@@ -133,7 +133,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("SalesOrderLineId,createdAt,DiscountAmount,Price,ProductId,Qty,SalesOrderId,TotalAmount,ProductVAT,Discount,ProductVATAmount,SpecialTaxAmount,UnitCost,SpecialTaxDiscount")] SalesOrderLine salesOrderLine)
+        public async Task<IActionResult> Edit(string id, [Bind("SalesOrderLineId,Discount,DiscountAmount,Price,TotalBeforeDiscount,ProductId,ProductVAT,ProductVATAmount,Qty,SalesOrderId,SpecialTaxAmount,SpecialTaxDiscount,TotalAmount,UnitCost,createdAt,TotalAfterDiscount")] SalesOrderLine salesOrderLine)
         {
             if (id != salesOrderLine.SalesOrderLineId)
             {
@@ -228,7 +228,9 @@ namespace netcore.Controllers.Invent
                 PriceWithTaxes = (qty * specialtaxamount) + (productPrice * (1 + discount)),
                 ProductVAT = productVAT,
                 ProductCost = productCost,
-                TotalAmount = (qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount)) + (((qty * specialtaxamount)+((qty* productPrice) - ((qty * productPrice) * discount))) * productVAT)
+                TotalAmount = (qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount)) + (((qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount))) * productVAT),
+                TotalBeforeDiscount = qty * productPrice,
+                TotalAfterDiscount = qty * productPrice * (1 - discount)
             };
             return Json(result, sa);
         }

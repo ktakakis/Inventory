@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace netcore.Migrations
 {
-    public partial class initialdb : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,11 +31,15 @@ namespace netcore.Migrations
                     AccessFailedCount = table.Column<int>(nullable: false),
                     ApplicationUserRole = table.Column<bool>(nullable: false),
                     BranchRole = table.Column<bool>(nullable: false),
+                    CatalogLineRole = table.Column<bool>(nullable: false),
+                    CatalogRole = table.Column<bool>(nullable: false),
+                    CitiesRole = table.Column<bool>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     CustomerLineRole = table.Column<bool>(nullable: false),
                     CustomerRole = table.Column<bool>(nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
+                    EmployeeRole = table.Column<bool>(nullable: false),
                     HomeRole = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
@@ -95,24 +99,43 @@ namespace netcore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "City",
                 columns: table => new
                 {
-                    customerId = table.Column<string>(maxLength: 38, nullable: false),
-                    HasChild = table.Column<string>(nullable: true),
-                    city = table.Column<string>(maxLength: 30, nullable: true),
-                    country = table.Column<string>(maxLength: 30, nullable: true),
-                    createdAt = table.Column<DateTime>(nullable: false),
-                    customerName = table.Column<string>(maxLength: 50, nullable: false),
-                    description = table.Column<string>(maxLength: 50, nullable: true),
-                    province = table.Column<string>(maxLength: 30, nullable: true),
-                    size = table.Column<int>(nullable: false),
-                    street1 = table.Column<string>(maxLength: 50, nullable: false),
-                    street2 = table.Column<string>(maxLength: 50, nullable: true)
+                    CityId = table.Column<string>(maxLength: 38, nullable: false),
+                    CityName = table.Column<string>(maxLength: 50, nullable: false),
+                    ProductVAT = table.Column<decimal>(nullable: false),
+                    createdAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.customerId);
+                    table.PrimaryKey("PK_City", x => x.CityId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Employee",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<string>(maxLength: 38, nullable: false),
+                    DisplayName = table.Column<string>(maxLength: 50, nullable: true),
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    UserName = table.Column<string>(maxLength: 50, nullable: false),
+                    city = table.Column<string>(maxLength: 30, nullable: true),
+                    country = table.Column<string>(maxLength: 30, nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false),
+                    fax = table.Column<string>(nullable: true),
+                    mobilePhone = table.Column<string>(nullable: true),
+                    officePhone = table.Column<string>(nullable: true),
+                    personalEmail = table.Column<string>(nullable: true),
+                    province = table.Column<string>(maxLength: 30, nullable: true),
+                    street1 = table.Column<string>(maxLength: 50, nullable: false),
+                    street2 = table.Column<string>(maxLength: 50, nullable: true),
+                    workEmail = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employee", x => x.EmployeeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -120,6 +143,14 @@ namespace netcore.Migrations
                 columns: table => new
                 {
                     productId = table.Column<string>(maxLength: 38, nullable: false),
+                    Discontinued = table.Column<bool>(nullable: false),
+                    ProductVAT = table.Column<decimal>(nullable: false),
+                    ProductVolume = table.Column<decimal>(nullable: true),
+                    ProductWeight = table.Column<decimal>(nullable: true),
+                    ReorderLevel = table.Column<int>(nullable: true),
+                    SpecialTaxValue = table.Column<decimal>(nullable: false),
+                    UnitCost = table.Column<decimal>(nullable: true),
+                    UnitPrice = table.Column<decimal>(nullable: true),
                     barcode = table.Column<string>(maxLength: 50, nullable: true),
                     createdAt = table.Column<DateTime>(nullable: false),
                     description = table.Column<string>(maxLength: 50, nullable: true),
@@ -140,15 +171,23 @@ namespace netcore.Migrations
                 {
                     vendorId = table.Column<string>(maxLength: 38, nullable: false),
                     HasChild = table.Column<string>(nullable: true),
+                    PostCode = table.Column<string>(maxLength: 6, nullable: true),
+                    TaxNumber = table.Column<string>(maxLength: 15, nullable: true),
+                    TaxOffice = table.Column<string>(maxLength: 50, nullable: true),
+                    WebSite = table.Column<string>(maxLength: 100, nullable: true),
                     city = table.Column<string>(maxLength: 30, nullable: true),
                     country = table.Column<string>(maxLength: 30, nullable: true),
                     createdAt = table.Column<DateTime>(nullable: false),
                     description = table.Column<string>(maxLength: 50, nullable: true),
+                    fax = table.Column<string>(nullable: true),
+                    mobilePhone = table.Column<string>(nullable: true),
+                    officePhone = table.Column<string>(nullable: true),
+                    personalEmail = table.Column<string>(nullable: true),
                     province = table.Column<string>(maxLength: 30, nullable: true),
                     size = table.Column<int>(nullable: false),
                     street1 = table.Column<string>(maxLength: 50, nullable: false),
-                    street2 = table.Column<string>(maxLength: 50, nullable: true),
-                    vendorName = table.Column<string>(maxLength: 50, nullable: false)
+                    vendorName = table.Column<string>(maxLength: 50, nullable: false),
+                    workEmail = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -288,75 +327,38 @@ namespace netcore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerLine",
+                name: "Customer",
                 columns: table => new
                 {
-                    customerLineId = table.Column<string>(maxLength: 38, nullable: false),
+                    customerId = table.Column<string>(maxLength: 38, nullable: false),
+                    Active = table.Column<bool>(nullable: false),
+                    CompanyActivity = table.Column<string>(maxLength: 50, nullable: false),
+                    EmployeeId = table.Column<string>(maxLength: 38, nullable: true),
+                    HasChild = table.Column<string>(nullable: true),
+                    OrderDiscount = table.Column<decimal>(nullable: true),
+                    SalesCount = table.Column<bool>(nullable: false),
+                    TaxDiscount = table.Column<decimal>(nullable: false),
+                    TaxOffice = table.Column<string>(maxLength: 50, nullable: true),
+                    VATRegNumber = table.Column<string>(maxLength: 50, nullable: true),
+                    WebSite = table.Column<string>(maxLength: 50, nullable: true),
                     createdAt = table.Column<DateTime>(nullable: false),
-                    customerId = table.Column<string>(maxLength: 38, nullable: true),
+                    customerName = table.Column<string>(maxLength: 50, nullable: false),
+                    description = table.Column<string>(maxLength: 50, nullable: true),
                     fax = table.Column<string>(maxLength: 20, nullable: true),
-                    firstName = table.Column<string>(maxLength: 20, nullable: false),
-                    gender = table.Column<int>(nullable: false),
-                    jobTitle = table.Column<string>(maxLength: 20, nullable: false),
-                    lastName = table.Column<string>(maxLength: 20, nullable: false),
-                    middleName = table.Column<string>(maxLength: 20, nullable: true),
                     mobilePhone = table.Column<string>(maxLength: 20, nullable: true),
-                    nickName = table.Column<string>(maxLength: 20, nullable: true),
                     officePhone = table.Column<string>(maxLength: 20, nullable: true),
-                    personalEmail = table.Column<string>(maxLength: 50, nullable: true),
-                    salutation = table.Column<int>(nullable: false),
+                    size = table.Column<int>(nullable: false),
                     workEmail = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerLine", x => x.customerLineId);
+                    table.PrimaryKey("PK_Customer", x => x.customerId);
                     table.ForeignKey(
-                        name: "FK_CustomerLine_Customer_customerId",
-                        column: x => x.customerId,
-                        principalTable: "Customer",
-                        principalColumn: "customerId",
+                        name: "FK_Customer_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SalesOrder",
-                columns: table => new
-                {
-                    salesOrderId = table.Column<string>(maxLength: 38, nullable: false),
-                    HasChild = table.Column<string>(nullable: true),
-                    branchId = table.Column<string>(maxLength: 38, nullable: false),
-                    createdAt = table.Column<DateTime>(nullable: false),
-                    customerId = table.Column<string>(maxLength: 38, nullable: false),
-                    deliveryAddress = table.Column<string>(maxLength: 50, nullable: true),
-                    deliveryDate = table.Column<DateTime>(nullable: false),
-                    description = table.Column<string>(maxLength: 100, nullable: true),
-                    picCustomer = table.Column<string>(maxLength: 30, nullable: false),
-                    picInternal = table.Column<string>(maxLength: 30, nullable: false),
-                    referenceNumberExternal = table.Column<string>(maxLength: 30, nullable: true),
-                    referenceNumberInternal = table.Column<string>(maxLength: 30, nullable: true),
-                    salesOrderNumber = table.Column<string>(maxLength: 20, nullable: false),
-                    salesOrderStatus = table.Column<int>(nullable: false),
-                    salesShipmentNumber = table.Column<string>(nullable: true),
-                    soDate = table.Column<DateTime>(nullable: false),
-                    top = table.Column<int>(nullable: false),
-                    totalDiscountAmount = table.Column<decimal>(nullable: false),
-                    totalOrderAmount = table.Column<decimal>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SalesOrder", x => x.salesOrderId);
-                    table.ForeignKey(
-                        name: "FK_SalesOrder_Branch_branchId",
-                        column: x => x.branchId,
-                        principalTable: "Branch",
-                        principalColumn: "branchId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SalesOrder_Customer_customerId",
-                        column: x => x.customerId,
-                        principalTable: "Customer",
-                        principalColumn: "customerId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -484,80 +486,51 @@ namespace netcore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SalesOrderLine",
+                name: "Catalog",
                 columns: table => new
                 {
-                    salesOrderLineId = table.Column<string>(maxLength: 38, nullable: false),
-                    createdAt = table.Column<DateTime>(nullable: false),
-                    discountAmount = table.Column<decimal>(nullable: false),
-                    price = table.Column<decimal>(nullable: false),
-                    productId = table.Column<string>(maxLength: 38, nullable: true),
-                    qty = table.Column<float>(nullable: false),
-                    salesOrderId = table.Column<string>(maxLength: 38, nullable: true),
-                    totalAmount = table.Column<decimal>(nullable: false)
+                    CatalogId = table.Column<string>(maxLength: 38, nullable: false),
+                    CatalogName = table.Column<string>(maxLength: 50, nullable: false),
+                    CustomerId = table.Column<string>(maxLength: 38, nullable: false),
+                    HasChild = table.Column<string>(nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SalesOrderLine", x => x.salesOrderLineId);
+                    table.PrimaryKey("PK_Catalog", x => x.CatalogId);
                     table.ForeignKey(
-                        name: "FK_SalesOrderLine_Product_productId",
-                        column: x => x.productId,
-                        principalTable: "Product",
-                        principalColumn: "productId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SalesOrderLine_SalesOrder_salesOrderId",
-                        column: x => x.salesOrderId,
-                        principalTable: "SalesOrder",
-                        principalColumn: "salesOrderId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_Catalog_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "customerId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shipment",
+                name: "CustomerLine",
                 columns: table => new
                 {
-                    shipmentId = table.Column<string>(maxLength: 38, nullable: false),
-                    HasChild = table.Column<string>(nullable: true),
-                    branchId = table.Column<string>(maxLength: 38, nullable: true),
+                    customerLineId = table.Column<string>(maxLength: 38, nullable: false),
+                    LocLat = table.Column<string>(maxLength: 30, nullable: true),
+                    LocLong = table.Column<string>(maxLength: 30, nullable: true),
+                    PostCode = table.Column<string>(maxLength: 5, nullable: true),
+                    ProductVAT = table.Column<string>(nullable: true),
+                    city = table.Column<string>(maxLength: 30, nullable: true),
+                    country = table.Column<string>(maxLength: 30, nullable: true),
                     createdAt = table.Column<DateTime>(nullable: false),
                     customerId = table.Column<string>(maxLength: 38, nullable: true),
-                    customerPO = table.Column<string>(maxLength: 50, nullable: true),
-                    expeditionMode = table.Column<int>(nullable: false),
-                    expeditionType = table.Column<int>(nullable: false),
-                    invoice = table.Column<string>(maxLength: 50, nullable: true),
-                    salesOrderId = table.Column<string>(maxLength: 38, nullable: false),
-                    shipmentDate = table.Column<DateTime>(nullable: false),
-                    shipmentNumber = table.Column<string>(maxLength: 20, nullable: false),
-                    warehouseId = table.Column<string>(maxLength: 38, nullable: false)
+                    province = table.Column<string>(maxLength: 30, nullable: true),
+                    street1 = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shipment", x => x.shipmentId);
+                    table.PrimaryKey("PK_CustomerLine", x => x.customerLineId);
                     table.ForeignKey(
-                        name: "FK_Shipment_Branch_branchId",
-                        column: x => x.branchId,
-                        principalTable: "Branch",
-                        principalColumn: "branchId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Shipment_Customer_customerId",
+                        name: "FK_CustomerLine_Customer_customerId",
                         column: x => x.customerId,
                         principalTable: "Customer",
                         principalColumn: "customerId",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Shipment_SalesOrder_salesOrderId",
-                        column: x => x.salesOrderId,
-                        principalTable: "SalesOrder",
-                        principalColumn: "salesOrderId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Shipment_Warehouse_warehouseId",
-                        column: x => x.warehouseId,
-                        principalTable: "Warehouse",
-                        principalColumn: "warehouseId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -773,46 +746,78 @@ namespace netcore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ShipmentLine",
+                name: "CatalogLine",
                 columns: table => new
                 {
-                    shipmentLineId = table.Column<string>(maxLength: 38, nullable: false),
-                    branchId = table.Column<string>(maxLength: 38, nullable: true),
-                    createdAt = table.Column<DateTime>(nullable: false),
-                    productId = table.Column<string>(maxLength: 38, nullable: true),
-                    qty = table.Column<float>(nullable: false),
-                    qtyInventory = table.Column<float>(nullable: false),
-                    qtyShipment = table.Column<float>(nullable: false),
-                    shipmentId = table.Column<string>(maxLength: 38, nullable: true),
-                    warehouseId = table.Column<string>(maxLength: 38, nullable: true)
+                    CatalogLineId = table.Column<string>(maxLength: 38, nullable: false),
+                    CatalogId = table.Column<string>(maxLength: 38, nullable: true),
+                    Discount = table.Column<decimal>(nullable: true),
+                    EndDate = table.Column<DateTime>(nullable: false),
+                    ProductId = table.Column<string>(maxLength: 38, nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShipmentLine", x => x.shipmentLineId);
+                    table.PrimaryKey("PK_CatalogLine", x => x.CatalogLineId);
                     table.ForeignKey(
-                        name: "FK_ShipmentLine_Branch_branchId",
-                        column: x => x.branchId,
-                        principalTable: "Branch",
-                        principalColumn: "branchId",
+                        name: "FK_CatalogLine_Catalog_CatalogId",
+                        column: x => x.CatalogId,
+                        principalTable: "Catalog",
+                        principalColumn: "CatalogId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ShipmentLine_Product_productId",
-                        column: x => x.productId,
+                        name: "FK_CatalogLine_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "productId",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SalesOrder",
+                columns: table => new
+                {
+                    salesOrderId = table.Column<string>(maxLength: 38, nullable: false),
+                    HasChild = table.Column<string>(nullable: true),
+                    branchId = table.Column<string>(maxLength: 38, nullable: false),
+                    createdAt = table.Column<DateTime>(nullable: false),
+                    customerId = table.Column<string>(maxLength: 38, nullable: false),
+                    customerLineId = table.Column<string>(maxLength: 38, nullable: false),
+                    deliveryDate = table.Column<DateTime>(nullable: false),
+                    description = table.Column<string>(maxLength: 100, nullable: true),
+                    picCustomer = table.Column<string>(maxLength: 30, nullable: false),
+                    picInternal = table.Column<string>(maxLength: 30, nullable: false),
+                    referenceNumberExternal = table.Column<string>(maxLength: 30, nullable: true),
+                    referenceNumberInternal = table.Column<string>(maxLength: 30, nullable: true),
+                    salesOrderNumber = table.Column<string>(maxLength: 20, nullable: false),
+                    salesOrderStatus = table.Column<int>(nullable: false),
+                    salesShipmentNumber = table.Column<string>(nullable: true),
+                    soDate = table.Column<DateTime>(nullable: false),
+                    top = table.Column<int>(nullable: false),
+                    totalDiscountAmount = table.Column<decimal>(nullable: false),
+                    totalOrderAmount = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalesOrder", x => x.salesOrderId);
                     table.ForeignKey(
-                        name: "FK_ShipmentLine_Shipment_shipmentId",
-                        column: x => x.shipmentId,
-                        principalTable: "Shipment",
-                        principalColumn: "shipmentId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_SalesOrder_Branch_branchId",
+                        column: x => x.branchId,
+                        principalTable: "Branch",
+                        principalColumn: "branchId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ShipmentLine_Warehouse_warehouseId",
-                        column: x => x.warehouseId,
-                        principalTable: "Warehouse",
-                        principalColumn: "warehouseId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_SalesOrder_Customer_customerId",
+                        column: x => x.customerId,
+                        principalTable: "Customer",
+                        principalColumn: "customerId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SalesOrder_CustomerLine_customerLineId",
+                        column: x => x.customerLineId,
+                        principalTable: "CustomerLine",
+                        principalColumn: "customerLineId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -914,6 +919,133 @@ namespace netcore.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SalesOrderLine",
+                columns: table => new
+                {
+                    SalesOrderLineId = table.Column<string>(maxLength: 38, nullable: false),
+                    Discount = table.Column<decimal>(nullable: true),
+                    DiscountAmount = table.Column<decimal>(nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    ProductId = table.Column<string>(maxLength: 38, nullable: true),
+                    ProductVAT = table.Column<decimal>(nullable: false),
+                    ProductVATAmount = table.Column<decimal>(nullable: false),
+                    Qty = table.Column<float>(nullable: false),
+                    SalesOrderId = table.Column<string>(maxLength: 38, nullable: true),
+                    SpecialTaxAmount = table.Column<decimal>(nullable: false),
+                    SpecialTaxDiscount = table.Column<decimal>(nullable: false),
+                    TotalAmount = table.Column<decimal>(nullable: false),
+                    TotalBeforeDiscount = table.Column<decimal>(nullable: true),
+                    UnitCost = table.Column<decimal>(nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SalesOrderLine", x => x.SalesOrderLineId);
+                    table.ForeignKey(
+                        name: "FK_SalesOrderLine_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "productId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SalesOrderLine_SalesOrder_SalesOrderId",
+                        column: x => x.SalesOrderId,
+                        principalTable: "SalesOrder",
+                        principalColumn: "salesOrderId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shipment",
+                columns: table => new
+                {
+                    shipmentId = table.Column<string>(maxLength: 38, nullable: false),
+                    HasChild = table.Column<string>(nullable: true),
+                    branchId = table.Column<string>(maxLength: 38, nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false),
+                    customerId = table.Column<string>(maxLength: 38, nullable: true),
+                    customerPO = table.Column<string>(maxLength: 50, nullable: true),
+                    expeditionMode = table.Column<int>(nullable: false),
+                    expeditionType = table.Column<int>(nullable: false),
+                    invoice = table.Column<string>(maxLength: 50, nullable: true),
+                    salesOrderId = table.Column<string>(maxLength: 38, nullable: false),
+                    shipmentDate = table.Column<DateTime>(nullable: false),
+                    shipmentNumber = table.Column<string>(maxLength: 20, nullable: false),
+                    warehouseId = table.Column<string>(maxLength: 38, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shipment", x => x.shipmentId);
+                    table.ForeignKey(
+                        name: "FK_Shipment_Branch_branchId",
+                        column: x => x.branchId,
+                        principalTable: "Branch",
+                        principalColumn: "branchId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Shipment_Customer_customerId",
+                        column: x => x.customerId,
+                        principalTable: "Customer",
+                        principalColumn: "customerId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Shipment_SalesOrder_salesOrderId",
+                        column: x => x.salesOrderId,
+                        principalTable: "SalesOrder",
+                        principalColumn: "salesOrderId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Shipment_Warehouse_warehouseId",
+                        column: x => x.warehouseId,
+                        principalTable: "Warehouse",
+                        principalColumn: "warehouseId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShipmentLine",
+                columns: table => new
+                {
+                    shipmentLineId = table.Column<string>(maxLength: 38, nullable: false),
+                    branchId = table.Column<string>(maxLength: 38, nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false),
+                    productId = table.Column<string>(maxLength: 38, nullable: true),
+                    qty = table.Column<float>(nullable: false),
+                    qtyInventory = table.Column<float>(nullable: false),
+                    qtyShipment = table.Column<float>(nullable: false),
+                    shipmentId = table.Column<string>(maxLength: 38, nullable: true),
+                    warehouseId = table.Column<string>(maxLength: 38, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShipmentLine", x => x.shipmentLineId);
+                    table.ForeignKey(
+                        name: "FK_ShipmentLine_Branch_branchId",
+                        column: x => x.branchId,
+                        principalTable: "Branch",
+                        principalColumn: "branchId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ShipmentLine_Product_productId",
+                        column: x => x.productId,
+                        principalTable: "Product",
+                        principalColumn: "productId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ShipmentLine_Shipment_shipmentId",
+                        column: x => x.shipmentId,
+                        principalTable: "Shipment",
+                        principalColumn: "shipmentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ShipmentLine_Warehouse_warehouseId",
+                        column: x => x.warehouseId,
+                        principalTable: "Warehouse",
+                        principalColumn: "warehouseId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -952,6 +1084,26 @@ namespace netcore.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Catalog_CustomerId",
+                table: "Catalog",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogLine_CatalogId",
+                table: "CatalogLine",
+                column: "CatalogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CatalogLine_ProductId",
+                table: "CatalogLine",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customer_EmployeeId",
+                table: "Customer",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerLine_customerId",
@@ -1029,14 +1181,19 @@ namespace netcore.Migrations
                 column: "customerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesOrderLine_productId",
-                table: "SalesOrderLine",
-                column: "productId");
+                name: "IX_SalesOrder_customerLineId",
+                table: "SalesOrder",
+                column: "customerLineId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesOrderLine_salesOrderId",
+                name: "IX_SalesOrderLine_ProductId",
                 table: "SalesOrderLine",
-                column: "salesOrderId");
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SalesOrderLine_SalesOrderId",
+                table: "SalesOrderLine",
+                column: "SalesOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shipment_branchId",
@@ -1207,7 +1364,10 @@ namespace netcore.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CustomerLine");
+                name: "CatalogLine");
+
+            migrationBuilder.DropTable(
+                name: "City");
 
             migrationBuilder.DropTable(
                 name: "PurchaseOrderLine");
@@ -1240,6 +1400,9 @@ namespace netcore.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Catalog");
+
+            migrationBuilder.DropTable(
                 name: "Receiving");
 
             migrationBuilder.DropTable(
@@ -1267,13 +1430,19 @@ namespace netcore.Migrations
                 name: "Vendor");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "CustomerLine");
 
             migrationBuilder.DropTable(
                 name: "Warehouse");
 
             migrationBuilder.DropTable(
+                name: "Customer");
+
+            migrationBuilder.DropTable(
                 name: "Branch");
+
+            migrationBuilder.DropTable(
+                name: "Employee");
         }
     }
 }

@@ -281,7 +281,10 @@
                 data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace(',', '.');
                 data['SpecialTaxAmount']=data['SpecialTaxAmount'].toString().replace(',', '.');
                 data['UnitCost'] = data['UnitCost'].toString().replace(',', '.');
-                data['SpecialTaxDiscount']=data['SpecialTaxDiscount'].toString().replace(',', '.');
+                data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace(',', '.');
+                data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace(',', '.');
+                data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace(',', '.');
+
                 data = JSON.stringify(data);
                 $.ajax({
                     type: 'POST',

@@ -36,7 +36,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Ποσ")]
         public float Qty { get; set; }
 
-        [Display(Name = "Τιμή Πώλησης")]
+        [Display(Name = "Τιμή Μονάδος")]
         public decimal Price { get; set; }
 
         [Display(Name = "Αξία προ Έκπτωσης")]
@@ -45,31 +45,32 @@ namespace netcore.Models.Invent
         [Display(Name = "Τιμή Αγοράς")]
         public decimal? UnitCost { get; set; }
 
-        //Product Discount
         [Display(Name = "Ποσοστό Έκπτωσης.")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? Discount { get; set; }
 
-        //Product amount after Discount
         [Display(Name = "Ποσό έκπτωσης")]
         public decimal DiscountAmount { get; set; }
+
+        [Display(Name = "Αξία μετά Έκπτωσης")]
+        public decimal? TotalAfterDiscount { get; set; }
 
         [Display(Name = "Ποσοστό Φ.Π.Α.")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal ProductVAT { get; set; }
         
-        [Display(Name = "Ποσό Φ.Π.Α.")]
+        [Display(Name = "Φ.Π.Α.")]
         public decimal ProductVATAmount { get; set; }
 
-        [Display(Name = "Έκπτωση Ειδικού Φόρου")]
+        [Display(Name = "Έκπτωση ΕΦ")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal SpecialTaxDiscount { get; set; }
         
 
-        [Display(Name = "Ποσό Ειδικού Φόρου")]
+        [Display(Name = "Ειδικός Φόρος")]
         public decimal SpecialTaxAmount { get; set; }
 
-        [Display(Name = "Συνολικό ποσό")]
+        [Display(Name = "Σύνολο")]
         public decimal TotalAmount { get; set; }
     }
 }

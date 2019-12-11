@@ -837,6 +837,8 @@ namespace netcore.Migrations
 
                     b.Property<decimal>("SpecialTaxDiscount");
 
+                    b.Property<decimal?>("TotalAfterDiscount");
+
                     b.Property<decimal>("TotalAmount");
 
                     b.Property<decimal?>("TotalBeforeDiscount");

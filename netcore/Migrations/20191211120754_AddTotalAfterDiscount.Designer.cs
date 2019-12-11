@@ -12,14 +12,14 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191028142148_CustomerUpdate3")]
-    partial class CustomerUpdate3
+    [Migration("20191211120754_AddTotalAfterDiscount")]
+    partial class AddTotalAfterDiscount
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
+                .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -141,6 +141,12 @@ namespace netcore.Migrations
 
                     b.Property<bool>("BranchRole");
 
+                    b.Property<bool>("CatalogLineRole");
+
+                    b.Property<bool>("CatalogRole");
+
+                    b.Property<bool>("CitiesRole");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -152,6 +158,8 @@ namespace netcore.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<bool>("EmployeeRole");
 
                     b.Property<bool>("HomeRole");
 
@@ -271,25 +279,99 @@ namespace netcore.Migrations
                     b.ToTable("Branch");
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.Catalog", b =>
+                {
+                    b.Property<string>("CatalogId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("CatalogName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("HasChild");
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("CatalogId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Catalog");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.CatalogLine", b =>
+                {
+                    b.Property<string>("CatalogLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("CatalogId")
+                        .HasMaxLength(38);
+
+                    b.Property<decimal?>("Discount");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(38);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("CatalogLineId");
+
+                    b.HasIndex("CatalogId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CatalogLine");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.City", b =>
+                {
+                    b.Property<string>("CityId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("CityName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<decimal>("ProductVAT");
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("CityId");
+
+                    b.ToTable("City");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.Customer", b =>
                 {
                     b.Property<string>("customerId")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<bool?>("Active");
+                    b.Property<bool>("Active");
 
                     b.Property<string>("CompanyActivity")
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<string>("EmployeeId")
+                        .HasMaxLength(38);
+
                     b.Property<string>("HasChild");
 
-                    b.Property<double?>("OrderDiscount");
+                    b.Property<decimal?>("OrderDiscount");
 
-                    b.Property<bool?>("SalesCount");
+                    b.Property<bool>("SalesCount");
 
-                    b.Property<double?>("TaxDiscount");
+                    b.Property<decimal>("TaxDiscount");
 
                     b.Property<string>("TaxOffice")
                         .HasMaxLength(50);
@@ -299,12 +381,6 @@ namespace netcore.Migrations
 
                     b.Property<string>("WebSite")
                         .HasMaxLength(50);
-
-                    b.Property<string>("city")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("country")
-                        .HasMaxLength(30);
 
                     b.Property<DateTime>("createdAt");
 
@@ -324,21 +400,14 @@ namespace netcore.Migrations
                     b.Property<string>("officePhone")
                         .HasMaxLength(20);
 
-                    b.Property<string>("province")
-                        .HasMaxLength(30);
-
                     b.Property<int>("size");
-
-                    b.Property<string>("street1")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("street2")
-                        .HasMaxLength(50);
 
                     b.Property<string>("workEmail")
                         .HasMaxLength(50);
 
                     b.HasKey("customerId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Customer");
                 });
@@ -349,46 +418,32 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
+                    b.Property<string>("LocLat")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("LocLong")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("PostCode")
+                        .HasMaxLength(5);
+
+                    b.Property<string>("ProductVAT");
+
+                    b.Property<string>("city")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("country")
+                        .HasMaxLength(30);
+
                     b.Property<DateTime>("createdAt");
 
                     b.Property<string>("customerId")
                         .HasMaxLength(38);
 
-                    b.Property<string>("fax")
-                        .HasMaxLength(20);
+                    b.Property<string>("province")
+                        .HasMaxLength(30);
 
-                    b.Property<string>("firstName")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
-                    b.Property<int>("gender");
-
-                    b.Property<string>("jobTitle")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
-                    b.Property<string>("lastName")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
-                    b.Property<string>("middleName")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("mobilePhone")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("nickName")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("officePhone")
-                        .HasMaxLength(20);
-
-                    b.Property<string>("personalEmail")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("salutation");
-
-                    b.Property<string>("workEmail")
+                    b.Property<string>("street1")
                         .HasMaxLength(50);
 
                     b.HasKey("customerLineId");
@@ -396,6 +451,60 @@ namespace netcore.Migrations
                     b.HasIndex("customerId");
 
                     b.ToTable("CustomerLine");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.Employee", b =>
+                {
+                    b.Property<string>("EmployeeId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("city")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("country")
+                        .HasMaxLength(30);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.Property<string>("fax");
+
+                    b.Property<string>("mobilePhone");
+
+                    b.Property<string>("officePhone");
+
+                    b.Property<string>("personalEmail");
+
+                    b.Property<string>("province")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("street1")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("street2")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("workEmail");
+
+                    b.HasKey("EmployeeId");
+
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.Product", b =>
@@ -406,15 +515,19 @@ namespace netcore.Migrations
 
                     b.Property<bool>("Discontinued");
 
-                    b.Property<double?>("ProductVolume");
+                    b.Property<decimal>("ProductVAT");
 
-                    b.Property<double?>("ProductWeight");
+                    b.Property<decimal?>("ProductVolume");
+
+                    b.Property<decimal?>("ProductWeight");
 
                     b.Property<int?>("ReorderLevel");
 
-                    b.Property<double?>("UnitCost");
+                    b.Property<decimal>("SpecialTaxValue");
 
-                    b.Property<double?>("UnitPrice");
+                    b.Property<decimal?>("UnitCost");
+
+                    b.Property<decimal?>("UnitPrice");
 
                     b.Property<string>("barcode")
                         .HasMaxLength(50);
@@ -647,8 +760,9 @@ namespace netcore.Migrations
                         .IsRequired()
                         .HasMaxLength(38);
 
-                    b.Property<string>("deliveryAddress")
-                        .HasMaxLength(50);
+                    b.Property<string>("customerLineId")
+                        .IsRequired()
+                        .HasMaxLength(38);
 
                     b.Property<DateTime>("deliveryDate");
 
@@ -691,36 +805,54 @@ namespace netcore.Migrations
 
                     b.HasIndex("customerId");
 
+                    b.HasIndex("customerLineId");
+
                     b.ToTable("SalesOrder");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.SalesOrderLine", b =>
                 {
-                    b.Property<string>("salesOrderLineId")
+                    b.Property<string>("SalesOrderLineId")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
+                    b.Property<decimal?>("Discount");
+
+                    b.Property<decimal>("DiscountAmount");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("ProductVAT");
+
+                    b.Property<decimal>("ProductVATAmount");
+
+                    b.Property<float>("Qty");
+
+                    b.Property<string>("SalesOrderId")
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("SpecialTaxAmount");
+
+                    b.Property<decimal>("SpecialTaxDiscount");
+
+                    b.Property<decimal?>("TotalAfterDiscount");
+
+                    b.Property<decimal>("TotalAmount");
+
+                    b.Property<decimal?>("TotalBeforeDiscount");
+
+                    b.Property<decimal?>("UnitCost");
+
                     b.Property<DateTime>("createdAt");
 
-                    b.Property<decimal>("discountAmount");
+                    b.HasKey("SalesOrderLineId");
 
-                    b.Property<decimal>("price");
+                    b.HasIndex("ProductId");
 
-                    b.Property<string>("productId")
-                        .HasMaxLength(38);
-
-                    b.Property<float>("qty");
-
-                    b.Property<string>("salesOrderId")
-                        .HasMaxLength(38);
-
-                    b.Property<decimal>("totalAmount");
-
-                    b.HasKey("salesOrderLineId");
-
-                    b.HasIndex("productId");
-
-                    b.HasIndex("salesOrderId");
+                    b.HasIndex("SalesOrderId");
 
                     b.ToTable("SalesOrderLine");
                 });
@@ -1085,6 +1217,18 @@ namespace netcore.Migrations
 
                     b.Property<string>("HasChild");
 
+                    b.Property<string>("PostCode")
+                        .HasMaxLength(6);
+
+                    b.Property<string>("TaxNumber")
+                        .HasMaxLength(15);
+
+                    b.Property<string>("TaxOffice")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("WebSite")
+                        .HasMaxLength(100);
+
                     b.Property<string>("city")
                         .HasMaxLength(30);
 
@@ -1096,6 +1240,14 @@ namespace netcore.Migrations
                     b.Property<string>("description")
                         .HasMaxLength(50);
 
+                    b.Property<string>("fax");
+
+                    b.Property<string>("mobilePhone");
+
+                    b.Property<string>("officePhone");
+
+                    b.Property<string>("personalEmail");
+
                     b.Property<string>("province")
                         .HasMaxLength(30);
 
@@ -1105,12 +1257,11 @@ namespace netcore.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("street2")
-                        .HasMaxLength(50);
-
                     b.Property<string>("vendorName")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<string>("workEmail");
 
                     b.HasKey("vendorId");
 
@@ -1258,10 +1409,36 @@ namespace netcore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.Catalog", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Customer", "Customer")
+                        .WithMany("Catalog")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.CatalogLine", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Catalog", "Catalog")
+                        .WithMany("CatalogLine")
+                        .HasForeignKey("CatalogId");
+
+                    b.HasOne("netcore.Models.Invent.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.Customer", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.CustomerLine", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Customer", "customer")
-                        .WithMany("customerLine")
+                        .WithMany("CustomerLine")
                         .HasForeignKey("customerId");
                 });
 
@@ -1340,17 +1517,22 @@ namespace netcore.Migrations
                         .WithMany()
                         .HasForeignKey("customerId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("netcore.Models.Invent.CustomerLine", "customerLine")
+                        .WithMany()
+                        .HasForeignKey("customerLineId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.SalesOrderLine", b =>
                 {
-                    b.HasOne("netcore.Models.Invent.Product", "product")
+                    b.HasOne("netcore.Models.Invent.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("productId");
+                        .HasForeignKey("ProductId");
 
-                    b.HasOne("netcore.Models.Invent.SalesOrder", "salesOrder")
+                    b.HasOne("netcore.Models.Invent.SalesOrder", "SalesOrder")
                         .WithMany("salesOrderLine")
-                        .HasForeignKey("salesOrderId");
+                        .HasForeignKey("SalesOrderId");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.Shipment", b =>

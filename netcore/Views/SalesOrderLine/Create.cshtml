@@ -10,18 +10,18 @@
     <div class="col-md-12">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="SalesOrderLineId" />
+
         <div class="form-group hidden">
             <label asp-for="SalesOrderId" class="control-label"></label>
             <select asp-for="SalesOrderId" id="salesorderId" class="form-control select2" asp-items="ViewBag.salesOrderId"></select>
         </div>
         <div class="col-md-12">
-            <div class="form-group ">
+            <div class="form-group hidden">
                 <label asp-for="UnitCost" class="control-label"></label>
-                <input type="hidden" asp-for="UnitCost" id="unitcost" class="form-control" />
+                <input asp-for="UnitCost" id="unitcost" class="form-control" />
                 <span asp-validation-for="UnitCost" class="text-danger"></span>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -36,20 +36,19 @@
                     <span asp-validation-for="Qty" class="text-danger"></span>
                 </div>
             </div>
-
         </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group ">
                     <label asp-for="Discount" class="control-label"></label>
-                    <input readonly="readonly"  asp-for="Discount" id="discount" class="form-control" />
+                    <input readonly="readonly" asp-for="Discount" id="discount" class="form-control" />
                     <span asp-validation-for="Discount" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="DiscountAmount" class="control-label"></label>
-                    <input readonly="readonly"  asp-for="DiscountAmount"  id="discountamount" class="form-control" />
+                    <input readonly="readonly" asp-for="DiscountAmount" id="discountamount" class="form-control" />
                     <span asp-validation-for="DiscountAmount" class="text-danger"></span>
                 </div>
             </div>
@@ -57,15 +56,31 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label asp-for="TotalBeforeDiscount" class="control-label"></label>
+                    <input readonly="readonly" asp-for="TotalBeforeDiscount" id="totalbeforediscount" class="form-control" />
+                    <span asp-validation-for="TotalBeforeDiscount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="TotalAfterDiscount" class="control-label"></label>
+                    <input readonly="readonly" asp-for="TotalAfterDiscount" id="totalafterdiscount" class="form-control" />
+                    <span asp-validation-for="TotalAfterDiscount" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     <label asp-for="SpecialTaxDiscount" class="control-label"></label>
-                    <input readonly="readonly"  asp-for="SpecialTaxDiscount" id="specialtaxdiscount" class="form-control" lang="el" />
+                    <input readonly="readonly" asp-for="SpecialTaxDiscount" id="specialtaxdiscount" class="form-control" lang="el" />
                     <span asp-validation-for="SpecialTaxDiscount" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="SpecialTaxAmount" class="control-label"></label>
-                    <input readonly="readonly"  asp-for="SpecialTaxAmount"   id="specialtaxamount" class="form-control" />
+                    <input readonly="readonly" asp-for="SpecialTaxAmount" id="specialtaxamount" class="form-control" />
                     <span asp-validation-for="SpecialTaxAmount" class="text-danger"></span>
                 </div>
             </div>
@@ -74,14 +89,14 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="ProductVAT" class="control-label"></label>
-                    <input readonly="readonly"  asp-for="ProductVAT" id="productVAT" class="form-control" />
+                    <input readonly="readonly" asp-for="ProductVAT" id="productVAT" class="form-control" />
                     <span asp-validation-for="ProductVAT" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="ProductVATAmount" class="control-label"></label>
-                    <input  readonly="readonly" asp-for="ProductVATAmount" id="productvatamount" class="form-control" />
+                    <input readonly="readonly" asp-for="ProductVATAmount" id="productvatamount" class="form-control" />
                     <span asp-validation-for="ProductVATAmount" class="text-danger"></span>
                 </div>
             </div>
@@ -104,32 +119,36 @@
         </div>
     </div>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script type="text/javascript">
         var productId = $("#productList").val();
         var salesorderId = $("#salesorderId").val();
         var qty = $("#qty").val();
-        $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId,qty:qty }, function (data) {
-                data['Price']=data['Price'].toString().replace( '.', ',');
-                $("#price").val(data.Price);
-                data['SpecialTaxDiscount']=data['SpecialTaxDiscount'].toString().replace( '.', ',');
-                $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
-                data['SpecialTaxAmount']=data['SpecialTaxAmount'].toString().replace( '.', ',');
-                $("#specialtaxamount").val(data.SpecialTaxAmount);
-                data['ProductVAT']=data['ProductVAT'].toString().replace( '.', ',');
-                $("#productVAT").val(data.ProductVAT);
-                data['Qty']=data['Qty'].toString().replace( '.', ',');
-                $("#qty").val(data.Qty);
-                data['ProductVATAmount']=data['ProductVATAmount'].toString().replace( '.', ',');
-                $("#productvatamount").val(data.ProductVATAmount);
-                data['Discount']=data['Discount'].toString().replace( '.', ',');
-                $("#discount").val(data.Discount);
-                data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
-                $("#discountamount").val(data.DiscountAmount);
-                data['TotalAmount']=data['TotalAmount'].toString().replace( '.', ',');
-                $("#totalamount").val(data.TotalAmount);
+        $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty }, function (data) {
+            data['Price'] = data['Price'].toString().replace('.', ',');
+            $("#price").val(data.Price);
+            data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace('.', ',');
+            $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
+            data['SpecialTaxAmount'] = data['SpecialTaxAmount'].toString().replace('.', ',');
+            $("#specialtaxamount").val(data.SpecialTaxAmount);
+            data['ProductVAT'] = data['ProductVAT'].toString().replace('.', ',');
+            $("#productVAT").val(data.ProductVAT);
+            data['Qty'] = data['Qty'].toString().replace('.', ',');
+            $("#qty").val(data.Qty);
+            data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
+            $("#productvatamount").val(data.ProductVATAmount);
+            data['Discount'] = data['Discount'].toString().replace('.', ',');
+            $("#discount").val(data.Discount);
+            data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
+            $("#discountamount").val(data.DiscountAmount);
+            data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
+            $("#totalamount").val(data.TotalAmount);
+            data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
+            $("#totalbeforediscount").val(data.TotalBeforeDiscount);
+            data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
+            $("#totalafterdiscount").val(data.TotalAfterDiscount);
+
         });
 
         $("#productList").change(function () {
@@ -138,25 +157,28 @@
             var qty = $("#qty").val();
 
             $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty }, function (data) {
-                        data['Price']=data['Price'].toString().replace( '.', ',');
-                        $("#price").val(data.Price);
-                        data['SpecialTaxDiscount']=data['SpecialTaxDiscount'].toString().replace( '.', ',');
-                        $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
-                        data['SpecialTaxAmount']=data['SpecialTaxAmount'].toString().replace( '.', ',');
-                        $("#specialtaxamount").val(data.SpecialTaxAmount);
-                        data['ProductVAT']=data['ProductVAT'].toString().replace( '.', ',');
-                        $("#productVAT").val(data.ProductVAT);
-                        data['Qty']=data['Qty'].toString().replace( '.', ',');
-                        $("#qty").val(data.Qty);
-                        data['ProductVATAmount']=data['ProductVATAmount'].toString().replace( '.', ',');
-                        $("#productvatamount").val(data.ProductVATAmount);
-                        data['Discount']=data['Discount'].toString().replace( '.', ',');
-                        $("#discount").val(data.Discount);
-                        data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
-                        $("#discountamount").val(data.DiscountAmount);
-                        data['TotalAmount']=data['TotalAmount'].toString().replace( '.', ',');
-                        $("#totalamount").val(data.TotalAmount);
-
+                data['Price'] = data['Price'].toString().replace('.', ',');
+                $("#price").val(data.Price);
+                data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace('.', ',');
+                $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
+                data['SpecialTaxAmount'] = data['SpecialTaxAmount'].toString().replace('.', ',');
+                $("#specialtaxamount").val(data.SpecialTaxAmount);
+                data['ProductVAT'] = data['ProductVAT'].toString().replace('.', ',');
+                $("#productVAT").val(data.ProductVAT);
+                data['Qty'] = data['Qty'].toString().replace('.', ',');
+                $("#qty").val(data.Qty);
+                data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
+                $("#productvatamount").val(data.ProductVATAmount);
+                data['Discount'] = data['Discount'].toString().replace('.', ',');
+                $("#discount").val(data.Discount);
+                data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
+                $("#discountamount").val(data.DiscountAmount);
+                data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
+                $("#totalamount").val(data.TotalAmount);
+                data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
+                $("#totalbeforediscount").val(data.TotalBeforeDiscount);
+                data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
+                $("#totalafterdiscount").val(data.TotalAfterDiscount);
             });
         });
         $("#qty").change(function () {
@@ -165,25 +187,28 @@
             var qty = $("#qty").val();
 
             $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty }, function (data) {
-                        data['Price']=data['Price'].toString().replace( '.', ',');
-                        $("#price").val(data.Price);
-                        data['SpecialTaxDiscount']=data['SpecialTaxDiscount'].toString().replace( '.', ',');
-                        $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
-                        data['SpecialTaxAmount']=data['SpecialTaxAmount'].toString().replace( '.', ',');
-                        $("#specialtaxamount").val(data.SpecialTaxAmount);
-                        data['ProductVAT']=data['ProductVAT'].toString().replace( '.', ',');
-                        $("#productVAT").val(data.ProductVAT);
-                        data['Qty']=data['Qty'].toString().replace( '.', ',');
-                        $("#qty").val(data.Qty);
-                        data['ProductVATAmount']=data['ProductVATAmount'].toString().replace( '.', ',');
-                        $("#productvatamount").val(data.ProductVATAmount);
-                        data['Discount']=data['Discount'].toString().replace( '.', ',');
-                        $("#discount").val(data.Discount);
-                        data['DiscountAmount']=data['DiscountAmount'].toString().replace( '.', ',');
-                        $("#discountamount").val(data.DiscountAmount);
-                        data['TotalAmount']=data['TotalAmount'].toString().replace( '.', ',');
-                        $("#totalamount").val(data.TotalAmount);
-
+                data['Price'] = data['Price'].toString().replace('.', ',');
+                $("#price").val(data.Price);
+                data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace('.', ',');
+                $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
+                data['SpecialTaxAmount'] = data['SpecialTaxAmount'].toString().replace('.', ',');
+                $("#specialtaxamount").val(data.SpecialTaxAmount);
+                data['ProductVAT'] = data['ProductVAT'].toString().replace('.', ',');
+                $("#productVAT").val(data.ProductVAT);
+                data['Qty'] = data['Qty'].toString().replace('.', ',');
+                $("#qty").val(data.Qty);
+                data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
+                $("#productvatamount").val(data.ProductVATAmount);
+                data['Discount'] = data['Discount'].toString().replace('.', ',');
+                $("#discount").val(data.Discount);
+                data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
+                $("#discountamount").val(data.DiscountAmount);
+                data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
+                $("#totalamount").val(data.TotalAmount);
+                data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
+                $("#totalbeforediscount").val(data.TotalBeforeDiscount);
+                data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
+                $("#totalafterdiscount").val(data.TotalAfterDiscount);
             });
         });
     </script>

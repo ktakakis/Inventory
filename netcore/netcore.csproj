@@ -22,6 +22,8 @@
     <Compile Remove="Migrations\20191129210850_Catalog.Designer.cs" />
     <Compile Remove="Migrations\20191202224207_LastUpdate3.cs" />
     <Compile Remove="Migrations\20191202224207_LastUpdate3.Designer.cs" />
+    <Compile Remove="Migrations\20191212225951_UpdateEmployeesWithUser2.cs" />
+    <Compile Remove="Migrations\20191212225951_UpdateEmployeesWithUser2.Designer.cs" />
   </ItemGroup>
 
 
@@ -463,5 +465,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

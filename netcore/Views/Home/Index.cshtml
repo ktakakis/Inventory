@@ -4,9 +4,15 @@
 @{
     ViewData["Title"] = "KAFFA HELLAS E.E.";
     Layout = "_AdminlteNetcore";
+    var username = User.Identity.Name;
+    
+    int so = Context.SalesOrder.Count();
+    if (!User.IsInRole("ApplicationUser"))
+    {
+        so = Context.SalesOrder.Where(s=>s.customer.Employee.UserName==username).Count();
+    }
 
     int po = Context.PurchaseOrder.Count();
-    int so = Context.SalesOrder.Count();
     int shipment = Context.Shipment.Count();
     int receive = Context.Receiving.Count();
 
@@ -30,7 +36,9 @@
     poLines = Context.PurchaseOrderLine.Include(x => x.purchaseOrder).OrderByDescending(x => x.purchaseOrder.poDate).Take(10).ToList();
 
     List<SalesOrderLine> soLines = new List<SalesOrderLine>();
-    soLines = Context.SalesOrderLine.Include(x => x.SalesOrder).OrderByDescending(x => x.SalesOrder.soDate).Take(10).ToList();
+    soLines = Context.SalesOrderLine.Where(s=>s.SalesOrder.customer.Employee.UserName==username).Include(x => x.SalesOrder).OrderByDescending(x => x.SalesOrder.soDate).Take(10).ToList();
+
+
 }
 
 

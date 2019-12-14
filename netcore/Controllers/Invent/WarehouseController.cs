@@ -66,7 +66,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("branchId,warehouseId,warehouseName,description,street1,street2,city,province,country,createdAt")] Warehouse warehouse)
+        public async Task<IActionResult> Create([Bind("branchId,warehouseId,warehouseName,description,street1,city,province,country,createdAt")] Warehouse warehouse)
         {
             if (ModelState.IsValid)
             {
@@ -100,7 +100,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("branchId,warehouseId,warehouseName,description,street1,street2,city,province,country,createdAt")] Warehouse warehouse)
+        public async Task<IActionResult> Edit(string id, [Bind("branchId,warehouseId,warehouseName,description,street1,city,province,country,createdAt")] Warehouse warehouse)
         {
             if (id != warehouse.warehouseId)
             {

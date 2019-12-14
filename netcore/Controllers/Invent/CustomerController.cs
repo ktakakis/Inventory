@@ -10,6 +10,8 @@ using System.ComponentModel.DataAnnotations;
 
 using netcore.Data;
 using netcore.Models.Invent;
+using netcore.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace netcore.Controllers.Invent
 {
@@ -19,7 +21,6 @@ namespace netcore.Controllers.Invent
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         public CustomerController(ApplicationDbContext context)
         {
             _context = context;
@@ -28,7 +29,14 @@ namespace netcore.Controllers.Invent
         // GET: Customer
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customer.OrderByDescending(x => x.createdAt).ToListAsync());
+            var username = HttpContext.User.Identity.Name;
+            var applicationDbContext = _context.Customer.OrderByDescending(x => x.createdAt);
+            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            {
+                applicationDbContext = _context.Customer.Where(x => x.Employee.UserName == username).OrderByDescending(x => x.createdAt);
+            }
+
+                return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Customer/Details/5

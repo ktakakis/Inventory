@@ -115,7 +115,6 @@ namespace netcore
 
             app.UseStaticFiles();
 
-            app.UseAuthentication();
 
             var di = new DirectoryInfo(Path.Combine(env.WebRootPath, @"lib\cldr-data\main"));
             var supportedCultures = di.GetDirectories().Where(x => x.Name != "root").Select(x => new CultureInfo(x.Name)).ToList();
@@ -130,6 +129,7 @@ namespace netcore
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

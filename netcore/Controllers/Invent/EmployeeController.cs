@@ -40,7 +40,6 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-
             return View(employee);
         }
 
@@ -55,7 +54,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,UserName,FirstName,LastName,createdAt")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeId,DisplayName,FirstName,LastName,UserName,city,country,createdAt,fax,mobilePhone,officePhone,personalEmail,province,street1")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +86,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("EmployeeId,UserName,FirstName,LastName,createdAt")] Employee employee)
+        public async Task<IActionResult> Edit(string id, [Bind("EmployeeId,DisplayName,FirstName,LastName,UserName,city,country,createdAt,fax,mobilePhone,officePhone,personalEmail,province,street1")] Employee employee)
         {
             if (id != employee.EmployeeId)
             {
@@ -114,6 +113,7 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             return View(employee);
         }
 
@@ -131,7 +131,6 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-
             return View(employee);
         }
 
@@ -140,7 +139,8 @@ namespace netcore.Controllers.Invent
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var employee = await _context.Employee.SingleOrDefaultAsync(m => m.EmployeeId == id);
+            var employee = await _context.Employee
+                .SingleOrDefaultAsync(m => m.EmployeeId == id);
             _context.Employee.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

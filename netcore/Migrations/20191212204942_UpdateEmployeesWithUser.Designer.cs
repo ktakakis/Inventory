@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191212204942_UpdateEmployeesWithUser")]
+    partial class UpdateEmployeesWithUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -496,7 +497,11 @@ namespace netcore.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
+                    b.Property<string>("userId");
+
                     b.HasKey("EmployeeId");
+
+                    b.HasIndex("userId");
 
                     b.ToTable("Employee");
                 });
@@ -1434,6 +1439,13 @@ namespace netcore.Migrations
                     b.HasOne("netcore.Models.Invent.Customer", "customer")
                         .WithMany("CustomerLine")
                         .HasForeignKey("customerId");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.Employee", b =>
+                {
+                    b.HasOne("netcore.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("userId");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.PurchaseOrder", b =>

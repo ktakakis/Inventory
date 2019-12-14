@@ -64,7 +64,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("branchId,branchName,description,street1,street2,city,province,country,createdAt,isDefaultBranch")] Branch branch)
+        public async Task<IActionResult> Create([Bind("branchId,branchName,description,street1,city,province,country,createdAt,isDefaultBranch")] Branch branch)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("branchId,branchName,description,street1,street2,city,province,country,createdAt,isDefaultBranch")] Branch branch)
+        public async Task<IActionResult> Edit(string id, [Bind("branchId,branchName,description,street1,city,province,country,createdAt,isDefaultBranch")] Branch branch)
         {
             if (id != branch.branchId)
             {

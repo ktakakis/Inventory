@@ -33,7 +33,11 @@
                     <thead>
                         <tr>
                             <th></th>
-                            @{ 
+                            <th>
+                                @Html.DisplayNameFor(model => model.UserName)
+                            </th>
+                            @{
+
                                 Type t = typeof(ApplicationUser);
                                 foreach (System.Reflection.PropertyInfo item in t.GetProperties())
                                 {
@@ -41,18 +45,14 @@
                                     {
                                         if (!item.Name.Contains("Line"))
                                         {
-                                            <th>
-                                                @item.Name
-                                            </th>
+                                <th>
+                                    @item.Name
+                                </th>
                                         }
 
                                     }
                                 }
                             }
-                            <th>
-                                @Html.DisplayNameFor(model => model.UserName)
-                            </th>
-
 
                         </tr>
                     </thead>
@@ -63,7 +63,10 @@
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil"></i></a>
                             </td>
-                            @{ 
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            @{
                                 Type ct = item.GetType();
                                 foreach (System.Reflection.PropertyInfo ci in ct.GetProperties())
                                 {
@@ -73,14 +76,11 @@
                                         {
                                             bool vlue = false;
                                             vlue = (bool)ci.GetValue(item, null);
-                                            <td><input checked="@vlue"  class="check-box" disabled="disabled" type="checkbox"></td>
+                                <td><input checked="@vlue" class="check-box" disabled="disabled" type="checkbox"></td>
                                         }
                                     }
                                 }
                             }
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UserName)
-                            </td>
 
 
                         </tr>

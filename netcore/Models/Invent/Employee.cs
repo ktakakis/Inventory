@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace netcore.Models.Invent
 {
-    public class Employee : INetcoreBasic, IBaseAddress, IBaseCommunication
+    public class Employee : INetcoreBasic, IBaseAddress
     {
         [StringLength(38)]
         [Display(Name = "Id Συνεργάτη")]
@@ -37,14 +37,10 @@ namespace netcore.Models.Invent
         public string DisplayName { get; set; }
 
         //IBaseAddress
-        [Display(Name = "Διεύθυνση 1")]
+        [Display(Name = "Διεύθυνση")]
         [Required]
         [StringLength(50)]
         public string street1 { get; set; }
-
-        [Display(Name = "Διεύθυνση 2")]
-        [StringLength(50)]
-        public string street2 { get; set; }
 
         [Display(Name = "Πόλη")]
         [StringLength(30)]
@@ -59,7 +55,6 @@ namespace netcore.Models.Invent
         public string country { get; set; }
         //IBaseAddress
 
-        //IBaseCommunication
         [Display(Name = "Κινητό Τηλέφωνο")]
         public string mobilePhone { get; set; }
         [Display(Name = "Τηλέφωνο Εργασίας")]
@@ -68,10 +63,6 @@ namespace netcore.Models.Invent
         public string fax { get; set; }
         [Display(Name = "Προσωπικό E-mail")]
         public string personalEmail { get; set; }
-        [Display(Name = "E-mail Εργασίας")]
-        public string workEmail { get; set; }
-        //IBaseCommunication
-
 
     }
 }

@@ -59,7 +59,13 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Index()
         {
 
-            var applicationDbContext = _context.SalesOrder.OrderByDescending(x => x.createdAt).Include(s => s.customer);
+            var username = HttpContext.User.Identity.Name;
+            var applicationDbContext = _context.SalesOrder.OrderByDescending(x => x.createdAt).Include(s => s.customer); 
+            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            {
+                  applicationDbContext = _context.SalesOrder.Where(s => s.customer.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(s => s.customer);
+            }
+           
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -98,7 +104,15 @@ namespace netcore.Controllers.Invent
         // GET: SalesOrder/Create
         public IActionResult Create()
         {
-            ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
+            var username = HttpContext.User.Identity.Name;
+            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            {
+                ViewData["customerId"] = new SelectList(_context.Customer.Where(c=>c.Employee.UserName==username), "customerId", "customerName");
+            }
+            else
+            {
+                ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
+            }
             Branch defaultBranch = _context.Branch.Where(x => x.isDefaultBranch.Equals(true)).FirstOrDefault();
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", defaultBranch != null ? defaultBranch.branchId : null);
             ViewData["customerLineId"]= new SelectList(_context.CustomerLine, "customerLineId", "street1");
@@ -152,8 +166,16 @@ namespace netcore.Controllers.Invent
             salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
+            var username = HttpContext.User.Identity.Name;
+            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            {
+                ViewData["customerId"] = new SelectList(_context.Customer.Where(c => c.Employee.UserName == username), "customerId", "customerName", salesOrder.customerId);
+            }
+            else
+            {
+                ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
+            }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
-            ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
             TempData["SalesOrderStatus"] = salesOrder.salesOrderStatus;
             ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["customerLineId"] = new SelectList(_context.CustomerLine.Where(c => c.customer.customerId == salesOrder.customerId), "customerLineId", "street1");

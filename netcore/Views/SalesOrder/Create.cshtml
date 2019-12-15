@@ -41,12 +41,14 @@
                 <div class="form-group">
                     <label asp-for="customerId" class="control-label">Πελάτης</label>
                     <select asp-for="customerId" id="customerList" class="form-control select2" asp-items="ViewBag.customerId"></select>
+                    <span asp-validation-for="customerId" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="customerLineId" class="control-label">Διεύθυνση</label>
                     <select asp-for="customerLineId" id="customerLineList" class="form-control select2" asp-items="ViewBag.customerLineId"></select>
+                    <span asp-validation-for="customerLineId" class="text-danger"></span>
                 </div>
             </div>
         </div>

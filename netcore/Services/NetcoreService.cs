@@ -192,7 +192,7 @@ namespace netcore.Services
                 }
 
                 await _userManager.CreateAsync(superAdmin, _superAdminDefaultOptions.Password);
-
+                await _userManager.AddToRoleAsync(superAdmin, "Secretary");
                 //loop all the roles and then fill to SuperAdmin so he become powerfull
                 foreach (var item in typeof(netcore.MVC.Pages).GetNestedTypes())
                 {
@@ -208,7 +208,28 @@ namespace netcore.Services
                 throw;
             }
         }
+        public async Task CreateDefaultRoles()
+        {
+            try
+            {
+                ApplicationUser superAdmin = new ApplicationUser();
+                superAdmin.Email = _superAdminDefaultOptions.Email;
+                superAdmin.UserName = superAdmin.Email;
+                superAdmin.EmailConfirmed = true;
+                superAdmin.isSuperAdmin = true;
 
+                
+                    var roleName = "Secretary";
+                    if (!await _roleManager.RoleExistsAsync(roleName)) { await _roleManager.CreateAsync(new IdentityRole(roleName)); }
+
+                    await _userManager.AddToRoleAsync(superAdmin, roleName);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         public VMStock GetStockByProductAndWarehouse(string productId, string warehouseId)
         {
             VMStock result = new VMStock();

@@ -60,8 +60,8 @@ namespace netcore.Controllers.Invent
         {
 
             var username = HttpContext.User.Identity.Name;
-            var applicationDbContext = _context.SalesOrder.OrderByDescending(x => x.createdAt).Include(s => s.customer); 
-            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            var applicationDbContext = _context.SalesOrder.OrderByDescending(x => x.createdAt).Include(s => s.customer);
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                   applicationDbContext = _context.SalesOrder.Where(s => s.customer.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(s => s.customer);
             }

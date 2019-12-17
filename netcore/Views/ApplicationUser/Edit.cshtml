@@ -30,7 +30,7 @@
                         <div class="col-md-12">
 
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group hidden">
+                            <div class="form-group">
                                 <div class="checkbox">
                                     <label>
                                         <input asp-for="isSuperAdmin" /> @Html.DisplayNameFor(model => model.isSuperAdmin)
@@ -60,7 +60,7 @@
                             
                           
                             <input type="hidden" asp-for="Id" />
-                            <div class="form-group hidden">
+                            <div class="form-group">
                                 <label asp-for="UserName" class="control-label"></label>
                                 <input asp-for="UserName" class="form-control" />
                                 <span asp-validation-for="UserName" class="text-danger"></span>
@@ -70,7 +70,7 @@
                                 <input asp-for="NormalizedUserName" class="form-control" />
                                 <span asp-validation-for="NormalizedUserName" class="text-danger"></span>
                             </div>
-                            <div class="form-group hidden">
+                            <div class="form-group">
                                 <label asp-for="Email" class="control-label"></label>
                                 <input asp-for="Email" class="form-control" />
                                 <span asp-validation-for="Email" class="text-danger"></span>
@@ -80,7 +80,7 @@
                                 <input asp-for="NormalizedEmail" class="form-control" />
                                 <span asp-validation-for="NormalizedEmail" class="text-danger"></span>
                             </div>
-                            <div class="form-group hidden">
+                            <div class="form-group">
                                 <div class="checkbox">
                                     <label>
                                         <input asp-for="EmailConfirmed" /> @Html.DisplayNameFor(model => model.EmailConfirmed)
@@ -121,7 +121,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group hidden">
+                            <div class="form-group">
                                 <label asp-for="LockoutEnd" class="control-label"></label>
                                 <input asp-for="LockoutEnd" class="form-control" />
                                 <span asp-validation-for="LockoutEnd" class="text-danger"></span>

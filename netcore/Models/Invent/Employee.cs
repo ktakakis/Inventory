@@ -55,12 +55,18 @@ namespace netcore.Models.Invent
         public string country { get; set; }
         //IBaseAddress
 
+        [Display(Name ="Προμήθεια")]
+        public decimal? Commission { get; set; }
+
         [Display(Name = "Κινητό Τηλέφωνο")]
         public string mobilePhone { get; set; }
+
         [Display(Name = "Τηλέφωνο Εργασίας")]
         public string officePhone { get; set; }
+
         [Display(Name = "Φαξ")]
         public string fax { get; set; }
+
         [Display(Name = "Προσωπικό E-mail")]
         public string personalEmail { get; set; }
 

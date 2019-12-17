@@ -128,7 +128,6 @@ namespace netcore
             var cultureInfo = new CultureInfo("el-GR");
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-
             app.UseAuthentication();
             app.UseMvc(routes =>
             {

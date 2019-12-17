@@ -17,6 +17,7 @@ namespace netcore.Data
             INetcoreService netcoreService)
         {
             context.Database.EnsureCreated();
+            await netcoreService.CreateDefaultRoles();
 
             //check for users
             if (context.ApplicationUser.Any())
@@ -27,7 +28,7 @@ namespace netcore.Data
             //init app with super admin user
             await netcoreService.CreateDefaultSuperAdmin();
 
-            
+
         }
     }
 }

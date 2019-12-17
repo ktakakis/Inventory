@@ -31,7 +31,7 @@ namespace netcore.Controllers.Invent
         {
             var username = HttpContext.User.Identity.Name;
             var applicationDbContext = _context.Customer.OrderByDescending(x => x.createdAt);
-            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 applicationDbContext = _context.Customer.Where(x => x.Employee.UserName == username).OrderByDescending(x => x.createdAt);
             }

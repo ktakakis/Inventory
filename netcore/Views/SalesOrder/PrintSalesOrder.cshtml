@@ -66,8 +66,15 @@
                                 <th>Ποσ</th>
                                 <th>Προϊόν</th>
                                 <th>Τιμή</th>
-                                <th>Περιγραφή</th>
-                                <th>Υποσύνολο</th>
+                                <th>Αξία Π.Ε.</th>
+                                <th>Έκπτωση %</th>
+                                <th>Έκπτωση</th>
+                                <th>Αξία Μ.Ε.</th>
+                                <th>Ειδικός Φόρος</th>
+                                <th>Αξία+Φόρος</th>
+                                <th>Φ.Π.Α. %</th>
+                                <th>Ποσό Φ.Π.Α.</th>
+                                <th>Σύνολο</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,8 +83,15 @@
                                 <tr>
                                     <td>@item.Qty</td>
                                     <td>@item.Product.productCode</td>
-                                    <td>@item.Price.ToString()</td>
-                                    <td>@item.Product.productName</td>
+                                    <td>@item.Price.ToString() €</td>
+                                    <td>@item.TotalBeforeDiscount.ToString() €</td>
+                                    <td>@(item.Discount * 100) %</td>
+                                    <td>@item.DiscountAmount €</td>
+                                    <td>@item.TotalAfterDiscount €</td>
+                                    <td>@item.TotalSpecialTaxAmount €</td>
+                                    <td>@item.TotalWithSpecialTax €</td>
+                                    <td>@(item.Product.ProductVAT * 100) %</td>
+                                    <td>@item.ProductVATAmount €</td>
                                     <td>@item.TotalAmount €</td>
                                 </tr>
                             }
@@ -101,7 +115,7 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
-                                <th style="width:50%">Υποσύνολο:</th>
+                                <th style="width:50%">Σύνολο:</th>
                                 <td>@Model.totalOrderAmount.ToString() €</td>
                             </tr>
                             <tr>
@@ -109,7 +123,7 @@
                                 <td>@Model.totalDiscountAmount.ToString() €</td>
                             </tr>
                             <tr>
-                                <th>Σύνολο:</th>
+                                <th>Πληρωτέο:</th>
                                 <td>@((Model.totalOrderAmount - Model.totalDiscountAmount).ToString()) €</td>
                             </tr>
                         </table>

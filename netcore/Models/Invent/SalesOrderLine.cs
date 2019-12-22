@@ -70,6 +70,12 @@ namespace netcore.Models.Invent
         [Display(Name = "Ειδικός Φόρος")]
         public decimal SpecialTaxAmount { get; set; }
 
+        [Display(Name = "Σύνολο Ειδικού Φόρου")]
+        public decimal TotalSpecialTaxAmount { get; set; }
+
+        [Display(Name = "Αξία+Φόρος")]
+        public decimal TotalWithSpecialTax { get; set; }
+
         [Display(Name = "Σύνολο")]
         public decimal TotalAmount { get; set; }
     }

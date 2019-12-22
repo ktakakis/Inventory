@@ -78,13 +78,15 @@ namespace netcore.Controllers.Invent
                     Qty = 1,
                 };
                 var custId = _context.SalesOrder.Where(s => s.salesOrderId == selected.salesOrderId).FirstOrDefault().customerId;
-                var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
-                ViewData["productId"] = new SelectList(catalogProducts.Where(p => p.CatalogId == catalogId), "ProductId", "productCode");
+                var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId; 
+               ViewData["productId"] = new SelectList(catalogProducts.Where(p => p.CatalogId == catalogId), "ProductId", "productCode");
                 return View(objline);
             }
             else
             {
-                ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode"); 
+               //var catalogId = _context.Catalog.Where(c => c.CustomerId == check.SalesOrder.customerId).FirstOrDefault().CatalogId; 
+               //ViewData["productId"] = new SelectList(catalogProducts.Where(p => p.CatalogId == catalogId), "ProductId", "productCode");
+               ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode"); 
                 return View(check);
             }
         }
@@ -97,7 +99,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SalesOrderLineId,Discount,DiscountAmount,Price,TotalBeforeDiscount,ProductId,ProductVAT,ProductVATAmount,Qty,SalesOrderId,SpecialTaxAmount,SpecialTaxDiscount,TotalAmount,UnitCost,createdAt,TotalAfterDiscount")] SalesOrderLine salesOrderLine)
+        public async Task<IActionResult> Create([Bind("SalesOrderLineId,Discount,DiscountAmount,Price,TotalBeforeDiscount,ProductId,ProductVAT,ProductVATAmount,Qty,SalesOrderId,SpecialTaxAmount,SpecialTaxDiscount,TotalAmount,UnitCost,createdAt,TotalAfterDiscount,TotalSpecialTaxAmount,TotalWithSpecialTax")] SalesOrderLine salesOrderLine)
         {
             if (ModelState.IsValid)
             {
@@ -133,7 +135,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("SalesOrderLineId,Discount,DiscountAmount,Price,TotalBeforeDiscount,ProductId,ProductVAT,ProductVATAmount,Qty,SalesOrderId,SpecialTaxAmount,SpecialTaxDiscount,TotalAmount,UnitCost,createdAt,TotalAfterDiscount")] SalesOrderLine salesOrderLine)
+        public async Task<IActionResult> Edit(string id, [Bind("SalesOrderLineId,Discount,DiscountAmount,Price,TotalBeforeDiscount,ProductId,ProductVAT,ProductVATAmount,Qty,SalesOrderId,SpecialTaxAmount,SpecialTaxDiscount,TotalAmount,UnitCost,createdAt,TotalAfterDiscount,TotalSpecialTaxAmount,TotalWithSpecialTax")] SalesOrderLine salesOrderLine)
         {
             if (id != salesOrderLine.SalesOrderLineId)
             {
@@ -214,6 +216,7 @@ namespace netcore.Controllers.Invent
             var productVAT = _context.Product.Where(s => s.productId == productId).FirstOrDefault().ProductVAT;
             var productCost = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitCost;
             var productvatamount = ((productPrice * (1 - discount)) + specialtaxamount * (1 - specialtaxDiscount)) * productVAT * qty;
+            var totalwithspecialtax = (qty * specialtaxamount) + (qty * productPrice * (1 - discount));
 
             var result = new {
                 Qty = qty,
@@ -230,7 +233,9 @@ namespace netcore.Controllers.Invent
                 ProductCost = productCost,
                 TotalAmount = (qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount)) + (((qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount))) * productVAT),
                 TotalBeforeDiscount = qty * productPrice,
-                TotalAfterDiscount = qty * productPrice * (1 - discount)
+                TotalAfterDiscount = qty * productPrice * (1 - discount),
+                TotalSpecialTaxAmount = qty * specialtaxamount,
+                TotalWithSpecialTax = totalwithspecialtax
             };
             return Json(result, sa);
         }

@@ -74,17 +74,17 @@
                         <tr>
                             <th>Ποσ</th>
                             <th>Προϊόν</th>
-                            <th>Περιγραφή</th>
+                            <th>Τιμή Καταλόγου</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.shipmentLine)
                         {
-                            <tr>
-                                <td>@item.qty</td>
-                                <td>@item.product.productCode</td>
-                                <td>@item.product.productName</td>
-                            </tr>
+                        <tr>
+                            <td>@item.product.productCode</td>
+                            <td>@item.qty</td>
+                            <td>@item.product.UnitPrice</td>
+                        </tr>
                         }
 
                     </tbody>

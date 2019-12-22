@@ -104,6 +104,22 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
+                    <label asp-for="TotalSpecialTaxAmount" class="control-label"></label>
+                    <input readonly="readonly" asp-for="TotalSpecialTaxAmount" id="totalspecialtaxamount" class="form-control" />
+                    <span asp-validation-for="TotalSpecialTaxAmount" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="TotalWithSpecialTax" class="control-label"></label>
+                    <input readonly="readonly" asp-for="TotalWithSpecialTax" id="totalwithspecialtax" class="form-control" />
+                    <span asp-validation-for="TotalWithSpecialTax" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
                     <label asp-for="Price" class="control-label"></label>
                     <input asp-for="Price" readonly="readonly" id="price" class="form-control" lang="el" />
                     <span asp-validation-for="Price" class="text-danger"></span>
@@ -149,6 +165,11 @@
             data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
             $("#totalafterdiscount").val(data.TotalAfterDiscount);
 
+            data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace('.', ',');
+            $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
+            data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
+            $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
+
         });
 
         $("#productList").change(function () {
@@ -179,6 +200,10 @@
                 $("#totalbeforediscount").val(data.TotalBeforeDiscount);
                 data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
                 $("#totalafterdiscount").val(data.TotalAfterDiscount);
+                data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace('.', ',');
+                $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
+                data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
+                $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
             });
         });
         $("#qty").change(function () {
@@ -209,6 +234,11 @@
                 $("#totalbeforediscount").val(data.TotalBeforeDiscount);
                 data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
                 $("#totalafterdiscount").val(data.TotalAfterDiscount);
+                data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace('.', ',');
+                $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
+                data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
+                $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
+
             });
         });
     </script>

@@ -105,7 +105,7 @@ namespace netcore.Controllers.Invent
         public IActionResult Create()
         {
             var username = HttpContext.User.Identity.Name;
-            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 ViewData["customerId"] = new SelectList(_context.Customer.Where(c=>c.Employee.UserName==username), "customerId", "customerName");
             }
@@ -167,7 +167,7 @@ namespace netcore.Controllers.Invent
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
             var username = HttpContext.User.Identity.Name;
-            if (!HttpContext.User.IsInRole("ApplicationUser"))
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 ViewData["customerId"] = new SelectList(_context.Customer.Where(c => c.Employee.UserName == username), "customerId", "customerName", salesOrder.customerId);
             }

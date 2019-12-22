@@ -44,7 +44,7 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> ShowDeliveryOrder(string id)
         {
             Shipment obj = await _context.Shipment
-                .Include(x => x.customer)
+                .Include(x => x.customer).ThenInclude(x=>x.CustomerLine)
                 .Include(x => x.salesOrder)
                     .ThenInclude(x => x.branch)
                 .Include(x => x.shipmentLine).ThenInclude(x => x.product)
@@ -55,7 +55,7 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> PrintDeliveryOrder(string id)
         {
             Shipment obj = await _context.Shipment
-                .Include(x => x.customer)
+                .Include(x => x.customer).ThenInclude(x => x.CustomerLine)
                 .Include(x => x.salesOrder)
                     .ThenInclude(x => x.branch)
                 .Include(x => x.shipmentLine).ThenInclude(x => x.product)

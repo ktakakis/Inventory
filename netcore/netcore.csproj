@@ -24,6 +24,14 @@
     <Compile Remove="Migrations\20191202224207_LastUpdate3.Designer.cs" />
     <Compile Remove="Migrations\20191212225951_UpdateEmployeesWithUser2.cs" />
     <Compile Remove="Migrations\20191212225951_UpdateEmployeesWithUser2.Designer.cs" />
+    <Compile Remove="Migrations\20191222115937_NumberSequence.cs" />
+    <Compile Remove="Migrations\20191222115937_NumberSequence.Designer.cs" />
+    <Compile Remove="Migrations\20191222121126_NumberSequenceModel.cs" />
+    <Compile Remove="Migrations\20191222121126_NumberSequenceModel.Designer.cs" />
+    <Compile Remove="Migrations\20191222121408_NumberSequenceModel.cs" />
+    <Compile Remove="Migrations\20191222121408_NumberSequenceModel.Designer.cs" />
+    <Compile Remove="Migrations\20191222122158_NumberSequenceModel.cs" />
+    <Compile Remove="Migrations\20191222122158_NumberSequenceModel.Designer.cs" />
   </ItemGroup>
 
 

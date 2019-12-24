@@ -26,8 +26,16 @@
                             <div class="col-md-6">
                                 <div class="form-group has-success">
                                     <label asp-for="branchName" class="control-label"></label>
-                                    <input asp-for="branchName" class="form-control" disabled />
+                                    <input disabled asp-for="branchName" class="form-control" />
                                     <span asp-validation-for="branchName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="isDefaultBranch" class="control-label"></label>
+                                    <div class="checkbox">
+                                        <input  disabled asp-for="isDefaultBranch" /> &nbsp; Yes.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -35,7 +43,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label asp-for="description" class="control-label"></label>
-                                    <textarea asp-for="description" class="form-control" cols="3" disabled></textarea>
+                                    <textarea disabled  asp-for="description" class="form-control" cols="3"></textarea>
                                     <span asp-validation-for="description" class="text-danger"></span>
                                 </div>
                             </div>
@@ -49,53 +57,84 @@
                             <div class="col-md-6">
                                 <div class="form-group has-success">
                                     <label asp-for="street1" class="control-label"></label>
-                                    <input asp-for="street1" class="form-control" disabled />
+                                    <input disabled  asp-for="street1" class="form-control" />
                                     <span asp-validation-for="street1" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="street2" class="control-label"></label>
-                                    <input asp-for="street2" class="form-control" disabled />
-                                    <span asp-validation-for="street2" class="text-danger"></span>
+                                    <label asp-for="PostalCode" class="control-label"></label>
+                                    <input disabled  asp-for="PostalCode" class="form-control" />
+                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="city" class="control-label"></label>
-                                    <input asp-for="city" class="form-control" disabled />
-                                    <span asp-validation-for="city" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="province" class="control-label"></label>
-                                    <input asp-for="province" class="form-control" disabled />
-                                    <span asp-validation-for="province" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="country" class="control-label"></label>
-                                    <input asp-for="country" class="form-control" disabled />
-                                    <span asp-validation-for="country" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <small class="text-yellow"><i>Property</i></small>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="isDefaultBranch" class="control-label"></label>
-                                    <div class="checkbox">
-                                        <input asp-for="isDefaultBranch" disabled/> &nbsp; Yes.
-                                    </div>
+                                    <label asp-for="city" class="control-label"></label>
+                                    <input disabled  asp-for="city" class="form-control" />
+                                    <span asp-validation-for="city" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="province" class="control-label"></label>
+                                    <input disabled  asp-for="province" class="form-control" />
+                                    <span asp-validation-for="province" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="country" class="control-label"></label>
+                                    <input disabled  asp-for="country" class="form-control" />
+                                    <span asp-validation-for="country" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="email" class="control-label"></label>
+                                    <input  disabled asp-for="email" class="form-control" />
+                                    <span asp-validation-for="email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small class="text-yellow"><i>Επικοινωνία</i></small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="OfficePhone" class="control-label"></label>
+                                    <input disabled  asp-for="OfficePhone" class="form-control" />
+                                    <span asp-validation-for="OfficePhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Fax" class="control-label"></label>
+                                    <input disabled  asp-for="Fax" class="form-control" />
+                                    <span asp-validation-for="Fax" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="VATNumber" class="control-label"></label>
+                                    <input disabled  asp-for="VATNumber" class="form-control" />
+                                    <span asp-validation-for="VATNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="TaxOffice" class="control-label"></label>
+                                    <input disabled  asp-for="TaxOffice" class="form-control" />
+                                    <span asp-validation-for="TaxOffice" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>

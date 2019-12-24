@@ -12,6 +12,7 @@ using netcore.Data;
 using netcore.Models.Invent;
 using System.Globalization;
 using System.Threading;
+using netcore.Services;
 
 namespace netcore.Controllers.Invent
 {
@@ -21,10 +22,13 @@ namespace netcore.Controllers.Invent
     public class SalesOrderController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INumberSequence _numberSequence;
 
-        public SalesOrderController(ApplicationDbContext context)
+        public SalesOrderController(ApplicationDbContext context,
+                        INumberSequence numberSequence)
         {
             _context = context;
+            _numberSequence = numberSequence;
         }
 
         public async Task<IActionResult> ShowSalesOrder(string id)
@@ -117,7 +121,6 @@ namespace netcore.Controllers.Invent
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", defaultBranch != null ? defaultBranch.branchId : null);
             ViewData["customerLineId"]= new SelectList(_context.CustomerLine, "customerLineId", "street1");
             SalesOrder so = new SalesOrder();
-            
             return View(so);
         }
 
@@ -132,6 +135,8 @@ namespace netcore.Controllers.Invent
 
             if (ModelState.IsValid)
             {
+                salesOrder.salesOrderNumber = _numberSequence.GetNumberSequence("SO");
+
                 _context.Add(salesOrder);
                 await _context.SaveChangesAsync();
                 TempData["TransMessage"] = "Η Δημιουργία της Παραγγελίας Πώλησης (SO) " + salesOrder.salesOrderNumber + " έγινε με Επιτυχία";

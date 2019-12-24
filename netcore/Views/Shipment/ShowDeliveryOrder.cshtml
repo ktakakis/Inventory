@@ -39,7 +39,6 @@
                 <address>
                     <strong>@Model.salesOrder.branch.branchName</strong><br>
                     @Model.salesOrder.branch.street1<br>
-                    @Model.salesOrder.branch.street2<br>
                     @Model.salesOrder.branch.city<br>
                     attn: @Model.salesOrder.picInternal
                 </address>
@@ -74,7 +73,7 @@
                         <tr>
                             <th>Ποσ</th>
                             <th>Προϊόν</th>
-                            <th>Τιμή Καταλόγου</th>
+                            <th>Περιγραφή</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,7 +82,7 @@
                         <tr>
                             <td>@item.product.productCode</td>
                             <td>@item.qty</td>
-                            <td>@item.product.UnitPrice</td>
+                            <td>@item.product.description</td>
                         </tr>
                         }
 

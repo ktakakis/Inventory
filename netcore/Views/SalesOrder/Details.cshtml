@@ -6,170 +6,170 @@
     ViewData["EntityIcon"] = "fa fa-cart-plus";
 
 }
-<div class="row">
-    <div class="col-md-9">
-        <!-- Default box -->
-        <div class="box box-primary">
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="salesOrderId" />
-                        <input type="hidden" asp-for="salesOrderNumber" />
-                        <input type="hidden" asp-for="salesOrderStatus" />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <small class="text-yellow"><i>Περίληψη</i></small>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="salesOrderNumber" class="control-label"></label>
-                                    <input disabled asp-for="salesOrderNumber" class="form-control" />
-                                    <span asp-validation-for="salesOrderNumber" class="text-danger"></span>
+    <div class="row">
+        <div class="col-md-9">
+            <!-- Default box -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="salesOrderId" />
+                            <input type="hidden" asp-for="salesOrderNumber" />
+                            <input type="hidden" asp-for="salesOrderStatus" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <small class="text-yellow"><i>Περίληψη</i></small>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="salesOrderStatus" class="control-label"></label>
-                                    <select disabled asp-for="salesOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.SalesOrderStatus>()" role="combobox"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="customerId" class="control-label">Πελάτης</label>
-                                    <select disabled asp-for="customerId" id="customerList" class="form-control select2" asp-items="ViewBag.customerId" role="combobox"></select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="customerLineId" class="control-label">Διεύθυνση</label>
-                                    <select disabled asp-for="customerLineId" id="customerLineList" class="form-control select2" asp-items="ViewBag.customerLineId" role="combobox"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="description" class="control-label"></label>
-                            <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="description" class="text-danger"></span>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="soDate" class="control-label"></label>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input disabled asp-for="soDate" value="@Model.soDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="salesOrderNumber" class="control-label"></label>
+                                        <input disabled asp-for="salesOrderNumber" class="form-control" />
+                                        <span asp-validation-for="salesOrderNumber" class="text-danger"></span>
                                     </div>
-                                    <span asp-validation-for="soDate" class="text-danger"></span>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="deliveryDate" class="control-label"></label>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input disabled asp-for="deliveryDate" value="@Model.deliveryDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="salesOrderStatus" class="control-label"></label>
+                                        <select disabled asp-for="salesOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.SalesOrderStatus>()" role="combobox"></select>
                                     </div>
-                                    <span asp-validation-for="deliveryDate" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="customerId" class="control-label">Πελάτης</label>
+                                        <select disabled asp-for="customerId" id="customerList" class="form-control select2" asp-items="ViewBag.customerId" role="combobox"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="customerLineId" class="control-label">Διεύθυνση</label>
+                                        <select disabled asp-for="customerLineId" id="customerLineList" class="form-control select2" asp-items="ViewBag.customerLineId" role="combobox"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="description" class="control-label"></label>
+                                <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
+                                <span asp-validation-for="description" class="text-danger"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="soDate" class="control-label"></label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input disabled asp-for="soDate" value="@Model.soDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                                        </div>
+                                        <span asp-validation-for="soDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="deliveryDate" class="control-label"></label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input disabled asp-for="deliveryDate" value="@Model.deliveryDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                                        </div>
+                                        <span asp-validation-for="deliveryDate" class="text-danger"></span>
+                                    </div>
+                                </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="branchId" class="control-label">Υποκατάστημα</label>
-                                    <select disabled asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId" role="combobox"></select>
-                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
-                                    <select disabled asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()" role="combobox"></select>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="branchId" class="control-label">Υποκατάστημα</label>
+                                        <select disabled asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId" role="combobox"></select>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
+                                        <select disabled asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()" role="combobox"></select>
+                                    </div>
+                                </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="referenceNumberInternal" class="control-label"></label>
-                                    <input disabled asp-for="referenceNumberInternal" class="form-control" />
-                                    <span asp-validation-for="referenceNumberInternal" class="text-danger"></span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="referenceNumberInternal" class="control-label"></label>
+                                        <input disabled asp-for="referenceNumberInternal" class="form-control" />
+                                        <span asp-validation-for="referenceNumberInternal" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="referenceNumberExternal" class="control-label"></label>
+                                        <input disabled asp-for="referenceNumberExternal" class="form-control" />
+                                        <span asp-validation-for="referenceNumberExternal" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="referenceNumberExternal" class="control-label"></label>
-                                    <input disabled asp-for="referenceNumberExternal" class="form-control" />
-                                    <span asp-validation-for="referenceNumberExternal" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group has-success">
+                                        <label asp-for="picInternal" class="control-label">Υπεύθυνος (Εσωτερικός)</label>
+                                        <input disabled asp-for="picInternal" class="form-control" />
+                                        <span asp-validation-for="picInternal" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group has-success">
+                                        <label asp-for="picCustomer" class="control-label">Υπεύθυνος (πελάτης)</label>
+                                        <input disabled asp-for="picCustomer" class="form-control" />
+                                        <span asp-validation-for="picCustomer" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group has-success">
-                                    <label asp-for="picInternal" class="control-label">Υπεύθυνος (Εσωτερικός)</label>
-                                    <input disabled asp-for="picInternal" class="form-control" />
-                                    <span asp-validation-for="picInternal" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="totalDiscountAmount" class="control-label"></label>
+                                        <input disabled asp-for="totalDiscountAmount" class="form-control" />
+                                        <span asp-validation-for="totalDiscountAmount" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group has-success">
-                                    <label asp-for="picCustomer" class="control-label">Υπεύθυνος (πελάτης)</label>
-                                    <input disabled asp-for="picCustomer" class="form-control" />
-                                    <span asp-validation-for="picCustomer" class="text-danger"></span>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="totalOrderAmount" class="control-label"></label>
+                                        <input disabled asp-for="totalOrderAmount" class="form-control" />
+                                        <span asp-validation-for="totalOrderAmount" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="totalDiscountAmount" class="control-label"></label>
-                                    <input disabled asp-for="totalDiscountAmount" class="form-control" />
-                                    <span asp-validation-for="totalDiscountAmount" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="totalOrderAmount" class="control-label"></label>
-                                    <input disabled asp-for="totalOrderAmount" class="form-control" />
-                                    <span asp-validation-for="totalOrderAmount" class="text-danger"></span>
-                                </div>
-                            </div>
                                 <div class="form-group hidden">
                                     <label asp-for="salesShipmentNumber" class="control-label"></label>
                                     <input disabled asp-for="salesShipmentNumber" class="form-control" />
                                     <span asp-validation-for="salesShipmentNumber" class="text-danger"></span>
                                 </div>
                             </div>
+                        </div>
                     </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="form-group">
+                            <a asp-action="Edit" asp-route-id="@Model.salesOrderId" class="btn btn-primary">Επεξεργασία</a>
+                            <a asp-action="ShowSalesOrder" asp-route-id="@Model.salesOrderId" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Εκτύπωση Παραγγελίας</a>
+                            <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                        </div>
+                    </div>
+                    <!-- /.box-footer-->
                 </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-                <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="@Model.salesOrderId" class="btn btn-primary">Επεξεργασία</a>
-                    <a asp-action="ShowSalesOrder" asp-route-id="@Model.salesOrderId" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Εκτύπωση Παραγγελίας</a>
-                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
-                </div>
+                <!-- /.box -->
             </div>
-            <!-- /.box-footer-->
-        </div>
-        <!-- /.box -->
         </div>
         <div class="col-md-3">
             @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
         </div>
     </div>
-</div>
 
 <!--Products Child-->
 <div class="row">

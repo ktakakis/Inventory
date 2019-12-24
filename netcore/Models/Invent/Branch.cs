@@ -27,18 +27,38 @@ namespace netcore.Models.Invent
         [Display(Name = "Περιγραφή υποκαταστήματος")]
         public string description { get; set; }
 
+        [StringLength(50)]
+        [Display(Name = "E-Mail")]
+        public string email { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Α.Φ.Μ.")]
+        public string VATNumber { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Δ.Ο.Υ.")]
+        public string TaxOffice { get; set; }
+
         [Display(Name = "Είναι υποκατάστημα προεπιλογής;")]
         public bool isDefaultBranch { get; set; } = false;
 
         //IBaseAddress
-        [Display(Name = "Διεύθυνση 1")]
+        [Display(Name = "Διεύθυνση")]
         [Required]
         [StringLength(50)]
         public string street1 { get; set; }
 
-        [Display(Name = "Διεύθυνση 2")]
+        [Display(Name = "Τ.Κ.")] 
         [StringLength(50)]
-        public string street2 { get; set; }
+        public string PostalCode { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Τηλέφωνο")]
+        public string OfficePhone { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "FAX")]
+        public string Fax { get; set; }
 
         [Display(Name = "Πόλη")]
         [StringLength(30)]

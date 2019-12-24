@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191222192015_updateOrderNumberToNull")]
+    partial class updateOrderNumberToNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,21 +247,6 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<string>("Fax")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("OfficePhone")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("TaxOffice")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("VATNumber")
-                        .HasMaxLength(50);
-
                     b.Property<string>("branchName")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -276,9 +262,6 @@ namespace netcore.Migrations
                     b.Property<string>("description")
                         .HasMaxLength(50);
 
-                    b.Property<string>("email")
-                        .HasMaxLength(50);
-
                     b.Property<bool>("isDefaultBranch");
 
                     b.Property<string>("province")
@@ -286,6 +269,9 @@ namespace netcore.Migrations
 
                     b.Property<string>("street1")
                         .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("street2")
                         .HasMaxLength(50);
 
                     b.HasKey("branchId");
@@ -927,6 +913,7 @@ namespace netcore.Migrations
                     b.Property<DateTime>("shipmentDate");
 
                     b.Property<string>("shipmentNumber")
+                        .IsRequired()
                         .HasMaxLength(20);
 
                     b.Property<string>("warehouseId")

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using netcore.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,10 +9,11 @@ namespace netcore.Models.Invent
 {
     public class SalesOrder : INetcoreMasterChild
     {
+
         public SalesOrder()
         {
             this.createdAt = DateTime.UtcNow;
-            this.salesOrderNumber = DateTime.UtcNow.Date.ToString("yyyyMMdd") + Guid.NewGuid().ToString().Substring(0, 5).ToUpper() + "#SO";
+            //this.salesOrderNumber = DateTime.UtcNow.Date.ToString("yyyyMMdd") + Guid.NewGuid().ToString().Substring(0, 5).ToUpper() + "#SO";
             this.soDate = DateTime.UtcNow.Date;
             this.deliveryDate = this.soDate.AddDays(5);
             this.salesOrderStatus = SalesOrderStatus.Draft;
@@ -24,7 +26,7 @@ namespace netcore.Models.Invent
         public string salesOrderId { get; set; }
 
         [StringLength(20)]
-        [Required]
+        
         [Display(Name = "Αριθμός Παραγγελίας")]
         public string salesOrderNumber { get; set; }
 

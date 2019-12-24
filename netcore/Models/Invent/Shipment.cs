@@ -11,7 +11,7 @@ namespace netcore.Models.Invent
         public Shipment()
         {
             this.createdAt = DateTime.UtcNow;
-            this.shipmentNumber = DateTime.UtcNow.Date.ToString("yyyyMMdd") + Guid.NewGuid().ToString().Substring(0, 5).ToUpper() + "#DO";
+            //this.shipmentNumber = DateTime.UtcNow.Date.ToString("yyyyMMdd") + Guid.NewGuid().ToString().Substring(0, 5).ToUpper() + "#DO";
             this.shipmentDate = DateTime.UtcNow;
             this.expeditionType = ExpeditionType.Internal;
             this.expeditionMode = ExpeditionMode.Land;
@@ -29,8 +29,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Παραγγελία Πώλησης")]
         public SalesOrder salesOrder { get; set; }
 
-        [StringLength(20)]
-        [Required]
+        [StringLength(20)]        
         [Display(Name = "Αριθμός Αποστολής")]
         public string shipmentNumber { get; set; }
 

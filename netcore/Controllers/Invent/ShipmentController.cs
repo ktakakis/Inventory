@@ -21,14 +21,19 @@ namespace netcore.Controllers.Invent
     {
         private readonly ApplicationDbContext _context;
         private readonly INetcoreService _netcoreService;
+        private readonly INumberSequence _numberSequence;
 
-        public ShipmentController(ApplicationDbContext context, INetcoreService netcoreService)
+
+        public ShipmentController(ApplicationDbContext context, INetcoreService netcoreService,
+                        INumberSequence numberSequence)
         {
             _context = context;
             _netcoreService = netcoreService;
+            _numberSequence = numberSequence;
+
         }
 
-       
+
         public IActionResult GetWarehouseByOrder(string salesOrderId)
         {
             SalesOrder so = _context.SalesOrder
@@ -129,6 +134,7 @@ namespace netcore.Controllers.Invent
             if (ModelState.IsValid)
             {
                 //check sales order
+
                 Shipment check = await _context.Shipment
                     .Include(x => x.salesOrder)
                     .SingleOrDefaultAsync(x => x.salesOrderId.Equals(shipment.salesOrderId));
@@ -183,6 +189,7 @@ namespace netcore.Controllers.Invent
                 shipment.salesOrder.salesOrderStatus = SalesOrderStatus.Completed;
                 _context.Update(shipment.salesOrder);
 
+                shipment.shipmentNumber = _numberSequence.GetNumberSequence("DO");
                 _context.Add(shipment);
                 await _context.SaveChangesAsync();
 

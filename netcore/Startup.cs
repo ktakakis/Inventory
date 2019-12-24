@@ -81,6 +81,8 @@ namespace netcore
             // Add email services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddTransient<INumberSequence, Services.NumberSequence>();
+
             // Add custom role services
             services.AddTransient<IRoles, Roles>();
 

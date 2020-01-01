@@ -62,7 +62,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Φ.Π.Α.")]
         public decimal ProductVATAmount { get; set; }
 
-        [Display(Name = "Έκπτωση ΕΦ")]
+        [Display(Name = "Έκπτωση ΚΣ")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal SpecialTaxDiscount { get; set; }
         

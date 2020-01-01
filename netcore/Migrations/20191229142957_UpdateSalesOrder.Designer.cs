@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191229142957_UpdateSalesOrder")]
+    partial class UpdateSalesOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -788,8 +789,6 @@ namespace netcore.Migrations
 
                     b.Property<decimal>("TotalProductVAT");
 
-                    b.Property<decimal>("TotalWithSpecialTax");
-
                     b.Property<string>("branchId")
                         .IsRequired()
                         .HasMaxLength(38);
@@ -808,6 +807,10 @@ namespace netcore.Migrations
 
                     b.Property<string>("description")
                         .HasMaxLength(100);
+
+                    b.Property<string>("picCustomer")
+                        .IsRequired()
+                        .HasMaxLength(30);
 
                     b.Property<string>("picInternal")
                         .IsRequired()

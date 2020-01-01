@@ -3,7 +3,6 @@
 @{
     Layout = "_AdminlteNetcore";
 }
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -14,7 +13,7 @@
         </div>
     </div>
     <!-- Main content -->
-    <section class="invoice">
+    <section class="invoice" style="background-image:url('/../../images/kaffa_background.png')">
         <!-- title row -->
         <div class="row">
             <table style="width:100%">
@@ -25,10 +24,19 @@
                         </div>
                     </td>
                     <td>
-                        <div class="col-sm-8">
-                            <h4>@Model.branch.branchName</h4>
-                            <h5>@Model.branch.street1</h5>
-                            <h5>@Model.branch.city</h5>
+                        <div class="col-sm-4 invoice-col">
+                            <h5>Επωνυμία: @Model.branch.branchName</h5>
+                            <h5>@Model.branch.description</h5>
+                            <h5>Διεύθυνση: @Model.branch.street1</h5>
+                            <h5>Ταχ. Κωδ.: @Model.branch.PostalCode</h5>
+                            <h5>Πόλη: @Model.branch.city</h5>
+                        </div>
+                        <div class="col-sm-4 invoice-col pull-right-container">
+                            <h5>Τηλ: @Model.branch.OfficePhone</h5>
+                            <h5>Fax: @Model.branch.Fax</h5>
+                            <h5>E-Mail: @Model.branch.email</h5>
+                            <h5>Α.Φ.Μ.: @Model.branch.VATNumber</h5>
+                            <h5>Εφορία: @Model.branch.TaxOffice</h5>
                         </div>
                     </td>
                 </tr>
@@ -63,99 +71,107 @@
         <!-- info row -->
         <div class="row invoice-info">
             <div class="col-sm-4 invoice-col">
-                Πελάτης / Παράδοση
-                <address>
-                    <strong>@Model.customer.customerName</strong><br>
-                    @Model.customerLine.street1<br>
-                    @Model.customerLine.city<br>
-                    @Model.customerLine.country<br>
-                    Υπεύθυνος: @Model.picCustomer
-                </address>
+                Πελάτης / Παράδοση<br>
+                Επωνυμία: <strong>@Model.customer.customerName</strong><br>
+                Διεύθυνση: @Model.customerLine.street1<br>
+                Ταχ. Κωδικός: @Model.customerLine.PostCode<br>
+                Πόλη: @Model.customerLine.city<br>
+                Χώρα: @Model.customerLine.country<br>
             </div>
-            <!-- /.col -->
-        </div>
-        <!-- /.row -->
-        <!-- Table row -->
-        <div class="row" style="border-bottom:groove;border-top:groove;">
-            <div class="col-xs-12 table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Ποσ</th>
-                            <th>Προϊόν</th>
-                            <th>Τιμή</th>
-                            <th>Αξία Π.Ε.</th>
-                            <th>% Έκπτωση</th>
-                            <th>Έκπτωση</th>
-                            <th>Ειδικός Φόρος</th>
-                            <th>% Φ.Π.Α.</th>
-                            <th>Φ.Π.Α.</th>
-                            <th>Σύνολο</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.salesOrderLine)
-                        {
-                        <tr>
-                            <td>@item.Qty</td>
-                            <td>@item.Product.productCode</td>
-                            <td>@item.Price.ToString()</td>
-                            <td>@item.TotalBeforeDiscount.ToString()</td>
-                            <td>@(item.Discount*100)%</td>
-                            <td>@item.DiscountAmount</td>
-                            <td>@item.TotalSpecialTaxAmount</td>
-                            <td>@(item.Product.ProductVAT*100)%</td>
-                            <td>@item.ProductVATAmount</td>
-                            <td>@item.TotalAmount</td>
-                        </tr>
-                        }
+            <div class="col-sm-4 invoice-col">
+                Α.Φ.Μ.: @Model.customer.VATRegNumber<br>
+                Εφορία: @Model.customer.TaxOffice<br>
 
-                    </tbody>
-                </table>
             </div>
             <!-- /.col -->
         </div>
-        <!-- /.row -->
-        <div class="row">
-            <!-- accepted payments column -->
-            <div class="col-xs-6">
-                <p class="lead">Περιγραφή:</p>
-                <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                    @Model.description
-                </p>
-            </div>
-            <!-- /.col -->
-            <div class="col-xs-6">
-                <p class="lead">Ανάλυση ποσού</p>
-                <div class="table-responsive">
-                    <table class="table">
-                        <tr>
-                            <th style="width:50%">Σύνολο:</th>
-                            <td>@Model.totalOrderAmount.ToString() €</td>
-                        </tr>
-                        <tr>
-                            <th>Έκπτωση</th>
-                            <td>@Model.totalDiscountAmount.ToString() €</td>
-                        </tr>
-                        <tr>
-                            <th>Πληρωτέο:</th>
-                            <td>@((Model.totalOrderAmount - Model.totalDiscountAmount).ToString()) €</td>
-                        </tr>
+            <!-- /.row -->
+            <!-- Table row -->
+            <div class="row" style="border-bottom:groove;border-top:groove;">
+                <div class="col-xs-12 table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Προϊόν</th>
+                                <th>Ποσ</th>
+                                <th>Τιμή</th>
+                                <th>Αξία</th>
+                                <th>% Έκπτωση</th>
+                                <th>Έκπτωση</th>
+                                <th>Ειδικός Φόρος</th>
+                                <th>% Φ.Π.Α.</th>
+                                <th>Φ.Π.Α.</th>
+                                <th>Αξία + ΦΠΑ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.salesOrderLine)
+                            {
+                            <tr>
+                                <td>@item.Product.productCode</td>
+                                <td>@item.Qty</td>
+                                <td>@item.Price.ToString()</td>
+                                <td>@item.TotalBeforeDiscount.ToString()</td>
+                                <td>@(item.Discount * 100)%</td>
+                                <td>@item.DiscountAmount</td>
+                                <td>@item.TotalSpecialTaxAmount</td>
+                                <td>@(item.Product.ProductVAT * 100)%</td>
+                                <td>@item.ProductVATAmount</td>
+                                <td>@item.TotalAmount</td>
+                            </tr>
+                            }
+
+                        </tbody>
                     </table>
                 </div>
+                <!-- /.col -->
             </div>
-            <!-- /.col -->
-        </div>
-        <!-- /.row -->
-        <!-- this row will not appear when printing -->
-        <div class="row no-print">
-            <div class="col-xs-12">
+            <!-- /.row -->
+            <div class="row">
+                <!-- accepted payments column -->
+                <div class="col-xs-6">
+                    <p class="lead">Περιγραφή:</p>
+                    <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                        @Model.description
+                    </p>
+                </div>
+                <!-- /.col -->
+                <div class="col-xs-6">
+                    <p class="lead">Ανάλυση ποσού</p>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tr>
+                                <th style="width:50%">Αξία:</th>
+                                <td>@Model.TotalWithSpecialTax.ToString() €</td>
+                            </tr>
+                            <tr>
+                                <th>Έκπτωση</th>
+                                <td>@Model.totalDiscountAmount.ToString() €</td>
+                            </tr>
+                            <tr>
+                                <th>Σύνολο Φ.Π.Α.</th>
+                                <td>@Model.TotalProductVAT.ToString() €</td>
+                            </tr>
 
-                <a href="@Url.Action("PrintSalesOrder", new { id = Model.salesOrderId })" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Εκτύπωση</a>
-
+                            <tr>
+                                <th>Τελική Αξία:</th>
+                                <td>@(Model.totalOrderAmount) €</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.col -->
             </div>
-        </div>
-    </section>
+            <!-- /.row -->
+            <!-- this row will not appear when printing -->
+            <div class="row no-print">
+                <div class="col-xs-12">
+
+                    <a href="@Url.Action("PrintSalesOrder", new { id = Model.salesOrderId })" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Εκτύπωση</a>
+
+                </div>
+            </div>
+</section>
     <!-- /.content -->
     <div class="clearfix"></div>
 </div>

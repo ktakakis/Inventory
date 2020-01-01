@@ -123,33 +123,40 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group has-success">
-                                        <label asp-for="picCustomer" class="control-label">Υπεύθυνος (πελάτης)</label>
-                                        <input disabled asp-for="picCustomer" class="form-control" />
-                                        <span asp-validation-for="picCustomer" class="text-danger"></span>
+                                    <div class="form-group">
+                                        <label asp-for="Invoicing" class="control-label"></label>
+                                        <input disabled type="checkbox" asp-for="Invoicing" class="checkbox" />
+                                        <span asp-validation-for="Invoicing" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label asp-for="totalDiscountAmount" class="control-label"></label>
                                         <input disabled asp-for="totalDiscountAmount" class="form-control" />
                                         <span asp-validation-for="totalDiscountAmount" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label asp-for="totalOrderAmount" class="control-label"></label>
                                         <input disabled asp-for="totalOrderAmount" class="form-control" />
                                         <span asp-validation-for="totalOrderAmount" class="text-danger"></span>
                                     </div>
                                 </div>
-                                <div class="form-group hidden">
-                                    <label asp-for="salesShipmentNumber" class="control-label"></label>
-                                    <input disabled asp-for="salesShipmentNumber" class="form-control" />
-                                    <span asp-validation-for="salesShipmentNumber" class="text-danger"></span>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="TotalProductVAT" class="control-label"></label>
+                                        <input disabled asp-for="TotalProductVAT" class="form-control" />
+                                        <span asp-validation-for="TotalProductVAT" class="text-danger"></span>
+                                    </div>
                                 </div>
+                            </div>
+                            <div class="form-group hidden">
+                                <label asp-for="salesShipmentNumber" class="control-label"></label>
+                                <input disabled asp-for="salesShipmentNumber" class="form-control" />
+                                <span asp-validation-for="salesShipmentNumber" class="text-danger"></span>
                             </div>
                         </div>
                     </div>

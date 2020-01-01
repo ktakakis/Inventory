@@ -42,7 +42,8 @@ namespace netcore.Controllers.Invent
 
             obj.totalOrderAmount = obj.salesOrderLine.Sum(x => x.TotalAmount);
             obj.totalDiscountAmount = obj.salesOrderLine.Sum(x => x.DiscountAmount);
-            
+            obj.TotalProductVAT = obj.salesOrderLine.Sum(x => x.ProductVATAmount);
+            obj.TotalWithSpecialTax = obj.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
             _context.Update(obj);
 
             return View(obj);
@@ -98,6 +99,9 @@ namespace netcore.Controllers.Invent
 
             salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
             salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
+            salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
+            salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
 
@@ -130,7 +134,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,deliveryDate,description,picCustomer,picInternal,referenceNumberExternal,referenceNumberInternal,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,customerLineId")] SalesOrder salesOrder)
+        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,picInternal,referenceNumberExternal,referenceNumberInternal,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax")] SalesOrder salesOrder)
         {
 
             if (ModelState.IsValid)
@@ -169,6 +173,9 @@ namespace netcore.Controllers.Invent
 
             salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
             salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
+            salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
+            salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
             var username = HttpContext.User.Identity.Name;
@@ -193,7 +200,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,deliveryDate,description,picCustomer,picInternal,referenceNumberExternal,referenceNumberInternal,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,customerLineId")] SalesOrder salesOrder)
+        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,picInternal,referenceNumberExternal,referenceNumberInternal,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax")] SalesOrder salesOrder)
         {
             if (id != salesOrder.salesOrderId)
             {
@@ -261,6 +268,9 @@ namespace netcore.Controllers.Invent
 
             salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
             salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
+            salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
+            salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
 

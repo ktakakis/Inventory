@@ -211,12 +211,13 @@ namespace netcore.Controllers.Invent
             var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
             var productPrice = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitPrice;
             var discount = _context.CatalogLine.Where(d => d.CatalogId == catalogId && d.ProductId == productId).FirstOrDefault().Discount.GetValueOrDefault(0);
-            var specialtaxDiscount = _context.Customer.Where(c => c.customerId == custId.ToString()).FirstOrDefault().TaxDiscount;
+            decimal specialtaxDiscount = _context.Customer.Where(c => c.customerId == custId.ToString()).FirstOrDefault().TaxDiscount;
             var specialtaxamount = _context.Product.Where(p => p.productId == productId).FirstOrDefault().SpecialTaxValue;
             var productVAT = _context.Product.Where(s => s.productId == productId).FirstOrDefault().ProductVAT;
             var productCost = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitCost;
-            var productvatamount = ((productPrice * (1 - discount)) + specialtaxamount * (1 - specialtaxDiscount)) * productVAT * qty;
-            var totalwithspecialtax = (qty * specialtaxamount) + (qty * productPrice * (1 - discount));
+            var invoicing = _context.SalesOrder.Where(s => s.salesOrderId == salesorderId).FirstOrDefault().Invoicing;
+            var productvatamount = ((productPrice * (1 - discount)) + specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing)))) * productVAT * qty;
+            var totalwithspecialtax = ((qty * specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing)))) + productPrice) * (1 + productVAT);
 
             var result = new {
                 Qty = qty,
@@ -228,13 +229,13 @@ namespace netcore.Controllers.Invent
                 SpecialTaxAmount = specialtaxamount,
                 SpecialTaxDiscount = specialtaxDiscount,
                 ProductVATAmount = productvatamount,
-                PriceWithTaxes = (qty * specialtaxamount) + (productPrice * (1 + discount)),
+                TotalPriceWithTaxes  = (qty * specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing)))) + productPrice ,
                 ProductVAT = productVAT,
                 ProductCost = productCost,
-                TotalAmount = (qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount)) + (((qty * specialtaxamount) + ((qty * productPrice) - ((qty * productPrice) * discount))) * productVAT),
+                TotalAmount = ((qty * (specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))))) + (productPrice * (1 - discount))) * (1 + productVAT),
                 TotalBeforeDiscount = qty * productPrice,
                 TotalAfterDiscount = qty * productPrice * (1 - discount),
-                TotalSpecialTaxAmount = qty * specialtaxamount,
+                TotalSpecialTaxAmount = qty * specialtaxamount* (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))),
                 TotalWithSpecialTax = totalwithspecialtax
             };
             return Json(result, sa);

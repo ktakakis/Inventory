@@ -13,21 +13,34 @@
 <body onload="window.print();">
     <div class="wrapper">
         <!-- Main content -->
-        <section class="invoice">
+        <section class="invoice" style="background-image:url('/../../images/kaffa_background.png')">
             <!-- title row -->
             <div class="row">
-                <div class="col-sm-4">
-                    <img src="~/images/LOGO.png" alt="" title="" />
-                </div>
-                <div class="col-sm-4 invoice-col pull-right-container">
-                    <h4>@Model.branch.branchName</h4>
-                    <h5>@Model.branch.street1</h5>
-                    <h5>@Model.branch.city</h5>
-                </div>
-                <div class="col-sm-4 invoice-col">
-                    <h3>
-                    </h3>
-                </div>
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <div class="col-sm-4">
+                                <img src="~/images/LOGO.png" alt="" title="" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-sm-4 invoice-col">
+                                <h5>Επωνυμία: @Model.branch.branchName</h5>
+                                <h5>@Model.branch.description</h5>
+                                <h5>Διεύθυνση: @Model.branch.street1</h5>
+                                <h5>Ταχ. Κωδ.: @Model.branch.PostalCode</h5>
+                                <h5>Πόλη: @Model.branch.city</h5>
+                            </div>
+                            <div class="col-sm-4 invoice-col pull-right-container">
+                                <h5>Τηλ: @Model.branch.OfficePhone</h5>
+                                <h5>Fax: @Model.branch.Fax</h5>
+                                <h5>E-Mail: @Model.branch.email</h5>
+                                <h5>Α.Φ.Μ.: @Model.branch.VATNumber</h5>
+                                <h5>Εφορία: @Model.branch.TaxOffice</h5>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
                 <!-- /.col -->
             </div>
             <br>
@@ -47,8 +60,8 @@
                             <td><strong>Παραγγελία Πώλησης Προϊόντων</strong></td>
                             <td>@Model.salesOrderNumber</td>
                             <td>@Model.picInternal</td>
-                            <td>@Model.soDate.ToString("dd-MMM-yyyy")</td>
-                            <td>@Model.soDate.ToString("hh:mm") </td>
+                            <td>@Model.deliveryDate.ToString("dd-MMM-yyyy")</td>
+                            <td>@Model.deliveryDate.ToString("hh:mm") </td>
                         </tr>
 
                     </tbody>
@@ -57,20 +70,16 @@
             <!-- info row -->
             <div class="row invoice-info">
                 <div class="col-sm-4 invoice-col">
-                    Πελάτης / Παράδοση
-                    <address>
-                        <strong>@Model.customer.customerName</strong><br>
-                        @Model.customerLine.street1<br>
-                        @Model.customerLine.city<br>
-                        @Model.customerLine.country<br>
-                        Υπεύθυνος: @Model.picCustomer
-                    </address>
+                    Πελάτης / Παράδοση<br>
+                    Επωνυμία: <strong>@Model.customer.customerName</strong><br>
+                    Διεύθυνση: @Model.customerLine.street1<br>
+                    Ταχ. Κωδικός: @Model.customerLine.PostCode<br>
+                    Πόλη: @Model.customerLine.city<br>
+                    Χώρα: @Model.customerLine.country<br>
                 </div>
-                <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
-                    <b>Αρ. Παραγγελίας:</b> @Model.salesOrderNumber<br>
-                    <b>Ημ. Παραγγελίας:</b> @Model.soDate.ToString("dd-MMM-yyyy")<br>
-                    <b>Ημ. Παράδοσης:</b> @Model.deliveryDate.ToString("dd-MMM-yyyy")<br>
+                    Α.Φ.Μ.: @Model.customer.VATRegNumber<br>
+                    Εφορία: @Model.customer.TaxOffice<br>
 
                 </div>
                 <!-- /.col -->
@@ -82,24 +91,24 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Ποσ</th>
                                 <th>Προϊόν</th>
+                                <th>Ποσ</th>
                                 <th>Τιμή</th>
-                                <th>Αξία Π.Ε.</th>
+                                <th>Αξία</th>
                                 <th>% Έκπτωση</th>
                                 <th>Έκπτωση</th>
                                 <th>Ειδικός Φόρος</th>
                                 <th>% Φ.Π.Α.</th>
                                 <th>Ποσό Φ.Π.Α.</th>
-                                <th>Σύνολο</th>
+                                <th>Αξία + ΦΠΑ</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.salesOrderLine)
                             {
                             <tr>
-                                <td>@item.Qty</td>
                                 <td>@item.Product.productCode</td>
+                                <td>@item.Qty</td>
                                 <td>@item.Price.ToString()</td>
                                 <td>@item.TotalBeforeDiscount.ToString()</td>
                                 <td>@(item.Discount * 100)%</td>
@@ -130,16 +139,20 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
-                                <th style="width:50%">Σύνολο:</th>
-                                <td>@Model.totalOrderAmount.ToString() €</td>
+                                <th style="width:50%">Αξία:</th>
+                                <td>@Model.TotalWithSpecialTax.ToString() €</td>
                             </tr>
                             <tr>
                                 <th>Έκπτωση</th>
                                 <td>@Model.totalDiscountAmount.ToString() €</td>
                             </tr>
                             <tr>
-                                <th>Πληρωτέο:</th>
-                                <td>@((Model.totalOrderAmount - Model.totalDiscountAmount).ToString()) €</td>
+                                <th>Σύνολο Φ.Π.Α.</th>
+                                <td>@Model.TotalProductVAT.ToString() €</td>
+                            </tr>
+                            <tr>
+                                <th>Τελική Αξία:</th>
+                                <td>@(Model.totalOrderAmount) €</td>
                             </tr>
                         </table>
                     </div>

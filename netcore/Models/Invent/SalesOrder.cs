@@ -80,19 +80,25 @@ namespace netcore.Models.Invent
         [Display(Name = "PIC Εσωτερικό")]
         public string picInternal { get; set; }
 
-        [StringLength(30)]
-        [Required]
-        [Display(Name = "PIC Πελάτη")]
-        public string picCustomer { get; set; }
-
         [Display(Name = "Κατάσταση")]
         public SalesOrderStatus salesOrderStatus { get; set; }
+
+        [Display(Name = "Έκδοση Τιμολογίου")]
+        public Boolean Invoicing { get; set; } 
+
+        [Display(Name = "Αξία με Ε. Φόρο")] 
+        public decimal TotalWithSpecialTax { get; set; }  
+
 
         [Display(Name = "Συνολική έκπτωση")]
         public decimal totalDiscountAmount { get; set; }
 
-        [Display(Name = "Σύνολο Παραγγελίας")]
+        [Display(Name = "Τελική Αξία")]
         public decimal totalOrderAmount { get; set; }
+
+        [Display(Name = "Σύνολο Φ.Π.Α.")]
+        public decimal TotalProductVAT { get; set; } 
+
 
         [Display(Name = "Αριθμός Αποστολής")]
         public string salesShipmentNumber { get; set; }

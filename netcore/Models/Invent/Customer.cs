@@ -64,7 +64,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Εκπτωση Τιμολογίου")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal? OrderDiscount { get; set; }
-        [Display(Name = "Εκπτωση Φόρου")]
+        [Display(Name = "Εκπτωση Καλής Συνεργασίας")]
         [DisplayFormat(DataFormatString = "{0:P2}")]
         public decimal TaxDiscount { get; set; }
 

@@ -40,9 +40,6 @@
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.picInternal)
             </th>
-            <th class="hidden">
-                @Html.DisplayNameFor(model => model.picCustomer)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.salesOrderStatus)
             </th>
@@ -58,7 +55,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.customer)
             </th>
-
         </tr>
     </thead>
     <tbody>
@@ -99,9 +95,6 @@
                 </td>
                 <td class="hidden">
                     @Html.DisplayFor(modelItem => item.picInternal)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.picCustomer)
                 </td>
                 <td>
                     @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Completed)

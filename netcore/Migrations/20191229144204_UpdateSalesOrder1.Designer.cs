@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191229144204_UpdateSalesOrder1")]
+    partial class UpdateSalesOrder1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -787,8 +788,6 @@ namespace netcore.Migrations
                     b.Property<bool>("Invoicing");
 
                     b.Property<decimal>("TotalProductVAT");
-
-                    b.Property<decimal>("TotalWithSpecialTax");
 
                     b.Property<string>("branchId")
                         .IsRequired()

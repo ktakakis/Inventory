@@ -85,13 +85,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="invoice" class="control-label">Τιμολόγιο για τον Πελάτη</label>
                                     <input disabled asp-for="invoice" class="form-control" />
                                     <span asp-validation-for="invoice" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
+                                    <select disabled asp-for="EmployeeId" class="form-control select2" asp-items="ViewBag.employeeId"></select>
+                                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="row">
                             <div class="col-md-6">

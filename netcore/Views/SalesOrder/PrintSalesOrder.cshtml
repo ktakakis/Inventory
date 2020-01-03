@@ -59,7 +59,7 @@
                         <tr>
                             <td><strong>Παραγγελία Πώλησης Προϊόντων</strong></td>
                             <td>@Model.salesOrderNumber</td>
-                            <td>@Model.picInternal</td>
+                            <td>@Model.Employee.DisplayName</td>
                             <td>@Model.deliveryDate.ToString("dd-MMM-yyyy")</td>
                             <td>@Model.deliveryDate.ToString("hh:mm") </td>
                         </tr>
@@ -140,7 +140,7 @@
                         <table class="table">
                             <tr>
                                 <th style="width:50%">Αξία:</th>
-                                <td>@Model.TotalWithSpecialTax.ToString() €</td>
+                                <td>@Model.TotalBeforeDiscount.ToString() €</td>
                             </tr>
                             <tr>
                                 <th>Έκπτωση</th>
@@ -152,7 +152,7 @@
                             </tr>
                             <tr>
                                 <th>Τελική Αξία:</th>
-                                <td>@(Model.totalOrderAmount) €</td>
+                                <td><strong>@(Model.totalOrderAmount) €</strong></td>
                             </tr>
                         </table>
                     </div>

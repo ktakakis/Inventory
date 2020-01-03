@@ -67,6 +67,15 @@ namespace netcore.Models.Invent
         [Display(Name = "Αποθήκη")]
         public Warehouse warehouse { get; set; }
 
+        [StringLength(38)]
+        [Display(Name = "Id Employee")]
+        public string EmployeeId { get; set; }
+
+        [Display(Name = "Συνεργάτης")]
+        public Employee Employee { get; set; }
+
+
+
         [Display(Name = "Τύπος αποστολής")]
         public ExpeditionType expeditionType { get; set; }
 

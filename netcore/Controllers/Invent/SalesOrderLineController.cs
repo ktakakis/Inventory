@@ -232,10 +232,10 @@ namespace netcore.Controllers.Invent
                 TotalPriceWithTaxes  = (qty * specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing)))) + productPrice ,
                 ProductVAT = productVAT,
                 ProductCost = productCost,
-                TotalAmount = ((qty * (specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))))) + (productPrice * (1 - discount))) * (1 + productVAT),
-                TotalBeforeDiscount = qty * productPrice,
                 TotalAfterDiscount = qty * productPrice * (1 - discount),
                 TotalSpecialTaxAmount = qty * specialtaxamount* (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))),
+                TotalAmount = ((qty * productPrice * (1 - discount)) + (qty * specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))))) * (1 + productVAT),
+                TotalBeforeDiscount = qty * productPrice,
                 TotalWithSpecialTax = totalwithspecialtax
             };
             return Json(result, sa);

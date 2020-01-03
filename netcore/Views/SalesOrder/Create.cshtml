@@ -113,26 +113,10 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="referenceNumberInternal" class="control-label"></label>
-                    <input asp-for="referenceNumberInternal" class="form-control" />
-                    <span asp-validation-for="referenceNumberInternal" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label asp-for="referenceNumberExternal" class="control-label"></label>
-                    <input asp-for="referenceNumberExternal" class="form-control" />
-                    <span asp-validation-for="referenceNumberExternal" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
                 <div class="form-group has-success">
-                    <label asp-for="picInternal" class="control-label">Υπεύθυνος (Εσωτερικός)</label>
-                    <input asp-for="picInternal" class="form-control" />
-                    <span asp-validation-for="picInternal" class="text-danger"></span>
+                    <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
+                    <select asp-for="EmployeeId" class="form-control select2" asp-items="ViewBag.employeeId"></select>
+                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">

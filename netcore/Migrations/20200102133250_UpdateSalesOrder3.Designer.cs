@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200102133250_UpdateSalesOrder3")]
+    partial class UpdateSalesOrder3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -789,8 +790,6 @@ namespace netcore.Migrations
 
                     b.Property<bool>("Invoicing");
 
-                    b.Property<decimal?>("TotalBeforeDiscount");
-
                     b.Property<decimal>("TotalProductVAT");
 
                     b.Property<decimal>("TotalWithSpecialTax");
@@ -813,6 +812,16 @@ namespace netcore.Migrations
 
                     b.Property<string>("description")
                         .HasMaxLength(100);
+
+                    b.Property<string>("picInternal")
+                        .IsRequired()
+                        .HasMaxLength(30);
+
+                    b.Property<string>("referenceNumberExternal")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("referenceNumberInternal")
+                        .HasMaxLength(30);
 
                     b.Property<string>("salesOrderNumber")
                         .HasMaxLength(20);
@@ -899,9 +908,6 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<string>("EmployeeId")
-                        .HasMaxLength(38);
-
                     b.Property<string>("HasChild");
 
                     b.Property<string>("branchId")
@@ -936,8 +942,6 @@ namespace netcore.Migrations
                         .HasMaxLength(38);
 
                     b.HasKey("shipmentId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("branchId");
 
@@ -1549,7 +1553,7 @@ namespace netcore.Migrations
             modelBuilder.Entity("netcore.Models.Invent.SalesOrder", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Employee", "Employee")
-                        .WithMany("SalesOrder")
+                        .WithMany()
                         .HasForeignKey("EmployeeId");
 
                     b.HasOne("netcore.Models.Invent.Branch", "branch")
@@ -1581,10 +1585,6 @@ namespace netcore.Migrations
 
             modelBuilder.Entity("netcore.Models.Invent.Shipment", b =>
                 {
-                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
-                        .WithMany("Shipment")
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("netcore.Models.Invent.Branch", "branch")
                         .WithMany()
                         .HasForeignKey("branchId");

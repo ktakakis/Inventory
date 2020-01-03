@@ -47,14 +47,6 @@ namespace netcore.Models.Invent
         [Display(Name = "Διεύθυνση παράδοσης")]
         public CustomerLine customerLine { get; set; }
 
-        [StringLength(30)]
-        [Display(Name = "Αριθμός αναφοράς (Εσωτερικός)")]
-        public string referenceNumberInternal { get; set; }
-
-        [StringLength(30)]
-        [Display(Name = "Αριθμός αναφοράς (Εξωτερικός)")]
-        public string referenceNumberExternal { get; set; }
-
         [StringLength(100)]
         [Display(Name = "Περιγραφή")]
         public string description { get; set; }
@@ -68,17 +60,19 @@ namespace netcore.Models.Invent
         public Branch branch { get; set; }
 
         [StringLength(38)]
+        [Display(Name = "Id Employee")]
+        public string EmployeeId { get; set; }
+
+        [Display(Name = "Συνεργάτης")] 
+        public Employee Employee { get; set; }
+
+        [StringLength(38)]
         [Required]
         [Display(Name = "Id Πελάτη")]
         public string customerId { get; set; }
 
         [Display(Name = "Πελάτης")]
         public Customer customer { get; set; }
-
-        [StringLength(30)]
-        [Required]
-        [Display(Name = "PIC Εσωτερικό")]
-        public string picInternal { get; set; }
 
         [Display(Name = "Κατάσταση")]
         public SalesOrderStatus salesOrderStatus { get; set; }
@@ -88,6 +82,9 @@ namespace netcore.Models.Invent
 
         [Display(Name = "Αξία με Ε. Φόρο")] 
         public decimal TotalWithSpecialTax { get; set; }  
+
+        [Display(Name = "Σύνολο Προ Έκπτωσης")] 
+        public decimal? TotalBeforeDiscount { get; set; }  
 
 
         [Display(Name = "Συνολική έκπτωση")]

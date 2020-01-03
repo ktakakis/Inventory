@@ -29,16 +29,10 @@
                 @Html.DisplayNameFor(model => model.customerLine.street1)
             </th>
             <th class="hidden">
-                @Html.DisplayNameFor(model => model.referenceNumberInternal)
-            </th>
-            <th class="hidden">
-                @Html.DisplayNameFor(model => model.referenceNumberExternal)
-            </th>
-            <th class="hidden">
                 @Html.DisplayNameFor(model => model.description)
             </th>
             <th class="hidden">
-                @Html.DisplayNameFor(model => model.picInternal)
+                @Html.DisplayNameFor(model => model.Employee.DisplayName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.salesOrderStatus)
@@ -85,16 +79,10 @@
                     @Html.DisplayFor(modelItem => item.customerLine.street1)
                 </td>
                 <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.referenceNumberInternal)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.referenceNumberExternal)
-                </td>
-                <td class="hidden">
                     @Html.DisplayFor(modelItem => item.description)
                 </td>
                 <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.picInternal)
+                    @Html.DisplayFor(modelItem => item.Employee.DisplayName)
                 </td>
                 <td>
                     @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Completed)

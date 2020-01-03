@@ -24,25 +24,59 @@
     <section class="invoice">
         <!-- title row -->
         <div class="row">
-            <div class="col-xs-12">
-                <h2 class="page-header">
-                    <i class="fa fa-globe"></i> Παραγγελία παράδοσης:
-                    <small class="pull-right">Ημερομηνία: @Model.shipmentDate.ToString("dd-MMM-yyyy")</small>
-                </h2>
-            </div>
+            <table style="width:100%">
+                <tr>
+                    <td>
+                        <div class="col-sm-4">
+                            <img src="~/images/LOGO.png" alt="" title="" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="col-sm-4 invoice-col">
+                            <h5>Επωνυμία: @Model.branch.branchName</h5>
+                            <h5>@Model.branch.description</h5>
+                            <h5>Διεύθυνση: @Model.branch.street1</h5>
+                            <h5>Ταχ. Κωδ.: @Model.branch.PostalCode</h5>
+                            <h5>Πόλη: @Model.branch.city</h5>
+                        </div>
+                        <div class="col-sm-4 invoice-col pull-right-container">
+                            <h5>Τηλ: @Model.branch.OfficePhone</h5>
+                            <h5>Fax: @Model.branch.Fax</h5>
+                            <h5>E-Mail: @Model.branch.email</h5>
+                            <h5>Α.Φ.Μ.: @Model.branch.VATNumber</h5>
+                            <h5>Εφορία: @Model.branch.TaxOffice</h5>
+                        </div>
+                    </td>
+                </tr>
+            </table>
             <!-- /.col -->
         </div>
+        <div class="row">
+            <table class="table table-responsive">
+                <thead style="background-color:lavender">
+                    <tr>
+                        <th>Είδος Παραστατικού</th>
+                        <th>Αριθμός</th>
+                        <th>Συνεργάτης</th>
+                        <th>Ημερομηνία</th>
+                        <th>Ώρα</th>
+                    </tr>
+                </thead>
+                <tbody style="border-bottom:groove;">
+                    <tr>
+                        <td><strong>Δελτίο Αποστολής Προϊόντων</strong></td>
+                        <td>@Model.shipmentNumber</td>
+                        <td>@Model.Employee.DisplayName</td>
+                        <td>@Model.shipmentDate.ToString("dd-MMM-yyyy")</td>
+                        <td>@Model.shipmentDate.ToString("hh:mm") </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
         <!-- info row -->
         <div class="row invoice-info">
-            <div class="col-sm-4 invoice-col">
-                Από
-                <address>
-                    <strong>@Model.salesOrder.branch.branchName</strong><br>
-                    @Model.salesOrder.branch.street1<br>
-                    @Model.salesOrder.branch.city<br>
-                    attn: @Model.salesOrder.picInternal
-                </address>
-            </div>
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
                 Για Πελάτη / Διεύθυνση Παράδοσης
@@ -55,11 +89,8 @@
             </div>
             <!-- /.col -->
             <div class="col-sm-4 invoice-col">
-                <b>Αριθμός SO</b> @Model.salesOrder.salesOrderNumber<br>
-                <b>Αριθμός DO</b> @Model.shipmentNumber<br />
-                <b>Ημερομηνία SO:</b> @Model.salesOrder.soDate.ToString("dd-MMM-yyyy")<br>
-                <b>Ημερομηνία DO:</b> @Model.shipmentDate.ToString("dd-MMM-yyyy")<br>
-
+                <b>Αριθμός Παραγγελίας</b> @Model.salesOrder.salesOrderNumber<br>
+                <b>Ημερομηνία Παραγγελίας:</b> @Model.salesOrder.soDate.ToString("dd-MMM-yyyy")<br>
             </div>
             <!-- /.col -->
         </div>

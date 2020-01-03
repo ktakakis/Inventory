@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +9,6 @@ using System.ComponentModel.DataAnnotations;
 
 using netcore.Data;
 using netcore.Models.Invent;
-using System.Globalization;
-using System.Threading;
 using netcore.Services;
 
 namespace netcore.Controllers.Invent
@@ -34,6 +31,7 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> ShowSalesOrder(string id)
         {
             SalesOrder obj = await _context.SalesOrder
+                .Include(x => x.Employee)
                 .Include(x => x.customer)
                 .Include(x => x.salesOrderLine).ThenInclude(x => x.Product)
                 .Include(x => x.branch)
@@ -44,6 +42,7 @@ namespace netcore.Controllers.Invent
             obj.totalDiscountAmount = obj.salesOrderLine.Sum(x => x.DiscountAmount);
             obj.TotalProductVAT = obj.salesOrderLine.Sum(x => x.ProductVATAmount);
             obj.TotalWithSpecialTax = obj.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+            obj.TotalBeforeDiscount = obj.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
             _context.Update(obj);
 
             return View(obj);
@@ -52,6 +51,7 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> PrintSalesOrder(string id)
         {
             SalesOrder obj = await _context.SalesOrder
+                .Include(x => x.Employee)
                 .Include(x => x.customer)
                 .Include(x => x.salesOrderLine).ThenInclude(x => x.Product)
                 .Include(x => x.branch)
@@ -68,7 +68,7 @@ namespace netcore.Controllers.Invent
             var applicationDbContext = _context.SalesOrder.OrderByDescending(x => x.createdAt).Include(s => s.customer);
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
-                  applicationDbContext = _context.SalesOrder.Where(s => s.customer.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(s => s.customer);
+                  applicationDbContext = _context.SalesOrder.Where(s => s.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(s => s.customer);
             }
            
             return View(await applicationDbContext.ToListAsync());
@@ -83,6 +83,7 @@ namespace netcore.Controllers.Invent
             }
 
             var salesOrder = await _context.SalesOrder
+                    .Include(x => x.Employee)
                     .Include(x => x.salesOrderLine)
                     .Include(s => s.customer)
                     .Include(x => x.branch)
@@ -96,12 +97,20 @@ namespace netcore.Controllers.Invent
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
             ViewData["customerLineId"] = new SelectList(_context.CustomerLine, "customerLineId", "street1");
-
+            var username = HttpContext.User.Identity.Name;
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName");
+            }
+            else
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+            }
             salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
             salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
             salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
             salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
-
+            salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
 
@@ -116,14 +125,17 @@ namespace netcore.Controllers.Invent
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 ViewData["customerId"] = new SelectList(_context.Customer.Where(c=>c.Employee.UserName==username), "customerId", "customerName");
-            }
+                ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName");
+          }
             else
             {
                 ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
+                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
             }
             Branch defaultBranch = _context.Branch.Where(x => x.isDefaultBranch.Equals(true)).FirstOrDefault();
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", defaultBranch != null ? defaultBranch.branchId : null);
             ViewData["customerLineId"]= new SelectList(_context.CustomerLine, "customerLineId", "street1");
+
             SalesOrder so = new SalesOrder();
             return View(so);
         }
@@ -134,7 +146,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,picInternal,referenceNumberExternal,referenceNumberInternal,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax")] SalesOrder salesOrder)
+        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId")] SalesOrder salesOrder)
         {
 
             if (ModelState.IsValid)
@@ -148,6 +160,15 @@ namespace netcore.Controllers.Invent
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
+            var username = HttpContext.User.Identity.Name;
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName");
+            }
+            else
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+            }
             return View(salesOrder);
         }
         [HttpGet]
@@ -175,6 +196,7 @@ namespace netcore.Controllers.Invent
             salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
             salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
             salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+            salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
 
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
@@ -182,15 +204,18 @@ namespace netcore.Controllers.Invent
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 ViewData["customerId"] = new SelectList(_context.Customer.Where(c => c.Employee.UserName == username), "customerId", "customerName", salesOrder.customerId);
+                ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName",salesOrder.EmployeeId);
             }
             else
             {
                 ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
+                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",salesOrder.EmployeeId);
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
             TempData["SalesOrderStatus"] = salesOrder.salesOrderStatus;
             ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["customerLineId"] = new SelectList(_context.CustomerLine.Where(c => c.customer.customerId == salesOrder.customerId), "customerLineId", "street1");
+
             salesOrder.soDate.ToString("dd/mm/yy");
             return View(salesOrder);
         }
@@ -200,7 +225,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,picInternal,referenceNumberExternal,referenceNumberInternal,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax")] SalesOrder salesOrder)
+        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId")] SalesOrder salesOrder)
         {
             if (id != salesOrder.salesOrderId)
             {
@@ -242,7 +267,16 @@ namespace netcore.Controllers.Invent
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
-            
+            var username = HttpContext.User.Identity.Name;
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName",salesOrder.EmployeeId);
+            }
+            else
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",salesOrder.EmployeeId);
+            }
+
             return View(salesOrder);
         }
 
@@ -255,6 +289,7 @@ namespace netcore.Controllers.Invent
             }
 
             var salesOrder = await _context.SalesOrder
+                    .Include(x => x.Employee)
                     .Include(x => x.salesOrderLine)
                     .Include(s => s.customer)
                     .SingleOrDefaultAsync(m => m.salesOrderId == id);
@@ -265,11 +300,21 @@ namespace netcore.Controllers.Invent
 
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
+            var username = HttpContext.User.Identity.Name;
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName",salesOrder.EmployeeId);
+            }
+            else
+            {
+                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",salesOrder.EmployeeId);
+            }
 
             salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
             salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
             salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
             salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+            salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
 
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();

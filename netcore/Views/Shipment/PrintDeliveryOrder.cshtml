@@ -1,4 +1,5 @@
 ﻿@model netcore.Models.Invent.Shipment
+
 @{
     Layout = null;
 }
@@ -32,7 +33,7 @@
                         <strong>@Model.salesOrder.branch.branchName</strong><br>
                         @Model.salesOrder.branch.street1<br>
                         @Model.salesOrder.branch.city<br>
-                        attn: @Model.salesOrder.picInternal
+                        @Model.Employee.DisplayName
                     </address>
                 </div>
                 <!-- /.col -->
@@ -47,11 +48,8 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4 invoice-col">
-                    <b>Αριθμός SO</b> @Model.salesOrder.salesOrderNumber<br>
-                    <b>Αριθμός DO</b> @Model.shipmentNumber<br />
-                    <b>Ημερομηνία SO:</b> @Model.salesOrder.soDate.ToString("dd-MMM-yyyy")<br>
-                    <b>Ημερομηνία DO:</b> @Model.shipmentDate.ToString("dd-MMM-yyyy")<br>
-
+                    <b>Αριθμός Παραγγελίας</b> @Model.salesOrder.salesOrderNumber<br>
+                    <b>Ημερομηνία Παραγγελίας:</b> @Model.salesOrder.soDate.ToString("dd-MMM-yyyy")<br>
                 </div>
                 <!-- /.col -->
             </div>

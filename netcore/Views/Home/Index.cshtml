@@ -8,7 +8,7 @@
     
     int so = Context.SalesOrder.Count();
     if (!(User.IsInRole("ApplicationUser") || User.IsInRole("Secretary")))    {
-        so = Context.SalesOrder.Where(s=>s.customer.Employee.UserName==username).Count();
+        so = Context.SalesOrder.Where(s=>s.Employee.UserName==username).Count();
     }
 
     int po = Context.PurchaseOrder.Count();

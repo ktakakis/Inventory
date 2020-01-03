@@ -51,7 +51,8 @@ namespace netcore.Controllers.Invent
             Shipment obj = await _context.Shipment
                 .Include(x => x.customer).ThenInclude(x=>x.CustomerLine)
                 .Include(x => x.salesOrder)
-                    .ThenInclude(x => x.branch)
+                .Include(x => x.Employee)
+                .Include(x => x.branch)
                 .Include(x => x.shipmentLine).ThenInclude(x => x.product)
                 .SingleOrDefaultAsync(x => x.shipmentId.Equals(id));
             return View(obj);
@@ -62,7 +63,8 @@ namespace netcore.Controllers.Invent
             Shipment obj = await _context.Shipment
                 .Include(x => x.customer).ThenInclude(x => x.CustomerLine)
                 .Include(x => x.salesOrder)
-                    .ThenInclude(x => x.branch)
+                .Include(x => x.Employee)
+                .Include(x => x.branch)
                 .Include(x => x.shipmentLine).ThenInclude(x => x.product)
                 .SingleOrDefaultAsync(x => x.shipmentId.Equals(id));
             return View(obj);
@@ -87,6 +89,7 @@ namespace netcore.Controllers.Invent
                     .Include(s => s.branch)
                     .Include(s => s.customer)
                     .Include(s => s.salesOrder)
+                    .Include(x => x.Employee)
                     .Include(s => s.warehouse)
                         .SingleOrDefaultAsync(m => m.shipmentId == id);
             if (shipment == null)
@@ -111,6 +114,7 @@ namespace netcore.Controllers.Invent
             soList.Insert(0, new SalesOrder { salesOrderId = "0", salesOrderNumber = "Select" });
             ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "salesOrderNumber");
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
             Shipment shipment = new Shipment();
             return View(shipment);
         }
@@ -123,7 +127,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("shipmentId,salesOrderId,shipmentNumber,shipmentDate,customerId,customerPO,invoice,branchId,warehouseId,expeditionType,expeditionMode,HasChild,createdAt")] Shipment shipment)
+        public async Task<IActionResult> Create([Bind("shipmentId,HasChild,branchId,createdAt,customerId,customerPO,expeditionMode,expeditionType,invoice,salesOrderId,shipmentDate,shipmentNumber,warehouseId,EmployeeId")] Shipment shipment)
         {
             if (shipment.salesOrderId == "0" || shipment.warehouseId == "0")
             {
@@ -137,6 +141,7 @@ namespace netcore.Controllers.Invent
 
                 Shipment check = await _context.Shipment
                     .Include(x => x.salesOrder)
+                    .Include(x => x.Employee)
                     .SingleOrDefaultAsync(x => x.salesOrderId.Equals(shipment.salesOrderId));
                 if (check != null)
                 {
@@ -146,7 +151,7 @@ namespace netcore.Controllers.Invent
                     ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
                     ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber");
                     ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
-
+                    ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
                     return View(shipment);
                 }
 
@@ -218,6 +223,7 @@ namespace netcore.Controllers.Invent
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
         }
 
@@ -238,6 +244,7 @@ namespace netcore.Controllers.Invent
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
         }
 
@@ -246,7 +253,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("shipmentId,salesOrderId,shipmentNumber,shipmentDate,customerId,customerPO,invoice,branchId,warehouseId,expeditionType,expeditionMode,HasChild,createdAt")] Shipment shipment)
+        public async Task<IActionResult> Edit(string id, [Bind("shipmentId,HasChild,branchId,createdAt,customerId,customerPO,expeditionMode,expeditionType,invoice,salesOrderId,shipmentDate,shipmentNumber,warehouseId,EmployeeId")] Shipment shipment)
         {
             if (id != shipment.shipmentId)
             {
@@ -278,6 +285,7 @@ namespace netcore.Controllers.Invent
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
         }
 
@@ -290,6 +298,7 @@ namespace netcore.Controllers.Invent
             }
 
             var shipment = await _context.Shipment
+                    .Include(x => x.Employee)
                     .Include(s => s.branch)
                     .Include(s => s.customer)
                     .Include(s => s.salesOrder)
@@ -303,6 +312,7 @@ namespace netcore.Controllers.Invent
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
         }
 
@@ -316,6 +326,7 @@ namespace netcore.Controllers.Invent
         {
             var shipment = await _context.Shipment
                 .Include(x => x.salesOrder)
+                .Include(x=>x.Employee)
                 .Include(x => x.shipmentLine)
                 .SingleOrDefaultAsync(m => m.shipmentId == id);
             try

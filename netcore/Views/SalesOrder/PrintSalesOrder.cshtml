@@ -45,27 +45,29 @@
             </div>
             <br>
             <div class="row">
-                <table class="table table-responsive">
-                    <thead style="background-color:lavender">
-                        <tr>
-                            <th>Είδος Παραστατικού</th>
-                            <th>Αριθμός</th>
-                            <th>Συνεργάτης</th>
-                            <th>Ημερομηνία</th>
-                            <th>Ώρα</th>
-                        </tr>
-                    </thead>
-                    <tbody style="border-bottom:groove;">
-                        <tr>
-                            <td><strong>Παραγγελία Πώλησης Προϊόντων</strong></td>
-                            <td>@Model.salesOrderNumber</td>
-                            <td>@Model.Employee.DisplayName</td>
-                            <td>@Model.deliveryDate.ToString("dd-MMM-yyyy")</td>
-                            <td>@Model.deliveryDate.ToString("hh:mm") </td>
-                        </tr>
+                <div class="col-xs-12 table-responsive">
+                    <table class="table table table-striped">
+                        <thead style="background-color:lavender;margin-left:auto">
+                            <tr>
+                                <th>Είδος Παραστατικού</th>
+                                <th>Αριθμός</th>
+                                <th>Συνεργάτης</th>
+                                <th>Ημερομηνία</th>
+                                <th>Ώρα</th>
+                            </tr>
+                        </thead>
+                        <tbody style="border-bottom:groove;">
+                            <tr>
+                                <td><strong>Παραγγελία Πώλησης Προϊόντων</strong></td>
+                                <td>@Model.salesOrderNumber</td>
+                                <td>@Model.Employee.DisplayName</td>
+                                <td>@Model.deliveryDate.ToString("dd-MMM-yyyy")</td>
+                                <td>@Model.deliveryDate.ToString("hh:mm") </td>
+                            </tr>
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <!-- info row -->
             <div class="row invoice-info">

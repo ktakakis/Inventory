@@ -32,6 +32,12 @@
     <Compile Remove="Migrations\20191222121408_NumberSequenceModel.Designer.cs" />
     <Compile Remove="Migrations\20191222122158_NumberSequenceModel.cs" />
     <Compile Remove="Migrations\20191222122158_NumberSequenceModel.Designer.cs" />
+    <Compile Remove="Migrations\20200103135635_Invoice.cs" />
+    <Compile Remove="Migrations\20200103135635_Invoice.Designer.cs" />
+    <Compile Remove="Migrations\20200103135955_Invoice1.cs" />
+    <Compile Remove="Migrations\20200103135955_Invoice1.Designer.cs" />
+    <Compile Remove="Migrations\20200103141753_Invoice.cs" />
+    <Compile Remove="Migrations\20200103141753_Invoice.Designer.cs" />
   </ItemGroup>
 
 

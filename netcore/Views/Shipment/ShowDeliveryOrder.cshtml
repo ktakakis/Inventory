@@ -33,24 +33,25 @@
                     </td>
                     <td>
                         <div class="col-sm-4 invoice-col">
-                            <h5>Επωνυμία: @Model.branch.branchName</h5>
+                            <h5>Επωνυμία:@Model.branch.branchName</h5>
                             <h5>@Model.branch.description</h5>
-                            <h5>Διεύθυνση: @Model.branch.street1</h5>
-                            <h5>Ταχ. Κωδ.: @Model.branch.PostalCode</h5>
-                            <h5>Πόλη: @Model.branch.city</h5>
+                            <h5>Διεύθυνση:@Model.branch.street1</h5>
+                            <h5>Ταχ. Κωδ.:@Model.branch.PostalCode</h5>
+                            <h5>Πόλη:@Model.branch.city</h5>
                         </div>
                         <div class="col-sm-4 invoice-col pull-right-container">
-                            <h5>Τηλ: @Model.branch.OfficePhone</h5>
-                            <h5>Fax: @Model.branch.Fax</h5>
-                            <h5>E-Mail: @Model.branch.email</h5>
-                            <h5>Α.Φ.Μ.: @Model.branch.VATNumber</h5>
-                            <h5>Εφορία: @Model.branch.TaxOffice</h5>
+                            <h5>Τηλ:@Model.branch.OfficePhone</h5>
+                            <h5>Fax:@Model.branch.Fax</h5>
+                            <h5>E-Mail:@Model.branch.email</h5>
+                            <h5>Α.Φ.Μ.:@Model.branch.VATNumber</h5>
+                            <h5>Εφορία:@Model.branch.TaxOffice</h5>
                         </div>
                     </td>
                 </tr>
             </table>
             <!-- /.col -->
         </div>
+        <br>
         <div class="row">
             <table class="table table-responsive">
                 <thead style="background-color:lavender">
@@ -64,11 +65,11 @@
                 </thead>
                 <tbody style="border-bottom:groove;">
                     <tr>
-                        <td><strong>Δελτίο Αποστολής Προϊόντων</strong></td>
-                        <td>@Model.shipmentNumber</td>
-                        <td>@Model.Employee.DisplayName</td>
-                        <td>@Model.shipmentDate.ToString("dd-MMM-yyyy")</td>
-                        <td>@Model.shipmentDate.ToString("hh:mm") </td>
+                        <td><strong> Δελτίο Αποστολής Προϊόντων</strong></td>
+                        <td> @Model.shipmentNumber</td>
+                        <td> @Model.Employee.DisplayName</td>
+                        <td> @Model.shipmentDate.ToString("dd-MMM-yyyy")</td>
+                        <td> @Model.shipmentDate.ToString("hh:mm") </td>
                     </tr>
 
                 </tbody>
@@ -109,11 +110,11 @@
                     <tbody>
                         @foreach (var item in Model.shipmentLine)
                         {
-                        <tr>
-                            <td>@item.product.productCode</td>
-                            <td>@item.qty</td>
-                            <td>@item.product.description</td>
-                        </tr>
+                            <tr>
+                                <td>@item.product.productCode</td>
+                                <td>@item.qty</td>
+                                <td>@item.product.description</td>
+                            </tr>
                         }
 
                     </tbody>

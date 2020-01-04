@@ -1,0 +1,114 @@
+﻿@model netcore.Models.Invent.InvoiceLine
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>InvoiceLine</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="InvoiceLineId" />
+            <div class="form-group">
+                <label asp-for="InvoiceId" class="control-label"></label>
+                <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"></select>
+                <span asp-validation-for="InvoiceId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label"></label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Qty" class="control-label"></label>
+                <input asp-for="Qty" class="form-control" />
+                <span asp-validation-for="Qty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalBeforeDiscount" class="control-label"></label>
+                <input asp-for="TotalBeforeDiscount" class="form-control" />
+                <span asp-validation-for="TotalBeforeDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitCost" class="control-label"></label>
+                <input asp-for="UnitCost" class="form-control" />
+                <span asp-validation-for="UnitCost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Discount" class="control-label"></label>
+                <input asp-for="Discount" class="form-control" />
+                <span asp-validation-for="Discount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountAmount" class="control-label"></label>
+                <input asp-for="DiscountAmount" class="form-control" />
+                <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalAfterDiscount" class="control-label"></label>
+                <input asp-for="TotalAfterDiscount" class="form-control" />
+                <span asp-validation-for="TotalAfterDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductVAT" class="control-label"></label>
+                <input asp-for="ProductVAT" class="form-control" />
+                <span asp-validation-for="ProductVAT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductVATAmount" class="control-label"></label>
+                <input asp-for="ProductVATAmount" class="form-control" />
+                <span asp-validation-for="ProductVATAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialTaxDiscount" class="control-label"></label>
+                <input asp-for="SpecialTaxDiscount" class="form-control" />
+                <span asp-validation-for="SpecialTaxDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialTaxAmount" class="control-label"></label>
+                <input asp-for="SpecialTaxAmount" class="form-control" />
+                <span asp-validation-for="SpecialTaxAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalSpecialTaxAmount" class="control-label"></label>
+                <input asp-for="TotalSpecialTaxAmount" class="form-control" />
+                <span asp-validation-for="TotalSpecialTaxAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalWithSpecialTax" class="control-label"></label>
+                <input asp-for="TotalWithSpecialTax" class="form-control" />
+                <span asp-validation-for="TotalWithSpecialTax" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalAmount" class="control-label"></label>
+                <input asp-for="TotalAmount" class="form-control" />
+                <span asp-validation-for="TotalAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="createdAt" class="control-label"></label>
+                <input asp-for="createdAt" class="form-control" />
+                <span asp-validation-for="createdAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

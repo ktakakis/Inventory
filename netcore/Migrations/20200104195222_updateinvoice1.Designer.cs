@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200104195222_updateinvoice1")]
+    partial class updateinvoice1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,10 +162,6 @@ namespace netcore.Migrations
                     b.Property<bool>("EmployeeRole");
 
                     b.Property<bool>("HomeRole");
-
-                    b.Property<bool>("InvoiceLineRole");
-
-                    b.Property<bool>("InvoiceRole");
 
                     b.Property<bool>("LockoutEnabled");
 

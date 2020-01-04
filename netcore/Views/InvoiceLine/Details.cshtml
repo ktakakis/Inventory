@@ -1,0 +1,120 @@
+﻿@model netcore.Models.Invent.InvoiceLine
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>InvoiceLine</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalBeforeDiscount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalBeforeDiscount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitCost)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UnitCost)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Discount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Discount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DiscountAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DiscountAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalAfterDiscount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalAfterDiscount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductVAT)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductVAT)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductVATAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductVATAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SpecialTaxDiscount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SpecialTaxDiscount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SpecialTaxAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SpecialTaxAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalSpecialTaxAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalSpecialTaxAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalWithSpecialTax)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalWithSpecialTax)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Invoice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Invoice.InvoiceId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.productId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.InvoiceLineId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,90 @@
+﻿@model IEnumerable<netcore.Models.Invent.Invoice>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-cart-plus";
+    ViewData["ListTitle"] = "Λίστα Παραγγελιών Πώλησης";
+    ViewData["IndexInfo"] = "Η παραγγελία πώλησης (SO) είναι ένα έγγραφο επιβεβαίωσης που αποστέλλεται στον πελάτη σας πριν από την παράδοση των εμπορευμάτων (αποστολή). Υπάρχουν τρεις καταστάσεις SO: 1. Πρόχειρο (Ανεπιβεβαίωτη SO, δεν είναι έτοιμη για αποστολή), 2. Ανοιχτό (Επιβεβαιωμένη SO, έτοιμη για αποστολή) και 3. Ολοκληρωμένο (Κλειστή SO, έχουν ήδη φορτωθεί τα προϊόντα).";
+}
+
+<table class="table table-hover table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InvoiceDate)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.TotalWithSpecialTax)
+            </th class="hidden">
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.TotalBeforeDiscount)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.totalDiscountAmount)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.totalOrderAmount)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.TotalProductVAT)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.HasChild)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.createdAt)
+            </th>
+            <th class="hidden">
+                @Html.DisplayNameFor(model => model.Shipment)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.InvoiceId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.InvoiceId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.InvoiceId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InvoiceDate)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.TotalWithSpecialTax)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.TotalBeforeDiscount)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.totalDiscountAmount)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.totalOrderAmount)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.TotalProductVAT)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.HasChild)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.Shipment.shipmentId)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

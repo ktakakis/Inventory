@@ -1,0 +1,131 @@
+﻿@model IEnumerable<netcore.Models.Invent.InvoiceLine>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Qty)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalBeforeDiscount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UnitCost)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Discount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DiscountAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalAfterDiscount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductVAT)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductVATAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SpecialTaxDiscount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SpecialTaxAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalSpecialTaxAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalWithSpecialTax)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalAmount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.createdAt)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Invoice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalBeforeDiscount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiscountAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalAfterDiscount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductVAT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductVATAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecialTaxDiscount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecialTaxAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalSpecialTaxAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalWithSpecialTax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Invoice.InvoiceId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.productId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.InvoiceLineId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.InvoiceLineId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.InvoiceLineId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

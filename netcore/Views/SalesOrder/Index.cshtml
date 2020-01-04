@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<netcore.Models.Invent.SalesOrder>
-@System.Globalization.CultureInfo.CurrentUICulture
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
@@ -119,7 +118,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.customer.customerName)
                 </td>
-
             </tr>
         }
     </tbody>

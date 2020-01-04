@@ -29,5 +29,25 @@ namespace netcore.Models.Invent
         [Display(Name = "Ημερομηνία Έκδοσης")]
         public DateTimeOffset InvoiceDate { get; set; }
 
+        [Display(Name = "Αξία με Ε. Φόρο")]
+        public decimal TotalWithSpecialTax { get; set; }
+
+        [Display(Name = "Σύνολο Προ Έκπτωσης")]
+        public decimal? TotalBeforeDiscount { get; set; }
+
+
+        [Display(Name = "Συνολική έκπτωση")]
+        public decimal totalDiscountAmount { get; set; }
+
+        [Display(Name = "Τελική Αξία")]
+        public decimal totalOrderAmount { get; set; }
+
+        [Display(Name = "Σύνολο Φ.Π.Α.")]
+        public decimal TotalProductVAT { get; set; }
+
+        [Display(Name = "Στοιχεία Τιμολογίου")]
+        public List<InvoiceLine> InvoiceLine { get; set; } = new List<InvoiceLine>();
+
+
     }
 }

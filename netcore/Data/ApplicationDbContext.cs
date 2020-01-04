@@ -78,7 +78,8 @@ namespace netcore.Data
         public DbSet<netcore.Models.Invent.Employee> Employee { get; set; }
 
         public DbSet<netcore.Models.Invent.NumberSequence> NumberSequence { get; set; } 
-        public DbSet<netcore.Models.Invent.Invoice> Invoice { get; set; }  
+        public DbSet<netcore.Models.Invent.Invoice> Invoice { get; set; }
+        public DbSet<netcore.Models.Invent.InvoiceLine> InvoiceLine { get; set; }  
 
     }
 }

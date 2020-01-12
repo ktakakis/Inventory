@@ -22,13 +22,13 @@
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.description)
             </th>
-            <th class="hidden">
+            <th>
                 @Html.DisplayNameFor(model => model.branchIdFrom)
             </th>
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.warehouseIdFrom)
             </th>
-            <th class="hidden">
+            <th>
                 @Html.DisplayNameFor(model => model.branchIdTo)
             </th>
             <th class="hidden">
@@ -60,14 +60,14 @@
             <td class="hidden">
                 @Html.DisplayFor(modelItem => item.description)
             </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.branchIdFrom)
+            <td>
+                @Html.DisplayFor(modelItem => item.branchFrom.branchName)
             </td>
             <td class="hidden">
                 @Html.DisplayFor(modelItem => item.warehouseIdFrom)
             </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.branchIdTo)
+            <td>
+                @Html.DisplayFor(modelItem => item.branchTo.branchName)
             </td>
             <td class="hidden">
                 @Html.DisplayFor(modelItem => item.warehouseIdTo)

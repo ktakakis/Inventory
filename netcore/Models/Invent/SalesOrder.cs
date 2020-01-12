@@ -15,7 +15,7 @@ namespace netcore.Models.Invent
             this.createdAt = DateTime.UtcNow;
             //this.salesOrderNumber = DateTime.UtcNow.Date.ToString("yyyyMMdd") + Guid.NewGuid().ToString().Substring(0, 5).ToUpper() + "#SO";
             this.soDate = DateTime.UtcNow.Date;
-            this.deliveryDate = this.soDate.AddDays(5);
+            this.deliveryDate = this.soDate.AddDays(1);
             this.salesOrderStatus = SalesOrderStatus.Draft;
             this.totalDiscountAmount = 0m;
             this.totalOrderAmount = 0m;
@@ -84,7 +84,7 @@ namespace netcore.Models.Invent
         public decimal TotalWithSpecialTax { get; set; }  
 
         [Display(Name = "Σύνολο Προ Έκπτωσης")] 
-        public decimal? TotalBeforeDiscount { get; set; }  
+        public decimal TotalBeforeDiscount { get; set; }  
 
 
         [Display(Name = "Συνολική έκπτωση")]

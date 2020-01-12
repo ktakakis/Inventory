@@ -1,0 +1,176 @@
+﻿@model netcore.Models.Invent.Invoice
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Εκτύπωση παραγγελίας πωλήσεων</title>
+</head>
+<body onload="window.print();">
+    <div class="wrapper">
+        <!-- Main content -->
+        <section class="invoice" style="background-image:url('/../../images/kaffa_background.png')">
+            <!-- title row -->
+            <div class="row">
+                <table style="width:100%">
+                    <tr>
+                        <td>
+                            <div class="col-sm-4">
+                                <img src="~/images/LOGO.png" alt="" title="" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-sm-4 invoice-col">
+                                <h5>Επωνυμία: @Model.branchName</h5>
+                                <h5>@Model.description</h5>
+                                <h5>Διεύθυνση: @Model.street1</h5>
+                                <h5>Ταχ. Κωδ.: @Model.PostalCode</h5>
+                                <h5>Πόλη: @Model.city</h5>
+                            </div>
+                            <div class="col-sm-4 invoice-col pull-right-container">
+                                <h5>Τηλ: @Model.OfficePhone</h5>
+                                <h5>Fax: @Model.Fax</h5>
+                                <h5>E-Mail: @Model.email</h5>
+                                <h5>Α.Φ.Μ.: @Model.VATNumber</h5>
+                                <h5>Εφορία: @Model.TaxOffice</h5>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- /.col -->
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12 table-responsive">
+                    <table class="table table table-striped">
+                        <thead style="background-color:lavender;margin-left:auto">
+                            <tr>
+                                <th>Είδος Παραστατικού</th>
+                                <th>Αριθμός</th>
+                                <th>Συνεργάτης</th>
+                                <th>Ημερομηνία</th>
+                                <th>Ώρα</th>
+                            </tr>
+                        </thead>
+                        <tbody style="border-bottom:groove;">
+                            <tr>
+                                <td><strong>Παραγγελία Πώλησης Προϊόντων</strong></td>
+                                <td>@Model.InvoiceNumber</td>
+                                <td>@Model.EmployeeName</td>
+                                <td>@Model.InvoiceDate.ToString("dd-MMM-yyyy")</td>
+                                <td>@Model.InvoiceDate.ToString("hh:mm") </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- info row -->
+            <div class="row">
+                <div class="col-sm-12 invoice-col">
+                    <h5>Πελάτης / Παράδοση</h5>
+                </div>
+            </div>
+                <div class="row invoice-info">
+                    <div class="col-sm-4 invoice-col">
+                        Επωνυμία: <strong>@Model.customerName</strong><br>
+                        Δραστηριότητα: @Model.CustomerCompanyActivity<br>
+                        Διεύθυνση: @Model.CustomerStreet<br>
+                        Ταχ. Κωδικός: @Model.CustomerPostCode<br>
+                    </div>
+                    <div class="col-sm-4 invoice-col">
+                        Πόλη: @Model.CustomerCity<br>
+                        Χώρα: @Model.CustomerCountry<br>
+                        Α.Φ.Μ.: @Model.CustomerVATRegNumber<br>
+                        Εφορία: @Model.CustomerTaxOffice<br>
+
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <!-- Table row -->
+                <div class="row">
+                    <div class="col-xs-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Προϊόν</th>
+                                    <th>Ποσ</th>
+                                    <th>Τιμή</th>
+                                    <th>Αξία</th>
+                                    <th>% Έκπτωση</th>
+                                    <th>Έκπτωση</th>
+                                    <th>Ειδικός Φόρος</th>
+                                    <th>% Φ.Π.Α.</th>
+                                    <th>Ποσό Φ.Π.Α.</th>
+                                    <th>Αξία + ΦΠΑ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.InvoiceLine)
+                                {
+                                    <tr>
+                                        <td>@item.Product.productCode</td>
+                                        <td>@item.Qty</td>
+                                        <td>@item.Price.ToString()</td>
+                                        <td>@item.TotalBeforeDiscount.ToString()</td>
+                                        <td>@(item.Discount * 100)%</td>
+                                        <td>@item.DiscountAmount€</td>
+                                        <td>@item.TotalSpecialTaxAmount</td>
+                                        <td>@(item.Product.ProductVAT * 100)%</td>
+                                        <td>@item.ProductVATAmount</td>
+                                        <td>@item.TotalAmount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                    <!-- accepted payments column -->
+                    <div class="col-xs-6">
+                        <p class="lead">Περιγραφές:</p>
+                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                            @Model.Comments
+                        </p>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-6">
+                        <p class="lead">Λεπτομέρειες ποσού</p>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <th style="width:50%">Αξία:</th>
+                                    <td>@(Model.TotalBeforeDiscount) €</td>
+                                </tr>
+                                <tr>
+                                    <th>Έκπτωση</th>
+                                    <td>@Model.totalDiscountAmount.ToString() €</td>
+                                </tr>
+                                <tr>
+                                    <th>Σύνολο Φ.Π.Α.</th>
+                                    <td>@Model.TotalProductVAT.ToString() €</td>
+                                </tr>
+                                <tr>
+                                    <th>Τελική Αξία:</th>
+                                    <td><strong>@(Model.totalOrderAmount) €</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+</section>
+        <!-- /.content -->
+    </div>
+    <!-- ./wrapper -->
+    @Html.Partial("_AdminlteNetcoreBasicStyles")
+    @Html.Partial("_AdminlteNetcoreBasicScripts")
+</body>
+</html>

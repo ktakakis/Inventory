@@ -72,7 +72,7 @@
                     <a asp-action="Details" asp-route-id="@item.purchaseOrderId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
                     <a asp-action="Delete" asp-route-id="@item.purchaseOrderId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                 </div>
-                
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.purchaseOrderNumber)
@@ -119,14 +119,14 @@
                     </span>
 
                 }
-                 @if (item.purchaseOrderStatus == netcore.Models.Invent.PurchaseOrderStatus.Draft)
-                 {
+                @if (item.purchaseOrderStatus == netcore.Models.Invent.PurchaseOrderStatus.Draft)
+                {
                     <span class="label label-warning">
                         @Html.DisplayFor(modelItem => item.purchaseOrderStatus)
                     </span>
 
-                 }
-                
+                }
+
             </td>
             <td class="hidden">
                 @Html.DisplayFor(modelItem => item.totalDiscountAmount)

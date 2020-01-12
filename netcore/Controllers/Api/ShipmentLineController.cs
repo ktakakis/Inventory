@@ -11,7 +11,6 @@ using netcore.Models.Invent;
 
 namespace netcore.Controllers.Api
 {
-
     [Produces("application/json")]
     [Route("api/ShipmentLine")]
     public class ShipmentLineController : Controller

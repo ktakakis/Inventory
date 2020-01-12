@@ -1,37 +1,63 @@
 ﻿@model netcore.Models.Invent.Invoice
+
 @{
     ViewData["Title"] = "Επεξεργασία";
     Layout = "~/Views/Shared/_AdminlteNetcoreEdit.cshtml";
     ViewData["EntityIcon"] = "fa fa-cart-plus";
     ViewData["EditInfo"] = " Οι Παραγγελίες Πώλησης έχουν τρεις καταστάσεις: 1. Draft (Μη επιβεβαιωμένη SO, δεν είναι έτοιμη για αποστολή), 2. Open (Επιβεβαιωμένη SO, έτοιμη για αποστολή) και 3. Completed (Κλειστό SO, έχει παραδοθεί ήδη η παραγγελία). Αλλάξτε την κατάσταση από [Draft] σε [Open] για να επιβεβαιώσετε την παραγγελία. Η κατάσταση [Completed] είναι αυτόματα ρυθμισμένη όταν το SO χρησιμοποιείται στην παραγγελία αποστολής / παράδοσης προϊόντος.";
-
 }
 
 @Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="row">
+        <div class="col-md-12">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="InvoiceId" />
-            <div class="form-group">
-                <label asp-for="InvoiceNumber" class="control-label"></label>
-                <input asp-for="InvoiceNumber" class="form-control" />
-                <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="InvoiceNumber" class="control-label"></label>
+                        <input asp-for="InvoiceNumber" class="form-control" />
+                        <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="shipmentId" class="control-label"></label>
+                        <select asp-for="shipmentId" class="form-control" asp-items="ViewBag.shipmentId"></select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="shipmentId" class="control-label"></label>
-                <select asp-for="shipmentId" class="form-control" asp-items="ViewBag.shipmentId"></select>
-                <span asp-validation-for="shipmentId" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="InvoiceDate" class="control-label"></label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input asp-for="InvoiceDate" value="@Model.InvoiceDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Finalized" class="control-label"></label>
+                        <input type="checkbox" asp-for="Finalized" class="checkbox" />
+                        <span asp-validation-for="Finalized" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="InvoiceDate" class="control-label"></label>
-                <input asp-for="InvoiceDate" class="form-control" />
-                <span asp-validation-for="InvoiceDate" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Comments" class="control-label"></label>
+                        <textarea asp-for="Comments" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Comments" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }

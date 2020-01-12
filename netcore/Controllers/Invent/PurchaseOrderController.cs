@@ -111,7 +111,7 @@ namespace netcore.Controllers.Invent
             {
                 _context.Add(purchaseOrder);
                 await _context.SaveChangesAsync();
-                TempData["TransMessage"] = "Η Δημιουργία του PO " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία";
+                TempData["TransMessage"] = "Η Δημιουργία της παραγγελίας αγοράς(ΠΑ) " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία";
                 return RedirectToAction(nameof(Details), new { id = purchaseOrder.purchaseOrderId });
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", purchaseOrder.branchId);
@@ -187,7 +187,7 @@ namespace netcore.Controllers.Invent
                         throw;
                     }
                 }
-                TempData["TransMessage"] = "Η Επεξεργασία της PO " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία";
+                TempData["TransMessage"] = "Η Επεξεργασία της ΠΑ " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", purchaseOrder.branchId);
@@ -239,7 +239,7 @@ namespace netcore.Controllers.Invent
                 _context.PurchaseOrderLine.RemoveRange(purchaseOrder.purchaseOrderLine);
                 _context.PurchaseOrder.Remove(purchaseOrder);
                 await _context.SaveChangesAsync();
-                TempData["TransMessage"] = "Η Διαγραφή της PO " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία!";
+                TempData["TransMessage"] = "Η Διαγραφή της ΠΑ " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

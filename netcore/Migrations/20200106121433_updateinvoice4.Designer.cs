@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200106121433_updateinvoice4")]
+    partial class updateinvoice4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -528,85 +529,17 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<string>("Comments")
-                        .HasMaxLength(100);
-
-                    b.Property<string>("CustomerCity")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("CustomerCompanyActivity")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CustomerCountry")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("CustomerPostCode")
-                        .HasMaxLength(5);
-
-                    b.Property<string>("CustomerStreet")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CustomerTaxOffice")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("CustomerVATRegNumber")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("EmployeeName")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Fax")
-                        .HasMaxLength(50);
-
                     b.Property<bool>("Finalized");
 
                     b.Property<string>("HasChild");
 
-                    b.Property<DateTime>("InvoiceDate");
+                    b.Property<DateTimeOffset>("InvoiceDate");
 
                     b.Property<string>("InvoiceNumber");
 
-                    b.Property<string>("OfficePhone")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("TaxOffice")
-                        .HasMaxLength(50);
-
-                    b.Property<decimal>("TotalBeforeDiscount");
-
-                    b.Property<decimal>("TotalProductVAT");
-
-                    b.Property<string>("VATNumber")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("branchName")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("city")
-                        .HasMaxLength(30);
-
                     b.Property<DateTime>("createdAt");
 
-                    b.Property<string>("customerName")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("description")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("email")
-                        .HasMaxLength(50);
-
                     b.Property<string>("shipmentId");
-
-                    b.Property<string>("street1")
-                        .HasMaxLength(50);
-
-                    b.Property<decimal>("totalDiscountAmount");
-
-                    b.Property<decimal>("totalOrderAmount");
 
                     b.HasKey("InvoiceId");
 
@@ -938,7 +871,7 @@ namespace netcore.Migrations
 
                     b.Property<bool>("Invoicing");
 
-                    b.Property<decimal>("TotalBeforeDiscount");
+                    b.Property<decimal?>("TotalBeforeDiscount");
 
                     b.Property<decimal>("TotalProductVAT");
 
@@ -1023,7 +956,7 @@ namespace netcore.Migrations
 
                     b.Property<decimal>("TotalAmount");
 
-                    b.Property<decimal>("TotalBeforeDiscount");
+                    b.Property<decimal?>("TotalBeforeDiscount");
 
                     b.Property<decimal>("TotalSpecialTaxAmount");
 

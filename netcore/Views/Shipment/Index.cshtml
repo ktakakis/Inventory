@@ -19,6 +19,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.shipmentDate)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.customer.customerName)
+            </th>
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.customerPO)
             </th>
@@ -55,13 +58,16 @@
                     <a asp-action="Details" asp-route-id="@item.shipmentId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
                     <a asp-action="Delete" asp-route-id="@item.shipmentId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                 </div>
-                
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.shipmentNumber)
             </td>
             <td>
                 @item.shipmentDate.ToString("dd-MMM-yyyy")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.customer.customerName)
             </td>
             <td class="hidden">
                 @Html.DisplayFor(modelItem => item.customerPO)

@@ -43,7 +43,7 @@ namespace netcore.Models.Invent
 
 
         [StringLength(38)]
-        [Display(Name = "Από Id υποκαταστήματος")]
+        [Display(Name = "Από υποκατάστημα")]
         public string branchIdFrom { get; set; }
 
         [Display(Name = "Από υποκατάστημα")]
@@ -57,7 +57,7 @@ namespace netcore.Models.Invent
         public Warehouse warehouseFrom { get; set; }
 
         [StringLength(38)]
-        [Display(Name = "Στο Id υποκαταστήματος")]
+        [Display(Name = "Στο υποκατάστημα")]
         public string branchIdTo { get; set; }
 
         [Display(Name = "Στο υποκατάστημα")]

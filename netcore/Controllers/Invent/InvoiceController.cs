@@ -17,10 +17,13 @@ namespace netcore.Controllers.Invent
     public class InvoiceController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INumberSequence _numberSequence;
 
-        public InvoiceController(ApplicationDbContext context)
+        public InvoiceController(ApplicationDbContext context,
+                        INumberSequence numberSequence)
         {
             _context = context;
+            _numberSequence = numberSequence;
         }
 
         // GET: Invoice
@@ -46,14 +49,16 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
 
+            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
             return View(invoice);
         }
 
         // GET: Invoice/Create
         public IActionResult Create()
         {
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentId");
-            return View();
+            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber");
+            Invoice inv = new Invoice();
+            return View(inv);
         }
 
         // POST: Invoice/Create
@@ -61,15 +66,128 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InvoiceId,InvoiceNumber,shipmentId,InvoiceDate,TotalWithSpecialTax,TotalBeforeDiscount,totalDiscountAmount,totalOrderAmount,TotalProductVAT,HasChild,createdAt")] Invoice invoice)
+        public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity")] Invoice invoice)
         {
+            var query =
+                from Invoice in _context.Invoice
+                join Shipment in _context.Shipment on Invoice.shipmentId equals Shipment.shipmentId
+                join SalesOrder in _context.SalesOrder on Shipment.salesOrderId equals SalesOrder.salesOrderId
+                join Customer in _context.Customer
+                      on new { Shipment.customerId, Column1 = SalesOrder.customerId }
+                  equals new { Customer.customerId, Column1 = Customer.customerId }
+                join Employee in _context.Employee on Customer.EmployeeId equals Employee.EmployeeId
+                join Branch in _context.Branch on Shipment.branchId equals Branch.branchId
+                join CustomerLine in _context.CustomerLine on SalesOrder.customerLineId equals CustomerLine.customerLineId
+                select new
+                {
+                    Branch.branchName,
+                    Branch.description,
+                    Branch.street1,
+                    Branch.PostalCode,
+                    Branch.city,
+                    Branch.OfficePhone,
+                    Branch.Fax,
+                    Branch.email,
+                    Branch.VATNumber,
+                    Branch.TaxOffice,
+                    SalesOrder.salesOrderNumber,
+                    EmployeeName = Employee.DisplayName,
+                    SalesOrder.deliveryDate,
+                    Customer.customerName,
+                    customerStreet1 = CustomerLine.street1,
+                    customerPostCode = CustomerLine.PostCode,
+                    customerCity = CustomerLine.city,
+                    customerCountry = CustomerLine.country,
+                    customerVATRegNumber = Customer.VATRegNumber,
+                    customerTaxOffice = Customer.TaxOffice,
+                    Invoice.InvoiceId,
+                    SalesOrder.totalDiscountAmount,
+                    SalesOrder.totalOrderAmount,
+                    SalesOrder.TotalProductVAT,
+                    SalesOrder.TotalWithSpecialTax,
+                    SalesOrder.TotalBeforeDiscount,
+                    Invoice.Comments,
+                    Customer.CompanyActivity
+                };
+
             if (ModelState.IsValid)
             {
+               
+                //check Invoice
+                Invoice check = await _context.Invoice.Include(x => x.Shipment)
+                    .SingleOrDefaultAsync(x => x.shipmentId.Equals(invoice.shipmentId));
+                if (check != null)
+                {
+                    ViewData["StatusMessage"] = "Σφάλμα. Το Τιμολόγιο έχει ήδη δημιουργηθεί. " + check.InvoiceNumber;
+                    ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
+
+                    return View(invoice);
+                }
+
+                
                 _context.Add(invoice);
+
+                invoice.InvoiceNumber = _numberSequence.GetNumberSequence("ΤΔΑ");
+                var inv = query.Where(x => x.InvoiceId == invoice.InvoiceId).FirstOrDefault();
+                invoice.branchName = inv.branchName;
+                invoice.description = inv.description;
+                invoice.VATNumber = inv.VATNumber;
+                invoice.city = inv.city;
+                invoice.CustomerCity = inv.customerCity;
+                invoice.CustomerCountry = inv.customerCountry;
+                invoice.customerName = inv.customerName;
+                invoice.CustomerCompanyActivity = inv.CompanyActivity;
+                invoice.CustomerPostCode = inv.customerPostCode;
+                invoice.CustomerStreet = inv.customerStreet1;
+                invoice.CustomerTaxOffice = inv.customerTaxOffice;
+                invoice.CustomerVATRegNumber = inv.customerVATRegNumber;
+                invoice.email = inv.email;
+                invoice.EmployeeName = inv.EmployeeName;
+                invoice.Fax = inv.Fax;
+                invoice.InvoiceDate = inv.deliveryDate;
+                invoice.OfficePhone = inv.OfficePhone;
+                invoice.PostalCode = inv.PostalCode;
+                invoice.street1 = inv.street1;
+                invoice.TaxOffice = inv.TaxOffice;
+                invoice.TotalBeforeDiscount = inv.TotalBeforeDiscount;
+                invoice.totalDiscountAmount = inv.totalDiscountAmount;
+                invoice.totalOrderAmount = inv.totalOrderAmount;
+                invoice.TotalProductVAT = inv.TotalProductVAT;
+
                 await _context.SaveChangesAsync();
+                //auto create shipment line, full shipment               
+                List<SalesOrderLine> solines = new List<SalesOrderLine>();
+                var salesOrderId = _context.Shipment.Where(x => x.shipmentId == invoice.shipmentId).FirstOrDefault().salesOrderId;
+                solines = _context.SalesOrderLine.Include(x => x.Product).Where(x => x.SalesOrderId.Equals(salesOrderId)).ToList();
+                foreach (var item in solines)
+                {
+                    InvoiceLine line = new InvoiceLine();
+                    
+                    line.Discount = item.Discount;
+                    line.DiscountAmount = item.DiscountAmount;
+                    line.InvoiceId = invoice.InvoiceId;
+                    line.InvoiceLineId = item.SalesOrderLineId;
+                    line.Price = item.Price;
+                    line.Product = item.Product;
+                    line.ProductId = item.ProductId;
+                    line.ProductVAT = item.ProductVAT;
+                    line.ProductVATAmount = item.ProductVATAmount;
+                    line.Qty = item.Qty;
+                    line.SpecialTaxAmount = item.SpecialTaxAmount;
+                    line.SpecialTaxDiscount = item.SpecialTaxDiscount;
+                    line.TotalAfterDiscount = item.TotalAfterDiscount;
+                    line.TotalAmount = item.TotalAmount;
+                    line.TotalBeforeDiscount = item.TotalBeforeDiscount;
+                    line.TotalSpecialTaxAmount = item.TotalSpecialTaxAmount;
+                    line.TotalWithSpecialTax = item.TotalWithSpecialTax;
+                    line.UnitCost = item.UnitCost;
+
+                    _context.InvoiceLine.Add(line);
+                    await _context.SaveChangesAsync();
+                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentId", invoice.shipmentId);
+            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
             return View(invoice);
         }
 
@@ -86,7 +204,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentId", invoice.shipmentId);
+            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
             return View(invoice);
         }
 
@@ -95,13 +213,79 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,InvoiceNumber,shipmentId,InvoiceDate,TotalWithSpecialTax,TotalBeforeDiscount,totalDiscountAmount,totalOrderAmount,TotalProductVAT,HasChild,createdAt")] Invoice invoice)
+        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity")] Invoice invoice)
         {
             if (id != invoice.InvoiceId)
             {
                 return NotFound();
             }
 
+            var query =
+                from Invoice in _context.Invoice
+                join Shipment in _context.Shipment on Invoice.shipmentId equals Shipment.shipmentId
+                join SalesOrder in _context.SalesOrder on Shipment.salesOrderId equals SalesOrder.salesOrderId
+                join Customer in _context.Customer
+                      on new { Shipment.customerId, Column1 = SalesOrder.customerId }
+                  equals new { Customer.customerId, Column1 = Customer.customerId }
+                join Employee in _context.Employee on Customer.EmployeeId equals Employee.EmployeeId
+                join Branch in _context.Branch on Shipment.branchId equals Branch.branchId
+                join CustomerLine in _context.CustomerLine on SalesOrder.customerLineId equals CustomerLine.customerLineId
+                select new
+                {
+                    Branch.branchName,
+                    Branch.description,
+                    Branch.street1,
+                    Branch.PostalCode,
+                    Branch.city,
+                    Branch.OfficePhone,
+                    Branch.Fax,
+                    Branch.email,
+                    Branch.VATNumber,
+                    Branch.TaxOffice,
+                    SalesOrder.salesOrderNumber,
+                    EmployeeName = Employee.DisplayName,
+                    SalesOrder.deliveryDate,
+                    Customer.customerName,
+                    customerStreet1 = CustomerLine.street1,
+                    customerPostCode = CustomerLine.PostCode,
+                    customerCity = CustomerLine.city,
+                    customerCountry = CustomerLine.country,
+                    customerVATRegNumber = Customer.VATRegNumber,
+                    customerTaxOffice = Customer.TaxOffice,
+                    Invoice.InvoiceId,
+                    SalesOrder.totalDiscountAmount,
+                    SalesOrder.totalOrderAmount,
+                    SalesOrder.TotalProductVAT,
+                    SalesOrder.TotalWithSpecialTax,
+                    SalesOrder.TotalBeforeDiscount,
+                    Invoice.Comments,
+                    Customer.CompanyActivity
+                };
+            var inv = query.Where(x => x.InvoiceId == invoice.InvoiceId).FirstOrDefault();
+            invoice.branchName = inv.branchName;
+            invoice.description = inv.description;
+            invoice.VATNumber = inv.VATNumber;
+            invoice.city = inv.city;
+            invoice.CustomerCity = inv.customerCity;
+            invoice.CustomerCountry = inv.customerCountry;
+            invoice.customerName = inv.customerName;
+            invoice.CustomerCompanyActivity = inv.CompanyActivity;
+            invoice.CustomerPostCode = inv.customerPostCode;
+            invoice.CustomerStreet = inv.customerStreet1;
+            invoice.CustomerTaxOffice = inv.customerTaxOffice;
+            invoice.CustomerVATRegNumber = inv.customerVATRegNumber;
+            invoice.email = inv.email;
+            invoice.EmployeeName = inv.EmployeeName;
+            invoice.Fax = inv.Fax;
+            invoice.InvoiceDate = inv.deliveryDate;
+            invoice.OfficePhone = inv.OfficePhone;
+            invoice.PostalCode = inv.PostalCode;
+            invoice.street1 = inv.street1;
+            invoice.TaxOffice = inv.TaxOffice;
+            invoice.TotalBeforeDiscount = inv.TotalBeforeDiscount;
+            invoice.totalDiscountAmount = inv.totalDiscountAmount;
+            invoice.totalOrderAmount = inv.totalOrderAmount;
+            invoice.TotalProductVAT = inv.TotalProductVAT;
             if (ModelState.IsValid)
             {
                 try
@@ -122,7 +306,7 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentId", invoice.shipmentId);
+            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
             return View(invoice);
         }
 
@@ -141,6 +325,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
 
             return View(invoice);
         }
@@ -155,6 +340,36 @@ namespace netcore.Controllers.Invent
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> ShowInvoice(string id)
+        {
+            Invoice obj = await _context.Invoice
+                .Include(x=>x.InvoiceLine).ThenInclude(x => x.Product)
+                .Include(x => x.Shipment)
+                .ThenInclude(x => x.salesOrder)
+                .ThenInclude(x=>x.branch)
+                .Include(x => x.Shipment).ThenInclude(x=>x.Employee)
+                .Include(x => x.Shipment).ThenInclude(x => x.customer)
+                .SingleOrDefaultAsync(x => x.InvoiceId.Equals(id));
+
+            _context.Update(obj);
+
+            return View(obj);
+        }
+
+        public async Task<IActionResult> PrintInvoice(string id)
+        {
+            Invoice obj = await _context.Invoice
+                .Include(x => x.InvoiceLine).ThenInclude(x => x.Product)
+                .Include(x => x.Shipment)
+                .ThenInclude(x => x.salesOrder)
+                .ThenInclude(x => x.branch)
+                .Include(x => x.Shipment).ThenInclude(x => x.Employee)
+                .Include(x => x.Shipment).ThenInclude(x => x.customer)
+                .SingleOrDefaultAsync(x => x.InvoiceId.Equals(id));
+
+            return View(obj);
+        }
+
 
         private bool InvoiceExists(string id)
         {

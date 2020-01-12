@@ -78,8 +78,8 @@ namespace netcore.Controllers.Invent
                     Qty = 1,
                 };
                 var custId = _context.SalesOrder.Where(s => s.salesOrderId == selected.salesOrderId).FirstOrDefault().customerId;
-                var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId; 
-               ViewData["productId"] = new SelectList(catalogProducts.Where(p => p.CatalogId == catalogId), "ProductId", "productCode");
+                var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
+                ViewData["productId"] = new SelectList(catalogProducts.Where(p => p.CatalogId == catalogId), "ProductId", "productCode");
                 return View(objline);
             }
             else

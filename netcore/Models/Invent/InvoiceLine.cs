@@ -18,6 +18,7 @@ namespace netcore.Models.Invent
         public string InvoiceLineId { get; set; }
 
         [StringLength(38)]
+        [Required]
         [Display(Name = "Id Τιμολογίου")]
         public string InvoiceId { get; set; }
 

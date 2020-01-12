@@ -21,6 +21,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Όνομα πελάτη")]
         [Required]
         public string customerName { get; set; }
+
         [StringLength(50)]
         [Display(Name = "Δραστηριότητα")]
         [Required]

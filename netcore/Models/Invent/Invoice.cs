@@ -15,6 +15,7 @@ namespace netcore.Models.Invent
         public Invoice() 
         {
             this.createdAt = DateTime.UtcNow;
+            this.InvoiceDate = DateTime.UtcNow.Date;
         }
 
         [Display(Name = "Αριθμός Τιμολογίου")]
@@ -27,23 +28,103 @@ namespace netcore.Models.Invent
         public Shipment Shipment { get; set; }
 
         [Display(Name = "Ημερομηνία Έκδοσης")]
-        public DateTimeOffset InvoiceDate { get; set; }
+        public DateTime InvoiceDate { get; set; }
 
-        [Display(Name = "Αξία με Ε. Φόρο")]
-        public decimal TotalWithSpecialTax { get; set; }
+        [Display(Name = "Οριστικοποιημένο")]
+        public Boolean Finalized { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Όνομα υποκαταστήματος")]
+        public string branchName { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Περιγραφή υποκαταστήματος")]
+        public string description { get; set; }
+
+        [Display(Name = "Διεύθυνση")]
+        [StringLength(50)]
+        public string street1 { get; set; }
+
+        [Display(Name = "Τ.Κ.")]
+        [StringLength(50)]
+        public string PostalCode { get; set; }
+
+        [Display(Name = "Πόλη")]
+        [StringLength(30)]
+        public string city { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Τηλέφωνο")]
+        public string OfficePhone { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "FAX")]
+        public string Fax { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "E-Mail")]
+        public string email { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Α.Φ.Μ.")]
+        public string VATNumber { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Δ.Ο.Υ.")]
+        public string TaxOffice { get; set; }
+
+        [Display(Name = "Συνεργάτης")]
+        [StringLength(30)]
+        public string EmployeeName { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Όνομα πελάτη")]
+        public string customerName { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Δραστηριότητα")]
+        public string CustomerCompanyActivity { get; set; }
+
+        [Display(Name = "Διεύθυνση")]
+        [StringLength(50)]
+        public string CustomerStreet { get; set; }
+
+        [Display(Name = "Ταχ. Κωδικός")]
+        [StringLength(5)]
+        public string CustomerPostCode { get; set; }
+
+        [Display(Name = "Πόλη")]
+        [StringLength(30)]
+        public string CustomerCity { get; set; }
+
+        [Display(Name = "Χώρα")]
+        [StringLength(30)]
+        public string CustomerCountry { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Α.Φ.Μ.")]
+        public string CustomerVATRegNumber { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Εφορία")]
+        public string CustomerTaxOffice { get; set; }
 
         [Display(Name = "Σύνολο Προ Έκπτωσης")]
-        public decimal? TotalBeforeDiscount { get; set; }
-
+        public decimal TotalBeforeDiscount { get; set; }
 
         [Display(Name = "Συνολική έκπτωση")]
         public decimal totalDiscountAmount { get; set; }
 
+        [Display(Name = "Σύνολο Φ.Π.Α.")]
+        public decimal TotalProductVAT { get; set; }
+
         [Display(Name = "Τελική Αξία")]
         public decimal totalOrderAmount { get; set; }
 
-        [Display(Name = "Σύνολο Φ.Π.Α.")]
-        public decimal TotalProductVAT { get; set; }
+        [StringLength(100)]
+        [Display(Name = "Περιγραφή")]
+        public string Comments { get; set; }
+
 
         [Display(Name = "Στοιχεία Τιμολογίου")]
         public List<InvoiceLine> InvoiceLine { get; set; } = new List<InvoiceLine>();

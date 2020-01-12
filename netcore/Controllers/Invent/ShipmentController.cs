@@ -73,7 +73,7 @@ namespace netcore.Controllers.Invent
         // GET: Shipment
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Shipment.OrderByDescending(x => x.createdAt).Include(s => s.branch).Include(s => s.customer).Include(s => s.salesOrder).Include(s => s.warehouse);
+            var applicationDbContext = _context.Shipment.OrderByDescending(x => x.createdAt).Include(s => s.branch).Include(s => s.customer).Include(s => s.salesOrder).Include(s => s.warehouse).Include(c=>c.customer);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -194,7 +194,7 @@ namespace netcore.Controllers.Invent
                 shipment.salesOrder.salesOrderStatus = SalesOrderStatus.Completed;
                 _context.Update(shipment.salesOrder);
 
-                shipment.shipmentNumber = _numberSequence.GetNumberSequence("DO");
+                shipment.shipmentNumber = _numberSequence.GetNumberSequence("ΔΑ");
                 _context.Add(shipment);
                 await _context.SaveChangesAsync();
 

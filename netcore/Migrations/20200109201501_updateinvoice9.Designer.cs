@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200109201501_updateinvoice9")]
+    partial class updateinvoice9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -534,9 +535,6 @@ namespace netcore.Migrations
                     b.Property<string>("CustomerCity")
                         .HasMaxLength(30);
 
-                    b.Property<string>("CustomerCompanyActivity")
-                        .HasMaxLength(50);
-
                     b.Property<string>("CustomerCountry")
                         .HasMaxLength(30);
 
@@ -562,7 +560,7 @@ namespace netcore.Migrations
 
                     b.Property<string>("HasChild");
 
-                    b.Property<DateTime>("InvoiceDate");
+                    b.Property<DateTimeOffset>("InvoiceDate");
 
                     b.Property<string>("InvoiceNumber");
 
@@ -575,7 +573,7 @@ namespace netcore.Migrations
                     b.Property<string>("TaxOffice")
                         .HasMaxLength(50);
 
-                    b.Property<decimal>("TotalBeforeDiscount");
+                    b.Property<decimal?>("TotalBeforeDiscount");
 
                     b.Property<decimal>("TotalProductVAT");
 
@@ -938,7 +936,7 @@ namespace netcore.Migrations
 
                     b.Property<bool>("Invoicing");
 
-                    b.Property<decimal>("TotalBeforeDiscount");
+                    b.Property<decimal?>("TotalBeforeDiscount");
 
                     b.Property<decimal>("TotalProductVAT");
 
@@ -1023,7 +1021,7 @@ namespace netcore.Migrations
 
                     b.Property<decimal>("TotalAmount");
 
-                    b.Property<decimal>("TotalBeforeDiscount");
+                    b.Property<decimal?>("TotalBeforeDiscount");
 
                     b.Property<decimal>("TotalSpecialTaxAmount");
 

@@ -158,6 +158,16 @@
             </li>
         }
 
+        @if (appUser.InvoiceRole)
+        {
+            <li class="@Html.IsSelected(controller: "Invoice")">
+                <a href="@Url.Action("Index", "Invoice")">
+                    <i class="fa fa-certificate"></i><span> Τιμολόγια</span>
+                </a>
+            </li>
+        }
+
+
         @if (appUser.TransferOrderRole)
         {
             <li class="@Html.IsSelected(controller: "TransferOrder")">

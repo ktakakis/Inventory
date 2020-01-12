@@ -151,11 +151,11 @@ namespace netcore.Controllers.Invent
 
             if (ModelState.IsValid)
             {
-                salesOrder.salesOrderNumber = _numberSequence.GetNumberSequence("SO");
+                salesOrder.salesOrderNumber = _numberSequence.GetNumberSequence("ΠΠ");
 
                 _context.Add(salesOrder);
                 await _context.SaveChangesAsync();
-                TempData["TransMessage"] = "Η Δημιουργία της Παραγγελίας Πώλησης (SO) " + salesOrder.salesOrderNumber + " έγινε με Επιτυχία";
+                TempData["TransMessage"] = "Η Δημιουργία της Παραγγελίας Πώλησης (ΠΠ) " + salesOrder.salesOrderNumber + " έγινε με Επιτυχία";
                 return RedirectToAction(nameof(Details), new { id = salesOrder.salesOrderId });
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
@@ -262,7 +262,7 @@ namespace netcore.Controllers.Invent
                         throw;
                     }
                 }
-                TempData["TransMessage"] = "Η Επεξεργασία της Παραγγελίας Πώλησης (PO) " + salesOrder.salesOrderNumber + " έγινε με Επιτυχία";
+                TempData["TransMessage"] = "Η Επεξεργασία της Παραγγελίας Πώλησης (ΠΠ) " + salesOrder.salesOrderNumber + " έγινε με Επιτυχία";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
@@ -338,7 +338,7 @@ namespace netcore.Controllers.Invent
                 _context.SalesOrderLine.RemoveRange(salesOrder.salesOrderLine);
                 _context.SalesOrder.Remove(salesOrder);
                 await _context.SaveChangesAsync();
-                TempData["TransMessage"] = "Delete SO " + salesOrder.salesOrderNumber + " Success";
+                TempData["TransMessage"] = "Η Διαγραφή της παραγγελίας πώλησης (ΠΠ) " + salesOrder.salesOrderNumber + " έγινε με επιτυχία";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

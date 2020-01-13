@@ -12,8 +12,8 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20191220231926_UpdateSalesOrderLineFields")]
-    partial class UpdateSalesOrderLineFields
+    [Migration("20200113212827_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -163,6 +163,10 @@ namespace netcore.Migrations
 
                     b.Property<bool>("HomeRole");
 
+                    b.Property<bool>("InvoiceLineRole");
+
+                    b.Property<bool>("InvoiceRole");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
@@ -247,6 +251,21 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
+                    b.Property<string>("Fax")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("OfficePhone")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("TaxOffice")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("VATNumber")
+                        .HasMaxLength(50);
+
                     b.Property<string>("branchName")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -262,6 +281,9 @@ namespace netcore.Migrations
                     b.Property<string>("description")
                         .HasMaxLength(50);
 
+                    b.Property<string>("email")
+                        .HasMaxLength(50);
+
                     b.Property<bool>("isDefaultBranch");
 
                     b.Property<string>("province")
@@ -269,9 +291,6 @@ namespace netcore.Migrations
 
                     b.Property<string>("street1")
                         .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("street2")
                         .HasMaxLength(50);
 
                     b.HasKey("branchId");
@@ -502,6 +521,174 @@ namespace netcore.Migrations
                     b.HasKey("EmployeeId");
 
                     b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.Invoice", b =>
+                {
+                    b.Property<string>("InvoiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CustomerCity")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("CustomerCompanyActivity")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CustomerCountry")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("CustomerPostCode")
+                        .HasMaxLength(5);
+
+                    b.Property<string>("CustomerStreet")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CustomerTaxOffice")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CustomerVATRegNumber")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("EmployeeName")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("Fax")
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("Finalized");
+
+                    b.Property<string>("HasChild");
+
+                    b.Property<DateTime>("InvoiceDate");
+
+                    b.Property<string>("InvoiceNumber");
+
+                    b.Property<string>("OfficePhone")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("TaxOffice")
+                        .HasMaxLength(50);
+
+                    b.Property<decimal>("TotalBeforeDiscount");
+
+                    b.Property<decimal>("TotalProductVAT");
+
+                    b.Property<string>("VATNumber")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("branchName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("city")
+                        .HasMaxLength(30);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.Property<string>("customerName")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("description")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("email")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("shipmentId");
+
+                    b.Property<string>("street1")
+                        .HasMaxLength(50);
+
+                    b.Property<decimal>("totalDiscountAmount");
+
+                    b.Property<decimal>("totalOrderAmount");
+
+                    b.HasKey("InvoiceId");
+
+                    b.HasIndex("shipmentId");
+
+                    b.ToTable("Invoice");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.InvoiceLine", b =>
+                {
+                    b.Property<string>("InvoiceLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<decimal?>("Discount");
+
+                    b.Property<decimal>("DiscountAmount");
+
+                    b.Property<string>("InvoiceId")
+                        .IsRequired()
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("ProductVAT");
+
+                    b.Property<decimal>("ProductVATAmount");
+
+                    b.Property<float>("Qty");
+
+                    b.Property<decimal>("SpecialTaxAmount");
+
+                    b.Property<decimal>("SpecialTaxDiscount");
+
+                    b.Property<decimal?>("TotalAfterDiscount");
+
+                    b.Property<decimal>("TotalAmount");
+
+                    b.Property<decimal?>("TotalBeforeDiscount");
+
+                    b.Property<decimal>("TotalSpecialTaxAmount");
+
+                    b.Property<decimal>("TotalWithSpecialTax");
+
+                    b.Property<decimal?>("UnitCost");
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("InvoiceLineId");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("InvoiceLine");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.NumberSequence", b =>
+                {
+                    b.Property<int>("NumberSequenceId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("LastNumber");
+
+                    b.Property<string>("Module")
+                        .IsRequired();
+
+                    b.Property<int>("MyProperty");
+
+                    b.Property<string>("NumberSequenceName")
+                        .IsRequired();
+
+                    b.Property<string>("Prefix")
+                        .IsRequired();
+
+                    b.HasKey("NumberSequenceId");
+
+                    b.ToTable("NumberSequence");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.Product", b =>
@@ -745,7 +932,18 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
+                    b.Property<string>("EmployeeId")
+                        .HasMaxLength(38);
+
                     b.Property<string>("HasChild");
+
+                    b.Property<bool>("Invoicing");
+
+                    b.Property<decimal>("TotalBeforeDiscount");
+
+                    b.Property<decimal>("TotalProductVAT");
+
+                    b.Property<decimal>("TotalWithSpecialTax");
 
                     b.Property<string>("branchId")
                         .IsRequired()
@@ -766,22 +964,7 @@ namespace netcore.Migrations
                     b.Property<string>("description")
                         .HasMaxLength(100);
 
-                    b.Property<string>("picCustomer")
-                        .IsRequired()
-                        .HasMaxLength(30);
-
-                    b.Property<string>("picInternal")
-                        .IsRequired()
-                        .HasMaxLength(30);
-
-                    b.Property<string>("referenceNumberExternal")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("referenceNumberInternal")
-                        .HasMaxLength(30);
-
                     b.Property<string>("salesOrderNumber")
-                        .IsRequired()
                         .HasMaxLength(20);
 
                     b.Property<int>("salesOrderStatus");
@@ -797,6 +980,8 @@ namespace netcore.Migrations
                     b.Property<decimal>("totalOrderAmount");
 
                     b.HasKey("salesOrderId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("branchId");
 
@@ -839,7 +1024,7 @@ namespace netcore.Migrations
 
                     b.Property<decimal>("TotalAmount");
 
-                    b.Property<decimal?>("TotalBeforeDiscount");
+                    b.Property<decimal>("TotalBeforeDiscount");
 
                     b.Property<decimal>("TotalSpecialTaxAmount");
 
@@ -862,6 +1047,9 @@ namespace netcore.Migrations
                 {
                     b.Property<string>("shipmentId")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("EmployeeId")
                         .HasMaxLength(38);
 
                     b.Property<string>("HasChild");
@@ -891,7 +1079,6 @@ namespace netcore.Migrations
                     b.Property<DateTime>("shipmentDate");
 
                     b.Property<string>("shipmentNumber")
-                        .IsRequired()
                         .HasMaxLength(20);
 
                     b.Property<string>("warehouseId")
@@ -899,6 +1086,8 @@ namespace netcore.Migrations
                         .HasMaxLength(38);
 
                     b.HasKey("shipmentId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("branchId");
 
@@ -1443,6 +1632,25 @@ namespace netcore.Migrations
                         .HasForeignKey("customerId");
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.Invoice", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Shipment", "Shipment")
+                        .WithMany()
+                        .HasForeignKey("shipmentId");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.InvoiceLine", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Invoice", "Invoice")
+                        .WithMany("InvoiceLine")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("netcore.Models.Invent.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.PurchaseOrder", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Branch", "branch")
@@ -1509,6 +1717,10 @@ namespace netcore.Migrations
 
             modelBuilder.Entity("netcore.Models.Invent.SalesOrder", b =>
                 {
+                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
+                        .WithMany("SalesOrder")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("netcore.Models.Invent.Branch", "branch")
                         .WithMany()
                         .HasForeignKey("branchId")
@@ -1538,6 +1750,10 @@ namespace netcore.Migrations
 
             modelBuilder.Entity("netcore.Models.Invent.Shipment", b =>
                 {
+                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
+                        .WithMany("Shipment")
+                        .HasForeignKey("EmployeeId");
+
                     b.HasOne("netcore.Models.Invent.Branch", "branch")
                         .WithMany()
                         .HasForeignKey("branchId");

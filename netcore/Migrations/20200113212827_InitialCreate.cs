@@ -41,6 +41,8 @@ namespace netcore.Migrations
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     EmployeeRole = table.Column<bool>(nullable: false),
                     HomeRole = table.Column<bool>(nullable: false),
+                    InvoiceLineRole = table.Column<bool>(nullable: false),
+                    InvoiceRole = table.Column<bool>(nullable: false),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
@@ -83,15 +85,20 @@ namespace netcore.Migrations
                 columns: table => new
                 {
                     branchId = table.Column<string>(maxLength: 38, nullable: false),
+                    Fax = table.Column<string>(maxLength: 50, nullable: true),
+                    OfficePhone = table.Column<string>(maxLength: 50, nullable: true),
+                    PostalCode = table.Column<string>(maxLength: 50, nullable: true),
+                    TaxOffice = table.Column<string>(maxLength: 50, nullable: true),
+                    VATNumber = table.Column<string>(maxLength: 50, nullable: true),
                     branchName = table.Column<string>(maxLength: 50, nullable: false),
                     city = table.Column<string>(maxLength: 30, nullable: true),
                     country = table.Column<string>(maxLength: 30, nullable: true),
                     createdAt = table.Column<DateTime>(nullable: false),
                     description = table.Column<string>(maxLength: 50, nullable: true),
+                    email = table.Column<string>(maxLength: 50, nullable: true),
                     isDefaultBranch = table.Column<bool>(nullable: false),
                     province = table.Column<string>(maxLength: 30, nullable: true),
-                    street1 = table.Column<string>(maxLength: 50, nullable: false),
-                    street2 = table.Column<string>(maxLength: 50, nullable: true)
+                    street1 = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,6 +124,7 @@ namespace netcore.Migrations
                 columns: table => new
                 {
                     EmployeeId = table.Column<string>(maxLength: 38, nullable: false),
+                    Commission = table.Column<decimal>(nullable: true),
                     DisplayName = table.Column<string>(maxLength: 50, nullable: true),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
@@ -129,13 +137,28 @@ namespace netcore.Migrations
                     officePhone = table.Column<string>(nullable: true),
                     personalEmail = table.Column<string>(nullable: true),
                     province = table.Column<string>(maxLength: 30, nullable: true),
-                    street1 = table.Column<string>(maxLength: 50, nullable: false),
-                    street2 = table.Column<string>(maxLength: 50, nullable: true),
-                    workEmail = table.Column<string>(nullable: true)
+                    street1 = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.EmployeeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NumberSequence",
+                columns: table => new
+                {
+                    NumberSequenceId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    LastNumber = table.Column<int>(nullable: false),
+                    Module = table.Column<string>(nullable: false),
+                    MyProperty = table.Column<int>(nullable: false),
+                    NumberSequenceName = table.Column<string>(nullable: false),
+                    Prefix = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NumberSequence", x => x.NumberSequenceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -778,18 +801,19 @@ namespace netcore.Migrations
                 columns: table => new
                 {
                     salesOrderId = table.Column<string>(maxLength: 38, nullable: false),
+                    EmployeeId = table.Column<string>(maxLength: 38, nullable: true),
                     HasChild = table.Column<string>(nullable: true),
+                    Invoicing = table.Column<bool>(nullable: false),
+                    TotalBeforeDiscount = table.Column<decimal>(nullable: false),
+                    TotalProductVAT = table.Column<decimal>(nullable: false),
+                    TotalWithSpecialTax = table.Column<decimal>(nullable: false),
                     branchId = table.Column<string>(maxLength: 38, nullable: false),
                     createdAt = table.Column<DateTime>(nullable: false),
                     customerId = table.Column<string>(maxLength: 38, nullable: false),
                     customerLineId = table.Column<string>(maxLength: 38, nullable: false),
                     deliveryDate = table.Column<DateTime>(nullable: false),
                     description = table.Column<string>(maxLength: 100, nullable: true),
-                    picCustomer = table.Column<string>(maxLength: 30, nullable: false),
-                    picInternal = table.Column<string>(maxLength: 30, nullable: false),
-                    referenceNumberExternal = table.Column<string>(maxLength: 30, nullable: true),
-                    referenceNumberInternal = table.Column<string>(maxLength: 30, nullable: true),
-                    salesOrderNumber = table.Column<string>(maxLength: 20, nullable: false),
+                    salesOrderNumber = table.Column<string>(maxLength: 20, nullable: true),
                     salesOrderStatus = table.Column<int>(nullable: false),
                     salesShipmentNumber = table.Column<string>(nullable: true),
                     soDate = table.Column<DateTime>(nullable: false),
@@ -800,6 +824,12 @@ namespace netcore.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SalesOrder", x => x.salesOrderId);
+                    table.ForeignKey(
+                        name: "FK_SalesOrder_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SalesOrder_Branch_branchId",
                         column: x => x.branchId,
@@ -934,8 +964,11 @@ namespace netcore.Migrations
                     SalesOrderId = table.Column<string>(maxLength: 38, nullable: true),
                     SpecialTaxAmount = table.Column<decimal>(nullable: false),
                     SpecialTaxDiscount = table.Column<decimal>(nullable: false),
+                    TotalAfterDiscount = table.Column<decimal>(nullable: true),
                     TotalAmount = table.Column<decimal>(nullable: false),
-                    TotalBeforeDiscount = table.Column<decimal>(nullable: true),
+                    TotalBeforeDiscount = table.Column<decimal>(nullable: false),
+                    TotalSpecialTaxAmount = table.Column<decimal>(nullable: false),
+                    TotalWithSpecialTax = table.Column<decimal>(nullable: false),
                     UnitCost = table.Column<decimal>(nullable: true),
                     createdAt = table.Column<DateTime>(nullable: false)
                 },
@@ -961,6 +994,7 @@ namespace netcore.Migrations
                 columns: table => new
                 {
                     shipmentId = table.Column<string>(maxLength: 38, nullable: false),
+                    EmployeeId = table.Column<string>(maxLength: 38, nullable: true),
                     HasChild = table.Column<string>(nullable: true),
                     branchId = table.Column<string>(maxLength: 38, nullable: true),
                     createdAt = table.Column<DateTime>(nullable: false),
@@ -971,12 +1005,18 @@ namespace netcore.Migrations
                     invoice = table.Column<string>(maxLength: 50, nullable: true),
                     salesOrderId = table.Column<string>(maxLength: 38, nullable: false),
                     shipmentDate = table.Column<DateTime>(nullable: false),
-                    shipmentNumber = table.Column<string>(maxLength: 20, nullable: false),
+                    shipmentNumber = table.Column<string>(maxLength: 20, nullable: true),
                     warehouseId = table.Column<string>(maxLength: 38, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shipment", x => x.shipmentId);
+                    table.ForeignKey(
+                        name: "FK_Shipment_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Shipment_Branch_branchId",
                         column: x => x.branchId,
@@ -1001,6 +1041,53 @@ namespace netcore.Migrations
                         principalTable: "Warehouse",
                         principalColumn: "warehouseId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoice",
+                columns: table => new
+                {
+                    InvoiceId = table.Column<string>(maxLength: 38, nullable: false),
+                    Comments = table.Column<string>(maxLength: 100, nullable: true),
+                    CustomerCity = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerCompanyActivity = table.Column<string>(maxLength: 50, nullable: true),
+                    CustomerCountry = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerPostCode = table.Column<string>(maxLength: 5, nullable: true),
+                    CustomerStreet = table.Column<string>(maxLength: 50, nullable: true),
+                    CustomerTaxOffice = table.Column<string>(maxLength: 50, nullable: true),
+                    CustomerVATRegNumber = table.Column<string>(maxLength: 50, nullable: true),
+                    EmployeeName = table.Column<string>(maxLength: 30, nullable: true),
+                    Fax = table.Column<string>(maxLength: 50, nullable: true),
+                    Finalized = table.Column<bool>(nullable: false),
+                    HasChild = table.Column<string>(nullable: true),
+                    InvoiceDate = table.Column<DateTime>(nullable: false),
+                    InvoiceNumber = table.Column<string>(nullable: true),
+                    OfficePhone = table.Column<string>(maxLength: 50, nullable: true),
+                    PostalCode = table.Column<string>(maxLength: 50, nullable: true),
+                    TaxOffice = table.Column<string>(maxLength: 50, nullable: true),
+                    TotalBeforeDiscount = table.Column<decimal>(nullable: false),
+                    TotalProductVAT = table.Column<decimal>(nullable: false),
+                    VATNumber = table.Column<string>(maxLength: 50, nullable: true),
+                    branchName = table.Column<string>(maxLength: 50, nullable: true),
+                    city = table.Column<string>(maxLength: 30, nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false),
+                    customerName = table.Column<string>(maxLength: 50, nullable: true),
+                    description = table.Column<string>(maxLength: 50, nullable: true),
+                    email = table.Column<string>(maxLength: 50, nullable: true),
+                    shipmentId = table.Column<string>(nullable: true),
+                    street1 = table.Column<string>(maxLength: 50, nullable: true),
+                    totalDiscountAmount = table.Column<decimal>(nullable: false),
+                    totalOrderAmount = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoice", x => x.InvoiceId);
+                    table.ForeignKey(
+                        name: "FK_Invoice_Shipment_shipmentId",
+                        column: x => x.shipmentId,
+                        principalTable: "Shipment",
+                        principalColumn: "shipmentId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1043,6 +1130,46 @@ namespace netcore.Migrations
                         column: x => x.warehouseId,
                         principalTable: "Warehouse",
                         principalColumn: "warehouseId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvoiceLine",
+                columns: table => new
+                {
+                    InvoiceLineId = table.Column<string>(maxLength: 38, nullable: false),
+                    Discount = table.Column<decimal>(nullable: true),
+                    DiscountAmount = table.Column<decimal>(nullable: false),
+                    InvoiceId = table.Column<string>(maxLength: 38, nullable: false),
+                    Price = table.Column<decimal>(nullable: false),
+                    ProductId = table.Column<string>(maxLength: 38, nullable: true),
+                    ProductVAT = table.Column<decimal>(nullable: false),
+                    ProductVATAmount = table.Column<decimal>(nullable: false),
+                    Qty = table.Column<float>(nullable: false),
+                    SpecialTaxAmount = table.Column<decimal>(nullable: false),
+                    SpecialTaxDiscount = table.Column<decimal>(nullable: false),
+                    TotalAfterDiscount = table.Column<decimal>(nullable: true),
+                    TotalAmount = table.Column<decimal>(nullable: false),
+                    TotalBeforeDiscount = table.Column<decimal>(nullable: true),
+                    TotalSpecialTaxAmount = table.Column<decimal>(nullable: false),
+                    TotalWithSpecialTax = table.Column<decimal>(nullable: false),
+                    UnitCost = table.Column<decimal>(nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoiceLine", x => x.InvoiceLineId);
+                    table.ForeignKey(
+                        name: "FK_InvoiceLine_Invoice_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "Invoice",
+                        principalColumn: "InvoiceId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvoiceLine_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "productId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1111,6 +1238,21 @@ namespace netcore.Migrations
                 column: "customerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Invoice_shipmentId",
+                table: "Invoice",
+                column: "shipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceLine_InvoiceId",
+                table: "InvoiceLine",
+                column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceLine_ProductId",
+                table: "InvoiceLine",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PurchaseOrder_branchId",
                 table: "PurchaseOrder",
                 column: "branchId");
@@ -1171,6 +1313,11 @@ namespace netcore.Migrations
                 column: "warehouseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SalesOrder_EmployeeId",
+                table: "SalesOrder",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SalesOrder_branchId",
                 table: "SalesOrder",
                 column: "branchId");
@@ -1194,6 +1341,11 @@ namespace netcore.Migrations
                 name: "IX_SalesOrderLine_SalesOrderId",
                 table: "SalesOrderLine",
                 column: "SalesOrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shipment_EmployeeId",
+                table: "Shipment",
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shipment_branchId",
@@ -1370,6 +1522,12 @@ namespace netcore.Migrations
                 name: "City");
 
             migrationBuilder.DropTable(
+                name: "InvoiceLine");
+
+            migrationBuilder.DropTable(
+                name: "NumberSequence");
+
+            migrationBuilder.DropTable(
                 name: "PurchaseOrderLine");
 
             migrationBuilder.DropTable(
@@ -1403,10 +1561,10 @@ namespace netcore.Migrations
                 name: "Catalog");
 
             migrationBuilder.DropTable(
-                name: "Receiving");
+                name: "Invoice");
 
             migrationBuilder.DropTable(
-                name: "Shipment");
+                name: "Receiving");
 
             migrationBuilder.DropTable(
                 name: "TransferIn");
@@ -1418,28 +1576,31 @@ namespace netcore.Migrations
                 name: "TransferOut");
 
             migrationBuilder.DropTable(
-                name: "PurchaseOrder");
+                name: "Shipment");
 
             migrationBuilder.DropTable(
-                name: "SalesOrder");
+                name: "PurchaseOrder");
 
             migrationBuilder.DropTable(
                 name: "TransferOrder");
 
             migrationBuilder.DropTable(
-                name: "Vendor");
+                name: "SalesOrder");
 
             migrationBuilder.DropTable(
-                name: "CustomerLine");
+                name: "Vendor");
 
             migrationBuilder.DropTable(
                 name: "Warehouse");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "CustomerLine");
 
             migrationBuilder.DropTable(
                 name: "Branch");
+
+            migrationBuilder.DropTable(
+                name: "Customer");
 
             migrationBuilder.DropTable(
                 name: "Employee");

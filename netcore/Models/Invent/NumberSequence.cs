@@ -8,7 +8,7 @@ namespace netcore.Models.Invent
 {
     public class NumberSequence
     {
-
+        [Key]
         public int NumberSequenceId { get; set; }
         [Required]
         public string NumberSequenceName { get; set; }

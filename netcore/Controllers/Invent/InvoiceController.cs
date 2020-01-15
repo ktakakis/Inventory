@@ -66,7 +66,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity")] Invoice invoice)
+        public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail")] Invoice invoice)
         {
             var query =
                 from Invoice in _context.Invoice
@@ -90,24 +90,29 @@ namespace netcore.Controllers.Invent
                     Branch.email,
                     Branch.VATNumber,
                     Branch.TaxOffice,
-                    SalesOrder.salesOrderNumber,
                     EmployeeName = Employee.DisplayName,
                     SalesOrder.deliveryDate,
                     Customer.customerName,
+                    Customer.CompanyActivity,
                     customerStreet1 = CustomerLine.street1,
                     customerPostCode = CustomerLine.PostCode,
                     customerCity = CustomerLine.city,
                     customerCountry = CustomerLine.country,
                     customerVATRegNumber = Customer.VATRegNumber,
                     customerTaxOffice = Customer.TaxOffice,
+                    CustomerEmail = Customer.workEmail,
+                    CustomerOfficePhone = Customer.officePhone,
+                    CustomerMobilePhone = Customer.mobilePhone,
+                    CustomerFax = Customer.fax,
                     Invoice.InvoiceId,
+                    Comments = SalesOrder.description,
+                    SalesOrder.salesOrderNumber,
                     SalesOrder.totalDiscountAmount,
                     SalesOrder.totalOrderAmount,
                     SalesOrder.TotalProductVAT,
                     SalesOrder.TotalWithSpecialTax,
                     SalesOrder.TotalBeforeDiscount,
-                    Invoice.Comments,
-                    Customer.CompanyActivity
+                    SalesOrder.Invoicing
                 };
 
             if (ModelState.IsValid)
@@ -126,9 +131,13 @@ namespace netcore.Controllers.Invent
 
                 
                 _context.Add(invoice);
-
-                invoice.InvoiceNumber = _numberSequence.GetNumberSequence("ΤΔΑ");
+                invoice.InvoiceNumber = _numberSequence.GetNumberSequence("ΔΑΠ");
                 var inv = query.Where(x => x.InvoiceId == invoice.InvoiceId).FirstOrDefault();
+                if (inv.Invoicing)
+                {
+                    invoice.InvoiceNumber = _numberSequence.GetNumberSequence("ΤΔΑ");
+                }
+
                 invoice.branchName = inv.branchName;
                 invoice.description = inv.description;
                 invoice.VATNumber = inv.VATNumber;
@@ -141,6 +150,10 @@ namespace netcore.Controllers.Invent
                 invoice.CustomerStreet = inv.customerStreet1;
                 invoice.CustomerTaxOffice = inv.customerTaxOffice;
                 invoice.CustomerVATRegNumber = inv.customerVATRegNumber;
+                invoice.CustomerFax = inv.CustomerFax;
+                invoice.CustomerMobilePhone = inv.CustomerMobilePhone;
+                invoice.CustomerWorkEmail = inv.CustomerEmail;
+                invoice.CustomerOfficePhone = inv.CustomerOfficePhone;
                 invoice.email = inv.email;
                 invoice.EmployeeName = inv.EmployeeName;
                 invoice.Fax = inv.Fax;
@@ -213,79 +226,14 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity")] Invoice invoice)
+        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail")] Invoice invoice)
         {
             if (id != invoice.InvoiceId)
             {
                 return NotFound();
             }
 
-            var query =
-                from Invoice in _context.Invoice
-                join Shipment in _context.Shipment on Invoice.shipmentId equals Shipment.shipmentId
-                join SalesOrder in _context.SalesOrder on Shipment.salesOrderId equals SalesOrder.salesOrderId
-                join Customer in _context.Customer
-                      on new { Shipment.customerId, Column1 = SalesOrder.customerId }
-                  equals new { Customer.customerId, Column1 = Customer.customerId }
-                join Employee in _context.Employee on Customer.EmployeeId equals Employee.EmployeeId
-                join Branch in _context.Branch on Shipment.branchId equals Branch.branchId
-                join CustomerLine in _context.CustomerLine on SalesOrder.customerLineId equals CustomerLine.customerLineId
-                select new
-                {
-                    Branch.branchName,
-                    Branch.description,
-                    Branch.street1,
-                    Branch.PostalCode,
-                    Branch.city,
-                    Branch.OfficePhone,
-                    Branch.Fax,
-                    Branch.email,
-                    Branch.VATNumber,
-                    Branch.TaxOffice,
-                    SalesOrder.salesOrderNumber,
-                    EmployeeName = Employee.DisplayName,
-                    SalesOrder.deliveryDate,
-                    Customer.customerName,
-                    customerStreet1 = CustomerLine.street1,
-                    customerPostCode = CustomerLine.PostCode,
-                    customerCity = CustomerLine.city,
-                    customerCountry = CustomerLine.country,
-                    customerVATRegNumber = Customer.VATRegNumber,
-                    customerTaxOffice = Customer.TaxOffice,
-                    Invoice.InvoiceId,
-                    SalesOrder.totalDiscountAmount,
-                    SalesOrder.totalOrderAmount,
-                    SalesOrder.TotalProductVAT,
-                    SalesOrder.TotalWithSpecialTax,
-                    SalesOrder.TotalBeforeDiscount,
-                    Invoice.Comments,
-                    Customer.CompanyActivity
-                };
-            var inv = query.Where(x => x.InvoiceId == invoice.InvoiceId).FirstOrDefault();
-            invoice.branchName = inv.branchName;
-            invoice.description = inv.description;
-            invoice.VATNumber = inv.VATNumber;
-            invoice.city = inv.city;
-            invoice.CustomerCity = inv.customerCity;
-            invoice.CustomerCountry = inv.customerCountry;
-            invoice.customerName = inv.customerName;
-            invoice.CustomerCompanyActivity = inv.CompanyActivity;
-            invoice.CustomerPostCode = inv.customerPostCode;
-            invoice.CustomerStreet = inv.customerStreet1;
-            invoice.CustomerTaxOffice = inv.customerTaxOffice;
-            invoice.CustomerVATRegNumber = inv.customerVATRegNumber;
-            invoice.email = inv.email;
-            invoice.EmployeeName = inv.EmployeeName;
-            invoice.Fax = inv.Fax;
-            invoice.InvoiceDate = inv.deliveryDate;
-            invoice.OfficePhone = inv.OfficePhone;
-            invoice.PostalCode = inv.PostalCode;
-            invoice.street1 = inv.street1;
-            invoice.TaxOffice = inv.TaxOffice;
-            invoice.TotalBeforeDiscount = inv.TotalBeforeDiscount;
-            invoice.totalDiscountAmount = inv.totalDiscountAmount;
-            invoice.totalOrderAmount = inv.totalOrderAmount;
-            invoice.TotalProductVAT = inv.TotalProductVAT;
+            
             if (ModelState.IsValid)
             {
                 try
@@ -352,7 +300,14 @@ namespace netcore.Controllers.Invent
                 .SingleOrDefaultAsync(x => x.InvoiceId.Equals(id));
 
             _context.Update(obj);
-
+            if (obj.Shipment.salesOrder.Invoicing)
+            {
+                ViewBag.InvoiceTitle = "Τιμολόγιο Δελτίο Αποστολής";
+            }
+            else
+            {
+                ViewBag.InvoiceTitle = "Δελτίο Αποστολής Προϊόντων";
+            }
             return View(obj);
         }
 
@@ -366,7 +321,14 @@ namespace netcore.Controllers.Invent
                 .Include(x => x.Shipment).ThenInclude(x => x.Employee)
                 .Include(x => x.Shipment).ThenInclude(x => x.customer)
                 .SingleOrDefaultAsync(x => x.InvoiceId.Equals(id));
-
+            if (obj.Shipment.salesOrder.Invoicing)
+            {
+                ViewBag.InvoiceTitle = "Τιμολόγιο Δελτίο Αποστολής";
+            }
+            else
+            {
+                ViewBag.InvoiceTitle = "Δελτίο Αποστολής Προϊόντων";
+            }
             return View(obj);
         }
 

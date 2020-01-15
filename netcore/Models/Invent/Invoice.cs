@@ -125,6 +125,21 @@ namespace netcore.Models.Invent
         [Display(Name = "Περιγραφή")]
         public string Comments { get; set; }
 
+        [Display(Name = "Τηλέφωνο γραφείου")]
+        [StringLength(20)]
+        public string CustomerOfficePhone { get; set; }
+
+        [Display(Name = "Κινητό τηλέφωνο")]
+        [StringLength(20)]
+        public string CustomerMobilePhone { get; set; }
+
+        [Display(Name = "Fax")]
+        [StringLength(20)] 
+        public string CustomerFax { get; set; }
+
+        [Display(Name = "Email εργασίας")]
+        [StringLength(50)]
+        public string CustomerWorkEmail { get; set; }
 
         [Display(Name = "Στοιχεία Τιμολογίου")]
         public List<InvoiceLine> InvoiceLine { get; set; } = new List<InvoiceLine>();

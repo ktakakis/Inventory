@@ -248,6 +248,12 @@ namespace netcore.Controllers.Invent
             {
                 try
                 {
+                    salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
+                    salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
+                    salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
+                    salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+                    salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
+
                     _context.Update(salesOrder);
                     await _context.SaveChangesAsync();
                 }
@@ -309,12 +315,6 @@ namespace netcore.Controllers.Invent
             {
                 ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",salesOrder.EmployeeId);
             }
-
-            salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
-            salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
-            salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
-            salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
-            salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
 
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();

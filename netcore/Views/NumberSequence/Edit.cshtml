@@ -1,0 +1,59 @@
+﻿@model netcore.Models.Invent.NumberSequence
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>NumberSequence</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NumberSequenceId" />
+            <div class="form-group">
+                <label asp-for="NumberSequenceName" class="control-label"></label>
+                <input asp-for="NumberSequenceName" class="form-control" />
+                <span asp-validation-for="NumberSequenceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Module" class="control-label"></label>
+                <input asp-for="Module" class="form-control" />
+                <span asp-validation-for="Module" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prefix" class="control-label"></label>
+                <input asp-for="Prefix" class="form-control" />
+                <span asp-validation-for="Prefix" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastNumber" class="control-label"></label>
+                <input asp-for="LastNumber" class="form-control" />
+                <span asp-validation-for="LastNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MyProperty" class="control-label"></label>
+                <input asp-for="MyProperty" class="form-control" />
+                <span asp-validation-for="MyProperty" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="createdAt" class="control-label"></label>
+                <input asp-for="createdAt" class="form-control" />
+                <span asp-validation-for="createdAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

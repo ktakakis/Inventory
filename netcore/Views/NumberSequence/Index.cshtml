@@ -1,0 +1,65 @@
+﻿@model IEnumerable<netcore.Models.Invent.NumberSequence>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NumberSequenceName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Module)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Prefix)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MyProperty)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.createdAt)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberSequenceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Module)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prefix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MyProperty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.NumberSequenceId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.NumberSequenceId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.NumberSequenceId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

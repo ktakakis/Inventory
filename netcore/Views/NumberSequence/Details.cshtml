@@ -1,0 +1,54 @@
+﻿@model netcore.Models.Invent.NumberSequence
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>NumberSequence</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberSequenceName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberSequenceName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Module)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Module)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Prefix)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Prefix)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LastNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MyProperty)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MyProperty)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.NumberSequenceId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace netcore.Models.Invent 
 {
-    public class NumberSequence
+    public class NumberSequence: INetcoreBasic
     {
-        [Key]
+        public NumberSequence()
+        {
+            this.createdAt = DateTime.UtcNow;
+        }
         public int NumberSequenceId { get; set; }
         [Required]
         public string NumberSequenceName { get; set; }

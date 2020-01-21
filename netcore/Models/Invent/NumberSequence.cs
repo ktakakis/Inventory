@@ -14,12 +14,17 @@ namespace netcore.Models.Invent
         }
         public int NumberSequenceId { get; set; }
         [Required]
+        [Display(Name ="Ονομασία")]
         public string NumberSequenceName { get; set; }
         [Required]
+        [Display(Name = "Μονάδα μέτρησης")]
         public string Module { get; set; }
         [Required]
+        [Display(Name = "Πρόθεμα")]
         public string Prefix { get; set; }
+        [Display(Name = "Τελευταίος Αριθμός")]
         public int LastNumber { get; set; }
+        
         public int MyProperty { get; set; }
     }
 }

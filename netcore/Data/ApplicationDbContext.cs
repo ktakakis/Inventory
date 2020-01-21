@@ -79,7 +79,11 @@ namespace netcore.Data
 
         public DbSet<netcore.Models.Invent.NumberSequence> NumberSequence { get; set; } 
         public DbSet<netcore.Models.Invent.Invoice> Invoice { get; set; }
-        public DbSet<netcore.Models.Invent.InvoiceLine> InvoiceLine { get; set; }  
+        public DbSet<netcore.Models.Invent.InvoiceLine> InvoiceLine { get; set; }
+        public DbSet<netcore.Models.Invent.PaymentType> PaymentType { get; set; }
+
+        public DbSet<netcore.Models.Invent.PaymentReceive> PaymentReceive { get; set; }
+
 
     }
 }

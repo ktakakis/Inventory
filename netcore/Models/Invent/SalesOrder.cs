@@ -39,6 +39,9 @@ namespace netcore.Models.Invent
         [Display(Name = "Ημερ.Παράδοσης")]
         public DateTime deliveryDate { get; set; }
 
+        [Display(Name ="Αναγνωριστικό")]
+        public string SalesOrderName { get; set; }
+
         [StringLength(38)]
         [Required]
         [Display(Name = "Id Διεύθυνσης")]

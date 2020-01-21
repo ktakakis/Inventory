@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200119190048_Payments4")]
+    partial class Payments4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1004,8 +1005,6 @@ namespace netcore.Migrations
                     b.Property<string>("HasChild");
 
                     b.Property<bool>("Invoicing");
-
-                    b.Property<string>("SalesOrderName");
 
                     b.Property<decimal>("TotalBeforeDiscount");
 

@@ -146,13 +146,15 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId")] SalesOrder salesOrder)
+        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId,TotalBeforeDiscount,SalesOrderName")] SalesOrder salesOrder)
         {
 
             if (ModelState.IsValid)
             {
+                string customerName = _context.Customer.Where(x => x.customerId == salesOrder.customerId).FirstOrDefault().customerName;
+                
                 salesOrder.salesOrderNumber = _numberSequence.GetNumberSequence("ΠΠ");
-
+                salesOrder.SalesOrderName = salesOrder.salesOrderNumber + " ("+ customerName + ")";
                 _context.Add(salesOrder);
                 await _context.SaveChangesAsync();
                 TempData["TransMessage"] = "Η Δημιουργία της Παραγγελίας Πώλησης (ΠΠ) " + salesOrder.salesOrderNumber + " έγινε με Επιτυχία";
@@ -225,7 +227,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId")] SalesOrder salesOrder)
+        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId,TotalBeforeDiscount,SalesOrderName")] SalesOrder salesOrder)
         {
             if (id != salesOrder.salesOrderId)
             {
@@ -246,8 +248,11 @@ namespace netcore.Controllers.Invent
 
             if (ModelState.IsValid)
             {
+                string customerName = _context.Customer.Where(x => x.customerId == salesOrder.customerId).FirstOrDefault().customerName;
+
                 try
                 {
+                    salesOrder.SalesOrderName = salesOrder.salesOrderNumber + " (" + customerName + ")";
                     salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
                     salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
                     salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);

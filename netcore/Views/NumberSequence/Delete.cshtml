@@ -1,14 +1,14 @@
 ﻿@model netcore.Models.Invent.NumberSequence
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-tags";
+    ViewData["DeleteInfo"] = "Οι σειρές αριθμών που διαγράφονται, δημιουργούνται εκ νέου από τον αριθμό 1 με την δημιουργία νέων εγγραφών.";
+    ViewData["IsCanDeleted"] = true;
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>NumberSequence</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -48,10 +48,5 @@
             @Html.DisplayFor(model => model.createdAt)
         </dd>
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="NumberSequenceId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+
 </div>

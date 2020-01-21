@@ -1,13 +1,10 @@
 ﻿@model netcore.Models.Invent.NumberSequence
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Επεξεργασία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreEdit.cshtml";
+    ViewData["EntityIcon"] = "fa fa-tags";
 }
 
-<h2>Edit</h2>
-
-<h4>NumberSequence</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -43,15 +40,8 @@
                 <input asp-for="createdAt" class="form-control" />
                 <span asp-validation-for="createdAt" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

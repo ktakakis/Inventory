@@ -3,8 +3,8 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
     ViewData["EntityIcon"] = "fa fa-tags";
-    ViewData["ListTitle"] = "Λίστα Προϊόντων";
-    ViewData["IndexInfo"] = "Το προϊόν είναι ένα εμπόρευμα που μπορεί να προσφερθεί στην αγορά προς πώληση για να ικανοποιήσει τη ζήτηση. Πριν να πουλήσετε προϊόντα σε πελάτες, θα πρέπει να έχετε το προϊόν σε απόθεμα αγοράζοντας το από τους προμηθευτές.";
+    ViewData["ListTitle"] = "Σειρές Αριθμών";
+    ViewData["IndexInfo"] = "Οι σειρές αριθμών χρησιμοποιούνται για την αρίθμιση των εγγραφών.";
 }
 
 
@@ -33,7 +33,6 @@
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.uom)
             </th>
-
         </tr>
     </thead>
     <tbody>
@@ -46,7 +45,6 @@
                         <a asp-action="Details" asp-route-id="@item.productId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
                         <a asp-action="Delete" asp-route-id="@item.productId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                     </div>
-
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.productCode)
@@ -69,7 +67,6 @@
                 <td class="hidden">
                     @Html.DisplayFor(modelItem => item.uom)
                 </td>
-
             </tr>
         }
     </tbody>

@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200119161305_Payments")]
+    partial class Payments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,10 +178,6 @@ namespace netcore.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash");
-
-                    b.Property<bool>("PaymentReceiveRole");
-
-                    b.Property<bool>("PaymentTypeRole");
 
                     b.Property<string>("PhoneNumber");
 
@@ -728,11 +725,7 @@ namespace netcore.Migrations
                     b.Property<string>("PaymentTypeId")
                         .HasMaxLength(38);
 
-                    b.Property<DateTime>("createdAt");
-
                     b.HasKey("PaymentReceiveId");
-
-                    b.HasIndex("InvoiceId");
 
                     b.HasIndex("PaymentTypeId");
 
@@ -1004,8 +997,6 @@ namespace netcore.Migrations
                     b.Property<string>("HasChild");
 
                     b.Property<bool>("Invoicing");
-
-                    b.Property<string>("SalesOrderName");
 
                     b.Property<decimal>("TotalBeforeDiscount");
 
@@ -1721,11 +1712,7 @@ namespace netcore.Migrations
 
             modelBuilder.Entity("netcore.Models.Invent.PaymentReceive", b =>
                 {
-                    b.HasOne("netcore.Models.Invent.Invoice", "invoice")
-                        .WithMany()
-                        .HasForeignKey("InvoiceId");
-
-                    b.HasOne("netcore.Models.Invent.PaymentType", "paymentType")
+                    b.HasOne("netcore.Models.Invent.PaymentType")
                         .WithMany("PaymentReceive")
                         .HasForeignKey("PaymentTypeId");
                 });

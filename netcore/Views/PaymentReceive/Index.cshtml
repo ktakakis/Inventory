@@ -1,0 +1,61 @@
+﻿@model IEnumerable<netcore.Models.Invent.PaymentReceive>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-money";
+    ViewData["ListTitle"] = "Λίστα Συναλλαγών";
+    ViewData["IndexInfo"] = "Η Λίστα περιέχει όλες τις Εισπράξεις που έχουν πραγματοποιηθεί.";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentReceiveName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsFullPayment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.paymentType)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.PaymentReceiveId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.PaymentReceiveId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.PaymentReceiveId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentReceiveName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsFullPayment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.paymentType.PaymentTypeName)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

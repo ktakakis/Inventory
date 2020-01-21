@@ -167,6 +167,23 @@
             </li>
         }
 
+        @if (appUser.PaymentTypeRole)
+        {
+            <li class="@Html.IsSelected(controller: "PaymentType")">
+                <a href="@Url.Action("Index", "PaymentType")">
+                    <i class="fa fa-get-pocket"></i><span> Τρόποι Είσπραξης</span>
+                </a>
+            </li>
+        }
+
+        @if (appUser.PaymentReceiveRole)
+        {
+            <li class="@Html.IsSelected(controller: "PaymentReceive")">
+                <a href="@Url.Action("Index", "PaymentReceive")">
+                    <i class="fa fa-money"></i><span> Εισπράξεις</span>
+                </a>
+            </li>
+        }
 
         @if (appUser.TransferOrderRole)
         {
@@ -203,7 +220,11 @@
                     <i class="fa fa-users"></i> <span>Ρόλοι χρηστών</span>
                 </a>
             </li>
-
+            <li class="@Html.IsSelected(controller: "NumberSequence")">
+                <a href="@Url.Action("Index", "NumberSequence")">
+                    <i class="fa fa-barcode"></i> <span> Σειρές Αριθμών</span>
+                </a>
+            </li>
         }
 
     </ul>

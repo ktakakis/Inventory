@@ -41,7 +41,7 @@ namespace netcore.Controllers.Invent
                 .Where(x => x.salesOrderId.Equals(salesOrderId)).FirstOrDefault();
 
             List<Warehouse> warehouseList = _context.Warehouse.Where(x => x.branchId.Equals(so.branch.branchId)).ToList();
-            warehouseList.Insert(0, new Warehouse { warehouseId = "0", warehouseName = "Select" });
+            warehouseList.Insert(0, new Warehouse { warehouseId = "0", warehouseName = "Επιλέξτε" });
 
             return Json(new SelectList(warehouseList, "warehouseId", "warehouseName"));
         }
@@ -98,7 +98,7 @@ namespace netcore.Controllers.Invent
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", shipment.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
-            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
+            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "SalesOrderName", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
             return View(shipment);
         }
@@ -107,12 +107,13 @@ namespace netcore.Controllers.Invent
         // GET: Shipment/Create
         public IActionResult Create()
         {
+            
             ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName");
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
             List<SalesOrder> soList = _context.SalesOrder.Where(x => x.salesOrderStatus == SalesOrderStatus.Open).ToList();
-            soList.Insert(0, new SalesOrder { salesOrderId = "0", salesOrderNumber = "Select" });
-            ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "salesOrderNumber");
+            soList.Insert(0, new SalesOrder { salesOrderId = "0", SalesOrderName = "Επιλέξτε" });
+            ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "SalesOrderName");
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
             ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
             Shipment shipment = new Shipment();
@@ -134,22 +135,21 @@ namespace netcore.Controllers.Invent
                 TempData["StatusMessage"] = "Σφάλμα. Η εντολή πώλησης ή η αποθήκη δεν είναι έγκυρη. Επιλέξτε έγκυρη παραγγελία και αποθήκη πωλήσεων";
                 return RedirectToAction(nameof(Create));
             }
-
+            
             if (ModelState.IsValid)
             {
                 //check sales order
-
-                Shipment check = await _context.Shipment
+               Shipment check = await _context.Shipment
                     .Include(x => x.salesOrder)
                     .Include(x => x.Employee)
                     .SingleOrDefaultAsync(x => x.salesOrderId.Equals(shipment.salesOrderId));
                 if (check != null)
                 {
-                    ViewData["StatusMessage"] = "Σφάλμα. Η εντολή πώλησης έχει ήδη αποσταλεί. " + check.shipmentNumber;
+                    ViewData["salesOrderId"] = new SelectList(_context.SalesOrder.Where(x => x.salesOrderStatus == SalesOrderStatus.Open), "salesOrderId", "SalesOrderName");
 
+                    ViewData["StatusMessage"] = "Σφάλμα. Η εντολή πώλησης έχει ήδη αποσταλεί. " + check.shipmentNumber;
                     ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName");
                     ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
-                    ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber");
                     ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
                     ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
                     return View(shipment);
@@ -221,7 +221,7 @@ namespace netcore.Controllers.Invent
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", shipment.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
-            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
+            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder.Where(x => x.salesOrderStatus == SalesOrderStatus.Open), "salesOrderId", "SalesOrderName", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
             ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
@@ -230,6 +230,7 @@ namespace netcore.Controllers.Invent
         // GET: Shipment/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -240,9 +241,19 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            var query =
+                from SalesOrder in _context.SalesOrder
+                join Customer in _context.Customer on SalesOrder.customerId equals Customer.customerId
+                select new
+                {
+                    SalesOrder.salesOrderId,
+                    description = (SalesOrder.salesOrderNumber + " (" + Customer.customerName + ")"),
+                    SalesOrder.salesOrderStatus
+                };
+
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", shipment.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
-            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
+            ViewData["salesOrderId"] = new SelectList(query, "salesOrderId", "SalesOrderName", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
             ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
@@ -259,6 +270,16 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            var query =
+                from SalesOrder in _context.SalesOrder
+                join Customer in _context.Customer on SalesOrder.customerId equals Customer.customerId
+                select new
+                {
+                    SalesOrder.salesOrderId,
+                    description = (SalesOrder.salesOrderNumber + " (" + Customer.customerName + ")"),
+                    SalesOrder.salesOrderStatus
+                };
+
 
             if (ModelState.IsValid)
             {
@@ -283,7 +304,7 @@ namespace netcore.Controllers.Invent
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", shipment.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
-            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
+            ViewData["salesOrderId"] = new SelectList(query, "salesOrderId", "SalesOrderName", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
             ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
@@ -310,7 +331,7 @@ namespace netcore.Controllers.Invent
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", shipment.branchId);
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
-            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", shipment.salesOrderId);
+            ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "SalesOrderName", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
             ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);

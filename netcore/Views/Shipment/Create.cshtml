@@ -122,8 +122,8 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-        $(document).ready(function() {
-            var items = "<option value='0'>Select</option>";
+        $(document).ready(function () {
+            var items = "<option value='0'>Επιλέξτε</option>";
             $('#warehouseId').html(items);
 
             $('#salesOrderId').change(function () { 
@@ -138,6 +138,7 @@
                     $('#warehouseId').html(items);
                 });
             });
+
         });
     </script>
 }

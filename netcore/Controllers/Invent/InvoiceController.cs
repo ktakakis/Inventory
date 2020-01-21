@@ -56,8 +56,16 @@ namespace netcore.Controllers.Invent
         // GET: Invoice/Create
         public IActionResult Create()
         {
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber");
-            Invoice inv = new Invoice();
+            var shipment =
+            from Shipment in _context.Shipment
+            join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+            select new
+            {
+                Shipment.shipmentId,
+                ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+            };
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName");
+            Invoice inv = new Invoice(); 
             return View(inv);
         }
 
@@ -200,7 +208,16 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
+            var shipment =
+            from Shipment in _context.Shipment
+            join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+            select new
+            {
+                Shipment.shipmentId,
+                ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+            };
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
+            
             return View(invoice);
         }
 
@@ -217,7 +234,15 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
+            var shipment =
+                        from Shipment in _context.Shipment
+                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+                        select new
+                        {
+                            Shipment.shipmentId,
+                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+                        };
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
             return View(invoice);
         }
 
@@ -254,7 +279,15 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
+            var shipment =
+                        from Shipment in _context.Shipment
+                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+                        select new
+                        {
+                            Shipment.shipmentId,
+                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+                        };
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
             return View(invoice);
         }
 
@@ -273,8 +306,15 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
-
+            var shipment =
+                        from Shipment in _context.Shipment
+                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+                        select new
+                        {
+                            Shipment.shipmentId,
+                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+                        };
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
             return View(invoice);
         }
 

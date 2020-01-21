@@ -1,0 +1,53 @@
+﻿@model netcore.Models.Invent.PaymentReceive
+@{
+    ViewData["Title"] = "Λεπτομέρειες";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
+    ViewData["EntityIcon"] = "fa fa-money";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentReceiveName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentReceiveName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFullPayment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsFullPayment)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.invoice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.invoice.InvoiceId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.paymentType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.paymentType.PaymentTypeId)
+        </dd>
+    </dl>
+</div>

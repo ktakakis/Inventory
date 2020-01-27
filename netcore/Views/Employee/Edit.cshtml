@@ -60,20 +60,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="province" class="control-label"></label>
                         <input asp-for="province" class="form-control" />
                         <span asp-validation-for="province" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="country" class="control-label"></label>
                         <input asp-for="country" class="form-control" />
                         <span asp-validation-for="country" class="text-danger"></span>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="Commission" class="control-label"></label>
@@ -81,7 +83,22 @@
                         <span asp-validation-for="Commission" class="text-danger"></span>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="Active" class="control-label"></label>
+                        <input type="checkbox" asp-for="Active" class="checkbox" />
+                        <span asp-validation-for="Active" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="PaymentReceiver" class="control-label"></label>
+                        <input type="checkbox" asp-for="PaymentReceiver" class="checkbox" />
+                        <span asp-validation-for="PaymentReceiver" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
+
         </form>
     </div>
 </div>

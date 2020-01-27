@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200124201114_authnumbersequence")]
+    partial class authnumbersequence
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -483,8 +484,6 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<bool>("Active");
-
                     b.Property<decimal?>("Commission");
 
                     b.Property<string>("DisplayName")
@@ -497,8 +496,6 @@ namespace netcore.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50);
-
-                    b.Property<bool>("PaymentReceiver");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -590,8 +587,6 @@ namespace netcore.Migrations
 
                     b.Property<string>("OfficePhone")
                         .HasMaxLength(50);
-
-                    b.Property<bool>("Paid");
 
                     b.Property<string>("PostalCode")
                         .HasMaxLength(50);
@@ -722,9 +717,6 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<string>("EmployeeId")
-                        .HasMaxLength(38);
-
                     b.Property<string>("InvoiceId")
                         .HasMaxLength(38);
 
@@ -742,8 +734,6 @@ namespace netcore.Migrations
                     b.Property<DateTime>("createdAt");
 
                     b.HasKey("PaymentReceiveId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("InvoiceId");
 
@@ -1734,12 +1724,8 @@ namespace netcore.Migrations
 
             modelBuilder.Entity("netcore.Models.Invent.PaymentReceive", b =>
                 {
-                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
                     b.HasOne("netcore.Models.Invent.Invoice", "invoice")
-                        .WithMany("PaymentReceive")
+                        .WithMany()
                         .HasForeignKey("InvoiceId");
 
                     b.HasOne("netcore.Models.Invent.PaymentType", "paymentType")

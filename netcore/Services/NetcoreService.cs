@@ -314,12 +314,12 @@ namespace netcore.Services
 
                 foreach (var item in polist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.purchaseOrder.poDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Αγοράς: " + item.purchaseOrder.purchaseOrderNumber + " ", Icon = "fa-file-text", CreatedDate = item.purchaseOrder.poDate });
+                    times.Add(new TimelineViewModel { Header = item.purchaseOrder.poDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Αγοράς: " + item.purchaseOrder.purchaseOrderNumber + " ", Icon = "fa-file-text", CreatedDate = item.purchaseOrder.poDate, ItemId = item.purchaseOrderId, Controler = "PurchaseOrder" });
                 }
 
                 foreach (var item in solist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.SalesOrder.soDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Πώλησης: " + item.SalesOrder.salesOrderNumber + " ", Icon = "fa-cart-plus", CreatedDate = item.SalesOrder.soDate });
+                    times.Add(new TimelineViewModel { Header = item.SalesOrder.soDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Πώλησης: " + item.SalesOrder.salesOrderNumber + " ", Icon = "fa-cart-plus", CreatedDate = item.SalesOrder.soDate, ItemId = item.SalesOrderId, Controler = "SalesOrder" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
@@ -345,12 +345,12 @@ namespace netcore.Services
 
                 foreach (var item in polist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.poDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Αγοράς: " + item.purchaseOrderNumber + " ", Icon = "fa-file-text", CreatedDate = item.poDate });
+                    times.Add(new TimelineViewModel { Header = item.poDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Αγοράς: " + item.purchaseOrderNumber + " ", Icon = "fa-file-text", CreatedDate = item.poDate, ItemId = item.purchaseOrderId, Controler = "PurchaseOrder" });
                 }
 
                 foreach (var item in solist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.soDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Πώλησης: " + item.salesOrderNumber + " ", Icon = "fa-cart-plus", CreatedDate = item.soDate });
+                    times.Add(new TimelineViewModel { Header = item.soDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Πώλησης: " + item.salesOrderNumber + " ", Icon = "fa-cart-plus", CreatedDate = item.soDate, ItemId = item.salesOrderId, Controler = "SalesOrder" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
@@ -375,7 +375,7 @@ namespace netcore.Services
 
                 foreach (var item in polist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.poDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Αγοράς: " + item.purchaseOrderNumber + " ", Icon = "fa-file-text", CreatedDate = item.poDate });
+                    times.Add(new TimelineViewModel { Header = item.poDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Αγοράς: " + item.purchaseOrderNumber + " ", Icon = "fa-file-text", CreatedDate = item.poDate, ItemId = item.purchaseOrderId, Controler = "PurchaseOrder" });
                 }
                 
 
@@ -401,7 +401,7 @@ namespace netcore.Services
                 
                 foreach (var item in solist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.soDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Πώλησης: " + item.salesOrderNumber + " ", Icon = "fa-cart-plus", CreatedDate = item.soDate });
+                    times.Add(new TimelineViewModel { Header = item.soDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Πώλησης: " + item.salesOrderNumber + " ", Icon = "fa-cart-plus", CreatedDate = item.soDate, ItemId = item.salesOrderId, Controler = "SalesOrder" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
@@ -426,7 +426,7 @@ namespace netcore.Services
 
                 foreach (var item in list)
                 {
-                    times.Add(new TimelineViewModel { Header = item.receivingDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα Παραλαβή: " + item.receivingNumber + " ", Icon = "fa-truck", CreatedDate = item.receivingDate });
+                    times.Add(new TimelineViewModel { Header = item.receivingDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα Παραλαβή: " + item.receivingNumber + " ", Icon = "fa-truck", CreatedDate = item.receivingDate, ItemId = item.receivingId, Controler = "Receiving" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
@@ -451,7 +451,7 @@ namespace netcore.Services
 
                 foreach (var item in list)
                 {
-                    times.Add(new TimelineViewModel { Header = item.shipmentDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα αποστολή: " + item.shipmentNumber + " ", Icon = "fa-plane", CreatedDate = item.shipmentDate });
+                    times.Add(new TimelineViewModel { Header = item.shipmentDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα αποστολή: " + item.shipmentNumber + " ", Icon = "fa-plane", CreatedDate = item.shipmentDate, ItemId = item.shipmentId, Controler = "Shipment" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
@@ -477,12 +477,36 @@ namespace netcore.Services
 
                 foreach (var item in outlist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.transferOutDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας Αποστολής Προϊόντων: " + item.transferOutNumber + " ", Icon = "fa-upload", CreatedDate = item.transferOutDate });
+                    times.Add(new TimelineViewModel { Header = item.transferOutDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας Αποστολής Προϊόντων: " + item.transferOutNumber + " ", Icon = "fa-upload", CreatedDate = item.transferOutDate, ItemId = item.transferOutId, Controler = "TransferOut" });
                 }
 
                 foreach (var item in inlist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.transferInDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας παραλαβής Προϊόντων: " + item.transferInNumber + " ", Icon = "fa-download", CreatedDate = item.transferInDate });
+                    times.Add(new TimelineViewModel { Header = item.transferInDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας παραλαβής Προϊόντων: " + item.transferInNumber + " ", Icon = "fa-download", CreatedDate = item.transferInDate, ItemId = item.transferInId, Controler = "TransferIn" });
+                }
+
+                results = times.OrderByDescending(x => x.CreatedDate).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return results;
+        }
+        public List<TimelineViewModel> GetTimelinesByInvoiceId(string invoiceId)
+        {
+            List<TimelineViewModel> results = new List<TimelineViewModel>();
+
+            try
+            {
+                List<TimelineViewModel> times = new List<TimelineViewModel>();
+                List<PaymentReceive> paymentslist = _context.PaymentReceive.Where(x => x.InvoiceId.Equals(invoiceId)).OrderByDescending(x => x.PaymentDate).Take(3).ToList();
+
+                foreach (var item in paymentslist)
+                {
+                    times.Add(new TimelineViewModel { Header = item.PaymentDate.ToString("dd-MMM-yyyy"), Body = "Αρ. Είσπραξης: " + item.PaymentReceiveName + " Ποσόν: " + item.PaymentAmount +" €", Icon = "fa-money", CreatedDate = item.createdAt, ItemId = item.PaymentReceiveId, Controler= "PaymentReceive" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();

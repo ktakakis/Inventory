@@ -54,7 +54,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,DisplayName,FirstName,LastName,UserName,city,country,createdAt,fax,mobilePhone,officePhone,personalEmail,province,street1,Commission")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeId,DisplayName,FirstName,LastName,UserName,city,country,createdAt,fax,mobilePhone,officePhone,personalEmail,province,street1,Commission,Active,PaymentReceiver")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("EmployeeId,DisplayName,FirstName,LastName,UserName,city,country,createdAt,fax,mobilePhone,officePhone,personalEmail,province,street1,Commission")] Employee employee)
+        public async Task<IActionResult> Edit(string id, [Bind("EmployeeId,DisplayName,FirstName,LastName,UserName,city,country,createdAt,fax,mobilePhone,officePhone,personalEmail,province,street1,Commission,Active,PaymentReceiver")] Employee employee)
         {
             if (id != employee.EmployeeId)
             {

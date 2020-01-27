@@ -38,11 +38,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label asp-for="Finalized" class="control-label"></label>
                         <input type="checkbox" asp-for="Finalized" class="checkbox" />
                         <span asp-validation-for="Finalized" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Paid" class="control-label"></label>
+                        <input type="checkbox" asp-for="Paid" class="checkbox" />
+                        <span asp-validation-for="Paid" class="text-danger"></span>
                     </div>
                 </div>
             </div>

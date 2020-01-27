@@ -7,59 +7,106 @@
 
 }
 
-<div class="row">
-    <div class="col-md-9">
-        <!-- Default box -->
-        <div class="box box-primary">
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="InvoiceNumber" class="control-label"></label>
-                                    <input disabled asp-for="InvoiceNumber" class="form-control" />
-                                    <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+    <div class="row">
+        <div class="col-md-9">
+            <!-- Default box -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="InvoiceNumber" class="control-label"></label>
+                                        <input disabled asp-for="InvoiceNumber" class="form-control" />
+                                        <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="shipmentId" class="control-label"></label>
-                                    <select disabled asp-for="shipmentId" class="form-control" asp-items="ViewBag.shipmentId"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="InvoiceDate" class="control-label"></label>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <input disabled asp-for="InvoiceDate" value="@Model.InvoiceDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="shipmentId" class="control-label"></label>
+                                        <select disabled asp-for="shipmentId" class="form-control" asp-items="ViewBag.shipmentId"></select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Finalized" class="control-label"></label>
-                                    <input disabled type="checkbox" asp-for="Finalized" class="checkbox" />
-                                    <span asp-validation-for="Finalized" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="customerName" class="control-label"></label>
+                                        <input disabled asp-for="customerName" class="form-control" />
+                                        <span asp-validation-for="customerName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="CustomerOfficePhone" class="control-label"></label>
+                                        <input disabled asp-for="CustomerOfficePhone" class="form-control" />
+                                        <span asp-validation-for="CustomerOfficePhone" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label asp-for="Comments" class="control-label"></label>
-                                    <textarea disabled asp-for="Comments" class="form-control" rows="3"></textarea>
-                                    <span asp-validation-for="Comments" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="InvoiceDate" class="control-label"></label>
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input disabled asp-for="InvoiceDate" value="@Model.InvoiceDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Finalized" class="control-label"></label>
+                                        <input disabled type="checkbox" asp-for="Finalized" class="checkbox" />
+                                        <span asp-validation-for="Finalized" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label asp-for="Paid" class="control-label"></label>
+                                        <input disabled type="checkbox" asp-for="Paid" class="checkbox" />
+                                        <span asp-validation-for="Paid" class="text-danger"></span>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="Comments" class="control-label"></label>
+                                        <textarea disabled asp-for="Comments" class="form-control" rows="3"></textarea>
+                                        <span asp-validation-for="Comments" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="totalDiscountAmount" class="control-label"></label>
+                                        <input disabled asp-for="totalDiscountAmount" class="form-control" />
+                                        <span asp-validation-for="totalDiscountAmount" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="totalOrderAmount" class="control-label"></label>
+                                        <input disabled asp-for="totalOrderAmount" class="form-control" />
+                                        <span asp-validation-for="totalOrderAmount" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="TotalProductVAT" class="control-label"></label>
+                                        <input disabled asp-for="TotalProductVAT" class="form-control" />
+                                        <span asp-validation-for="TotalProductVAT" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
@@ -70,12 +117,12 @@
                     </div>
                     <!-- /.box-footer-->
                 </div>
+            </div>
         </div>
         <div class="col-md-3">
             @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
         </div>
     </div>
-</div>
 <div class="row">
     <div class="col-md-9">
         <!-- Default box -->
@@ -110,9 +157,6 @@
             <!-- /.box-footer-->
         </div>
         <!-- /.box -->
-    </div>
-    <div class="col-md-3">
-
     </div>
 </div>
 <!--modal placeholder-->

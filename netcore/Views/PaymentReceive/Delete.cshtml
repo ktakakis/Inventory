@@ -17,6 +17,12 @@
             @Html.DisplayFor(model => model.PaymentReceiveName)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Employee.DisplayName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.DisplayName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.PaymentDate)
         </dt>
         <dd>
@@ -44,13 +50,13 @@
             @Html.DisplayNameFor(model => model.invoice)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.invoice.InvoiceId)
+            @Html.DisplayFor(model => model.invoice.InvoiceNumber)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.paymentType)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.paymentType.PaymentTypeId)
+            @Html.DisplayFor(model => model.paymentType.PaymentTypeName)
         </dd>
     </dl>
 

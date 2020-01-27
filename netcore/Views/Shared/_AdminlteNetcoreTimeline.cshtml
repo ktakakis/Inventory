@@ -13,7 +13,7 @@
     string purchaseId = (string)ViewContext.RouteData.Values["id"];
     string salesId = (string)ViewContext.RouteData.Values["id"];
     string transferId = (string)ViewContext.RouteData.Values["id"];
-
+    string invoiceId=(string)ViewContext.RouteData.Values["id"];
 
     List<TimelineViewModel> times = new List<TimelineViewModel>();
 
@@ -68,6 +68,11 @@
     {
         times = netcoreSvc.GetTimelinesByTransferId(transferId);
     }
+    //Invoice
+    if (currentController == "Invoice")
+    {
+        times = netcoreSvc.GetTimelinesByInvoiceId(transferId);
+    }
 }
 
 <!-- The time line -->
@@ -85,7 +90,7 @@
         <li>
             <i class="fa @item.Icon bg-blue"></i>
             <div class="timeline-item">
-                <h3 class="timeline-header"><a href="#">@item.Header</a></h3>
+                <h3 class="timeline-header"><a asp-controller=@item.Controler.ToString() asp-action="Details" asp-route-id="@item.ItemId">@item.Header</a></h3>
                 <div class="timeline-body">
                     @item.Body
                 </div>

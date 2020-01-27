@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using netcore.Models.Invent;
 
 namespace netcore.Controllers.Invent
 {
+    [Authorize(Roles = "NumberSequence")]
     public class NumberSequenceController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -149,5 +152,27 @@ namespace netcore.Controllers.Invent
         {
             return _context.NumberSequence.Any(e => e.NumberSequenceId == id);
         }
+    }
+}
+namespace netcore.MVC
+{
+    public static partial class Pages
+    {
+        public static class NumberSequence
+        {
+            public const string Controller = "NumberSequence";
+            public const string Action = "Index";
+            public const string Role = "NumberSequence";
+            public const string Url = "/NumberSequence/Index";
+            public const string Name = "NumberSequence";
+        }
+    }
+}
+namespace netcore.Models
+{
+    public partial class ApplicationUser
+    {
+        [Display(Name = "NumberSequence")]
+        public bool NumberSequenceRole { get; set; } = false;
     }
 }

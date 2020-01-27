@@ -26,6 +26,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.paymentType)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee.DisplayName)
+            </th>
+
         </tr>
     </thead>
     <tbody>
@@ -54,6 +58,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.paymentType.PaymentTypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.DisplayName)
             </td>
         </tr>
         }

@@ -44,14 +44,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label asp-for="Finalized" class="control-label"></label>
                         <input disabled type="checkbox" asp-for="Finalized" class="checkbox" />
                         <span asp-validation-for="Finalized" class="text-danger"></span>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Paid" class="control-label"></label>
+                        <input disabled type="checkbox" asp-for="Paid" class="checkbox" />
+                        <span asp-validation-for="Paid" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="customerName" class="control-label"></label>
+                        <input disabled asp-for="customerName" class="form-control" />
+                        <span asp-validation-for="customerName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CustomerOfficePhone" class="control-label"></label>
+                        <input disabled asp-for="CustomerOfficePhone" class="form-control" />
+                        <span asp-validation-for="CustomerOfficePhone" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">

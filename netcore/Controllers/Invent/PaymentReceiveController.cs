@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using netcore.Data;
 using netcore.Models.Invent;
+using netcore.Services;
 
 namespace netcore.Controllers.Invent
 {
@@ -16,16 +17,19 @@ namespace netcore.Controllers.Invent
     public class PaymentReceiveController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INumberSequence _numberSequence;
 
-        public PaymentReceiveController(ApplicationDbContext context)
+        public PaymentReceiveController(ApplicationDbContext context,
+                        INumberSequence numberSequence)
         {
             _context = context;
+            _numberSequence = numberSequence;
         }
 
         // GET: PaymentReceive
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PaymentReceive.Include(p => p.invoice).Include(p => p.paymentType);
+            var applicationDbContext = _context.PaymentReceive.Include(e=>e.Employee).Include(p => p.invoice).Include(p => p.paymentType);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -40,6 +44,7 @@ namespace netcore.Controllers.Invent
             var paymentReceive = await _context.PaymentReceive
                 .Include(p => p.invoice)
                 .Include(p => p.paymentType)
+                .Include(e=>e.Employee)
                 .SingleOrDefaultAsync(m => m.PaymentReceiveId == id);
             if (paymentReceive == null)
             {
@@ -57,12 +62,16 @@ namespace netcore.Controllers.Invent
             select new
             {
                 Invoice.InvoiceId,
-                description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")")
+                description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
+                Invoice.Paid
             };
 
-            ViewData["InvoiceId"] = new SelectList(query, "InvoiceId", "description");
+            ViewData["InvoiceId"] = new SelectList(query.Where(x=>x.Paid==false), "InvoiceId", "description");
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName");
-            return View();
+            ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x=>x.PaymentReceiver==true), "EmployeeId", "DisplayName");
+            PaymentReceive pr = new PaymentReceive();
+            pr.PaymentDate = DateTime.Today;
+            return View(pr);
         }
 
         // POST: PaymentReceive/Create
@@ -70,10 +79,11 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PaymentReceiveId,PaymentReceiveName,InvoiceId,PaymentDate,PaymentTypeId,PaymentAmount,IsFullPayment,createdAt")] PaymentReceive paymentReceive)
+        public async Task<IActionResult> Create([Bind("PaymentReceiveId,InvoiceId,IsFullPayment,PaymentAmount,PaymentDate,PaymentReceiveName,PaymentTypeId,createdAt,EmployeeId")] PaymentReceive paymentReceive)
         {
             if (ModelState.IsValid)
             {
+                paymentReceive.PaymentReceiveName = _numberSequence.GetNumberSequence("ΕΙΣ");
                 _context.Add(paymentReceive);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -83,11 +93,12 @@ namespace netcore.Controllers.Invent
                 select new
                 {
                     Invoice.InvoiceId,
-                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")")
+                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
+                    Invoice.Paid
                 };
-
-            ViewData["InvoiceId"] = new SelectList(query, "InvoiceId", "description", paymentReceive.InvoiceId);
-            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeId", paymentReceive.PaymentTypeId);
+            ViewData["InvoiceId"] = new SelectList(query.Where(x => x.Paid == false), "InvoiceId", "description", paymentReceive.InvoiceId);
+            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", paymentReceive.PaymentTypeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x => x.PaymentReceiver == true), "EmployeeId", "DisplayName",paymentReceive.EmployeeId);
             return View(paymentReceive);
         }
 
@@ -109,11 +120,14 @@ namespace netcore.Controllers.Invent
                 select new
                 {
                     Invoice.InvoiceId,
-                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")")
+                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
+                    Invoice.Paid
                 };
 
-            ViewData["InvoiceId"] = new SelectList(query, "InvoiceId", "description", paymentReceive.InvoiceId);
-            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeId", paymentReceive.PaymentTypeId);
+            ViewData["InvoiceId"] = new SelectList(query.Where(x => x.Paid == false), "InvoiceId", "description", paymentReceive.InvoiceId);
+            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", paymentReceive.PaymentTypeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x => x.PaymentReceiver == true), "EmployeeId", "DisplayName",paymentReceive.EmployeeId);
+
             return View(paymentReceive);
         }
 
@@ -122,7 +136,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("PaymentReceiveId,PaymentReceiveName,InvoiceId,PaymentDate,PaymentTypeId,PaymentAmount,IsFullPayment,createdAt")] PaymentReceive paymentReceive)
+        public async Task<IActionResult> Edit(string id, [Bind("PaymentReceiveId,InvoiceId,IsFullPayment,PaymentAmount,PaymentDate,PaymentReceiveName,PaymentTypeId,createdAt,EmployeeId")] PaymentReceive paymentReceive)
         {
             if (id != paymentReceive.PaymentReceiveId)
             {
@@ -154,11 +168,14 @@ namespace netcore.Controllers.Invent
                 select new
                 {
                     Invoice.InvoiceId,
-                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")")
+                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
+                    Invoice.Paid
                 };
 
-            ViewData["InvoiceId"] = new SelectList(query, "InvoiceId", "description", paymentReceive.InvoiceId);
-            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeId", paymentReceive.PaymentTypeId);
+            ViewData["InvoiceId"] = new SelectList(query.Where(x => x.Paid == false), "InvoiceId", "description", paymentReceive.InvoiceId);
+            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", paymentReceive.PaymentTypeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x => x.PaymentReceiver == true), "EmployeeId", "DisplayName",paymentReceive.EmployeeId);
+
             return View(paymentReceive);
         }
 
@@ -173,6 +190,7 @@ namespace netcore.Controllers.Invent
             var paymentReceive = await _context.PaymentReceive
                 .Include(p => p.invoice)
                 .Include(p => p.paymentType)
+                .Include(e=>e.Employee)
                 .SingleOrDefaultAsync(m => m.PaymentReceiveId == id);
             if (paymentReceive == null)
             {

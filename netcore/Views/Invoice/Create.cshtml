@@ -6,57 +6,63 @@
     ViewData["EntityIcon"] = "fa fa-cart-plus";
     ViewData["CreateInfo"] = "Η Παραγγελία Πώλησης (SO) είναι ένα έγγραφο επιβεβαίωσης που αποστέλλεται στον πελάτη σας πριν από την παράδοση των εμπορευμάτων (αποστολή). Υπάρχουν τρεις καταστάσεις SO: 1. Draft (Ανεπιβεβαίωτη SO, δεν είναι έτοιμη για αποστολή), 2. Open (Επιβεβαιωμένη SO, έτοιμη για αποστολή) και 3. Completed (Κλειστή SO, έχουν ήδη φορτωθεί τα προϊόντα).";
 }
-
-    <div class="row">
-        <div class="col-md-12">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="InvoiceNumber" class="control-label"></label>
-                        <input asp-for="InvoiceNumber" class="form-control" />
-                        <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="shipmentId" class="control-label"></label>
-                        <select asp-for="shipmentId" class="form-control" asp-items="ViewBag.shipmentId"></select>
-                    </div>
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="InvoiceNumber" class="control-label"></label>
+                    <input asp-for="InvoiceNumber" class="form-control" />
+                    <span asp-validation-for="InvoiceNumber" class="text-danger"></span>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="InvoiceDate" class="control-label"></label>
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-                            <input asp-for="InvoiceDate" value="@Model.InvoiceDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="Finalized" class="control-label"></label>
-                        <input type="checkbox" asp-for="Finalized" class="checkbox" />
-                        <span asp-validation-for="Finalized" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label asp-for="Comments" class="control-label"></label>
-                        <textarea asp-for="Comments" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="Comments" class="text-danger"></span>
-                    </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="shipmentId" class="control-label"></label>
+                    <select asp-for="shipmentId" class="form-control" asp-items="ViewBag.shipmentId"></select>
                 </div>
             </div>
         </div>
-     </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="InvoiceDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="InvoiceDate" value="@Model.InvoiceDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Finalized" class="control-label"></label>
+                    <input type="checkbox" asp-for="Finalized" class="checkbox" />
+                    <span asp-validation-for="Finalized" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="Paid" class="control-label"></label>
+                    <input type="checkbox" asp-for="Paid" class="checkbox" />
+                    <span asp-validation-for="Paid" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Comments" class="control-label"></label>
+                    <textarea asp-for="Comments" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Comments" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        @section Scripts {
-            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -14,6 +14,12 @@
             @Html.DisplayFor(model => model.PaymentReceiveName)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Employee.DisplayName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.DisplayName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.PaymentDate)
         </dt>
         <dd>
@@ -50,4 +56,10 @@
             @Html.DisplayFor(model => model.paymentType.PaymentTypeId)
         </dd>
     </dl>
+</div>
+<div class="box-footer">
+    <div class="form-group">
+        <a asp-action="Edit" asp-route-id="@Model.PaymentReceiveId" class="btn btn-primary">Επεξεργασία</a>
+        <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+    </div>
 </div>

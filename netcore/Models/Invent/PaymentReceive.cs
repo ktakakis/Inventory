@@ -11,7 +11,7 @@ namespace netcore.Models.Invent
         public PaymentReceive() 
         {
             this.createdAt = DateTime.UtcNow;
-            this.PaymentDate= DateTime.UtcNow;
+            this.PaymentDate = DateTime.UtcNow.Date;
         }
         [StringLength(38)]
         [Display(Name = "Id Τύπου Είσπραξης")]
@@ -39,6 +39,13 @@ namespace netcore.Models.Invent
 
         [Display(Name = "Ποσόν")]
         public double PaymentAmount { get; set; }
+
+        [StringLength(38)]
+        [Display(Name = "Id Συνεργάτη")]
+        public string EmployeeId { get; set; }
+
+        [Display(Name = "Συνεργάτης")]
+        public Employee Employee { get; set; }
 
         [Display(Name = "Πλήρης Είσπραξη")]
         public bool IsFullPayment { get; set; } = true;

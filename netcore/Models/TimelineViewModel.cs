@@ -11,5 +11,7 @@ namespace netcore.Models
         public string Body { get; set; }
         public string Icon { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string ItemId { get; set; }
+        public string Controler { get; set; }
     }
 }

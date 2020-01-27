@@ -16,6 +16,10 @@
                 <span asp-validation-for="PaymentReceiveName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
+                <select asp-for="EmployeeId" id="EmployeeList" class="form-control select2" asp-items="ViewBag.EmployeeId"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="InvoiceId" class="control-label"></label>
                 <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"></select>
                 <span asp-validation-for="InvoiceId" class="text-danger"></span>

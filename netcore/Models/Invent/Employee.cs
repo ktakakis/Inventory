@@ -70,6 +70,12 @@ namespace netcore.Models.Invent
         [Display(Name = "Προσωπικό E-mail")]
         public string personalEmail { get; set; }
 
+        [Display(Name = "Ενεργός")]
+        public Boolean Active { get; set; }
+
+        [Display(Name = "Αποδέκτης Πληρωμών")]
+        public Boolean PaymentReceiver { get; set; }
+
         [Display(Name = "Παραγγελίες Πώλησης")]
         public List<SalesOrder> SalesOrder { get; set; } = new List<SalesOrder>();
 

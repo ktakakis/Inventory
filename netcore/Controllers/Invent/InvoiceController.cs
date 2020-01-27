@@ -49,7 +49,15 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
 
-            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
+            var shipment =
+                        from Shipment in _context.Shipment
+                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+                        select new
+                        {
+                            Shipment.shipmentId,
+                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+                        };
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName",invoice.shipmentId);
             return View(invoice);
         }
 
@@ -74,7 +82,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail")] Invoice invoice)
+        public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail,Paid")] Invoice invoice)
         {
             var query =
                 from Invoice in _context.Invoice
@@ -251,7 +259,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail")] Invoice invoice)
+        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail,Paid")] Invoice invoice)
         {
             if (id != invoice.InvoiceId)
             {

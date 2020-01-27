@@ -33,6 +33,9 @@ namespace netcore.Models.Invent
         [Display(Name = "Οριστικοποιημένο")]
         public Boolean Finalized { get; set; }
 
+        [Display(Name = "Εξοφλημένο")]
+        public Boolean Paid { get; set; }
+
         [StringLength(50)]
         [Display(Name = "Όνομα υποκαταστήματος")]
         public string branchName { get; set; }
@@ -144,6 +147,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Στοιχεία Τιμολογίου")]
         public List<InvoiceLine> InvoiceLine { get; set; } = new List<InvoiceLine>();
 
-
+        [Display(Name = "Εισπράξεις Τιμολογίου")]
+        public List<PaymentReceive> PaymentReceive { get; set; } = new List<PaymentReceive>();
     }
 }

@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-12">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="salesOrderId" />
+        <input type="hidden"  id="salesorderid" asp-for="salesOrderId" />
         <input type="hidden" asp-for="salesOrderNumber" />
         <div class="row">
             <div class="col-md-12">
@@ -29,7 +29,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="salesOrderStatus" class="control-label"></label>
-                    <select asp-for="salesOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.SalesOrderStatus>()"></select>
+                    <select asp-for="salesOrderStatus" id="salesorderstatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.SalesOrderStatus>()"></select>
                     <span asp-validation-for="salesOrderStatus" class="text-danger"></span>
                 </div>
             </div>
@@ -159,6 +159,16 @@
                     item += '<option value="' + customerLine.value + '">' + customerLine.text + '</option>'
                 });
                 $("#customerLineList").html(item);
+            });
+        });
+
+
+        //Update SalesOrder Totals
+        $("#salesorderstatus").change(function () {
+            var url = "/SalesOrder/UpdateSalesOrderTotals";
+            var salesOrderId = $("salesorderid").val();
+            $.getJSON(url, { Id: salesOrderId }, function (data) {
+                var item = "";
             });
         });
     </script>

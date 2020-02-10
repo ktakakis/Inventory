@@ -415,6 +415,36 @@ namespace netcore.Services
             return results;
         }
 
+        public List<TimelineViewModel> GetTimelinesByTransferId(string transferId)
+        {
+            List<TimelineViewModel> results = new List<TimelineViewModel>();
+
+            try
+            {
+                List<TimelineViewModel> times = new List<TimelineViewModel>();
+                List<TransferOut> outlist = _context.TransferOut.Where(x => x.transferOrderId.Equals(transferId)).OrderByDescending(x => x.transferOutDate).Take(3).ToList();
+                List<TransferIn> inlist = _context.TransferIn.Where(x => x.transferOrderId.Equals(transferId)).OrderByDescending(x => x.transferInDate).Take(3).ToList();
+
+                foreach (var item in outlist)
+                {
+                    times.Add(new TimelineViewModel { Header = item.transferOutDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας Αποστολής Προϊόντων: " + item.transferOutNumber + " ", Icon = "fa-upload", CreatedDate = item.transferOutDate, ItemId = item.transferOutId, Controler = "TransferOut" });
+                }
+
+                foreach (var item in inlist)
+                {
+                    times.Add(new TimelineViewModel { Header = item.transferInDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας παραλαβής Προϊόντων: " + item.transferInNumber + " ", Icon = "fa-download", CreatedDate = item.transferInDate, ItemId = item.transferInId, Controler = "TransferIn" });
+                }
+
+                results = times.OrderByDescending(x => x.CreatedDate).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return results;
+        }
         public List<TimelineViewModel> GetTimelinesByPurchaseId(string purchaseId)
         {
             List<TimelineViewModel> results = new List<TimelineViewModel>();
@@ -465,24 +495,18 @@ namespace netcore.Services
             return results;
         }
 
-        public List<TimelineViewModel> GetTimelinesByTransferId(string transferId)
+        public List<TimelineViewModel> GetTimelinesByShipmentId(string shipmentId)
         {
             List<TimelineViewModel> results = new List<TimelineViewModel>();
 
             try
             {
                 List<TimelineViewModel> times = new List<TimelineViewModel>();
-                List<TransferOut> outlist = _context.TransferOut.Where(x => x.transferOrderId.Equals(transferId)).OrderByDescending(x => x.transferOutDate).Take(3).ToList();
-                List<TransferIn> inlist = _context.TransferIn.Where(x => x.transferOrderId.Equals(transferId)).OrderByDescending(x => x.transferInDate).Take(3).ToList();
+                List<Invoice> invoiceslist = _context.Invoice.Where(x => x.shipmentId.Equals(shipmentId)).OrderByDescending(x => x.InvoiceDate).Take(3).ToList();
 
-                foreach (var item in outlist)
+                foreach (var item in invoiceslist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.transferOutDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας Αποστολής Προϊόντων: " + item.transferOutNumber + " ", Icon = "fa-upload", CreatedDate = item.transferOutDate, ItemId = item.transferOutId, Controler = "TransferOut" });
-                }
-
-                foreach (var item in inlist)
-                {
-                    times.Add(new TimelineViewModel { Header = item.transferInDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργία νέας παραλαβής Προϊόντων: " + item.transferInNumber + " ", Icon = "fa-download", CreatedDate = item.transferInDate, ItemId = item.transferInId, Controler = "TransferIn" });
+                    times.Add(new TimelineViewModel { Header = item.InvoiceDate.ToString("dd-MMM-yyyy"), Body = "Αρ. ΤΔΑ-ΔΑΠ: " + item.InvoiceNumber + " Ποσόν: " + item.totalOrderAmount +" €", Icon = "fa-money", CreatedDate = item.createdAt, ItemId = item.InvoiceId, Controler= "Invoice" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();

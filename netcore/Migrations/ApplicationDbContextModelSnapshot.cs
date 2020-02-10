@@ -303,6 +303,35 @@ namespace netcore.Migrations
                     b.ToTable("Branch");
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.CashRepository", b =>
+                {
+                    b.Property<string>("CashRepositoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("Balance");
+
+                    b.Property<string>("CashRepositoryName")
+                        .IsRequired();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("EmployeeId")
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("TotalPayments");
+
+                    b.Property<decimal>("TotalReceipts");
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("CashRepositoryId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("CashRepository");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.Catalog", b =>
                 {
                     b.Property<string>("CatalogId")
@@ -584,6 +613,8 @@ namespace netcore.Migrations
 
                     b.Property<string>("HasChild");
 
+                    b.Property<decimal>("InvoiceBalance");
+
                     b.Property<DateTime>("InvoiceDate");
 
                     b.Property<string>("InvoiceNumber");
@@ -631,6 +662,8 @@ namespace netcore.Migrations
                     b.Property<decimal>("totalDiscountAmount");
 
                     b.Property<decimal>("totalOrderAmount");
+
+                    b.Property<decimal>("totalPaymentReceive");
 
                     b.HasKey("InvoiceId");
 
@@ -722,6 +755,8 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
+                    b.Property<string>("CashRepositoryId");
+
                     b.Property<string>("EmployeeId")
                         .HasMaxLength(38);
 
@@ -730,7 +765,7 @@ namespace netcore.Migrations
 
                     b.Property<bool>("IsFullPayment");
 
-                    b.Property<double>("PaymentAmount");
+                    b.Property<decimal>("PaymentAmount");
 
                     b.Property<DateTime>("PaymentDate");
 
@@ -742,6 +777,8 @@ namespace netcore.Migrations
                     b.Property<DateTime>("createdAt");
 
                     b.HasKey("PaymentReceiveId");
+
+                    b.HasIndex("CashRepositoryId");
 
                     b.HasIndex("EmployeeId");
 
@@ -1680,6 +1717,13 @@ namespace netcore.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.CashRepository", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.Catalog", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Customer", "Customer")
@@ -1734,6 +1778,10 @@ namespace netcore.Migrations
 
             modelBuilder.Entity("netcore.Models.Invent.PaymentReceive", b =>
                 {
+                    b.HasOne("netcore.Models.Invent.CashRepository")
+                        .WithMany("paymentReceive")
+                        .HasForeignKey("CashRepositoryId");
+
                     b.HasOne("netcore.Models.Invent.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId");

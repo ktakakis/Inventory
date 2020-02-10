@@ -100,12 +100,46 @@ namespace netcore.Controllers.Invent
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", shipment.customerId);
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "SalesOrderName", shipment.salesOrderId);
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName", shipment.warehouseId);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", shipment.EmployeeId);
             return View(shipment);
         }
 
 
         // GET: Shipment/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
+        {
+            
+            ViewData["StatusMessage"] = TempData["StatusMessage"];
+            ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName");
+            ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
+            if (id != null)
+            {
+                SalesOrder so = _context.SalesOrder
+                    .Include(x => x.branch)
+                    .Where(x => x.salesOrderId.Equals(id)).FirstOrDefault();
+                List<Warehouse> warehouseList = _context.Warehouse.Where(x => x.branchId.Equals(so.branch.branchId)).ToList();
+                warehouseList.Insert(0, new Warehouse { warehouseId = "0", warehouseName = "Επιλέξτε" });
+                ViewData["warehouseId"] = new SelectList(warehouseList, "warehouseId", "warehouseName");
+            }
+            else
+            {
+                ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
+            }
+
+            List<SalesOrder> soList = _context.SalesOrder.Where(x => x.salesOrderStatus == SalesOrderStatus.Open).ToList();
+            soList.Insert(0, new SalesOrder { salesOrderId = "0", SalesOrderName = "Επιλέξτε" });
+
+
+            ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "SalesOrderName",id);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+
+            Shipment shipment = new Shipment();
+            shipment.salesOrderId = id;
+            return View(shipment);
+        }
+
+        // GET: Shipment/CreateFromSalesOrder
+        public IActionResult CreateShipmentFromSalesOrder(string id) 
         {
             
             ViewData["StatusMessage"] = TempData["StatusMessage"];
@@ -116,10 +150,11 @@ namespace netcore.Controllers.Invent
             ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "SalesOrderName");
             ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
             ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+
             Shipment shipment = new Shipment();
+            shipment.salesOrderId = id;
             return View(shipment);
         }
-
 
 
 

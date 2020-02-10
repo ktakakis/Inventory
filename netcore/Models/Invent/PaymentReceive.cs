@@ -38,7 +38,7 @@ namespace netcore.Models.Invent
         public PaymentType paymentType { get; set; }
 
         [Display(Name = "Ποσόν")]
-        public double PaymentAmount { get; set; }
+        public decimal PaymentAmount { get; set; }
 
         [StringLength(38)]
         [Display(Name = "Id Συνεργάτη")]

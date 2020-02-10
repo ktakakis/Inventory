@@ -27,7 +27,6 @@ namespace netcore.Controllers.Invent
             _context = context;
             _numberSequence = numberSequence;
         }
-
         public async Task<IActionResult> ShowSalesOrder(string id)
         {
             SalesOrder obj = await _context.SalesOrder
@@ -64,8 +63,8 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Index()
         {
 
-            var username = HttpContext.User.Identity.Name;
             var applicationDbContext = _context.SalesOrder.OrderByDescending(x => x.createdAt).Include(s => s.customer);
+            var username = HttpContext.User.Identity.Name;
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                   applicationDbContext = _context.SalesOrder.Where(s => s.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(s => s.customer);
@@ -88,8 +87,16 @@ namespace netcore.Controllers.Invent
                     .Include(s => s.customer)
                     .Include(x => x.branch)
                     .Include(c=>c.customerLine)
-                        .SingleOrDefaultAsync(m => m.salesOrderId == id);
-            if (salesOrder == null)
+                    .SingleOrDefaultAsync(m => m.salesOrderId == id);
+            salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
+            salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
+            salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
+            salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+            salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
+            _context.Update(salesOrder);
+            await _context.SaveChangesAsync();
+
+           if (salesOrder == null)
             {
                 return NotFound();
             }
@@ -106,14 +113,6 @@ namespace netcore.Controllers.Invent
             {
                 ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
             }
-            salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
-            salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
-            salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
-            salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
-            salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
-            _context.Update(salesOrder);
-            await _context.SaveChangesAsync();
-
             return View(salesOrder);
         }
 
@@ -245,20 +244,18 @@ namespace netcore.Controllers.Invent
                 TempData["StatusMessage"] = "Σφάλμα. Δεν είναι δυνατή η επεξεργασία της κατάστασης μιας [Ολοκληρωμένης] Παραγγελίας.";
                 return RedirectToAction(nameof(Edit), new { id = salesOrder.salesOrderId});
             }
-
-            if (ModelState.IsValid)
+           if (ModelState.IsValid)
             {
-                string customerName = _context.Customer.Where(x => x.customerId == salesOrder.customerId).FirstOrDefault().customerName;
 
                 try
                 {
+                    string customerName = _context.Customer.Where(x => x.customerId == salesOrder.customerId).FirstOrDefault().customerName;
                     salesOrder.SalesOrderName = salesOrder.salesOrderNumber + " (" + customerName + ")";
                     salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
                     salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
                     salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
                     salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
                     salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
-
                     _context.Update(salesOrder);
                     await _context.SaveChangesAsync();
                 }
@@ -353,6 +350,25 @@ namespace netcore.Controllers.Invent
                 return View(salesOrder);
             }
             
+        }
+        public JsonResult UpdateSalesOrderTotals(string id)
+        {
+            var salesOrder = _context.SalesOrder.Where(x => x.salesOrderId == id)
+            .Include(x => x.Employee)
+            .Include(x => x.salesOrderLine)
+            .Include(s => s.customer)
+            .Include(x => x.branch)
+            .Include(c => c.customerLine).SingleOrDefault();
+
+            salesOrder.totalOrderAmount = salesOrder.salesOrderLine.Sum(x => x.TotalAmount);
+            salesOrder.totalDiscountAmount = salesOrder.salesOrderLine.Sum(x => x.DiscountAmount);
+            salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
+            salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+            salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
+            _context.Update(salesOrder);
+            _context.SaveChangesAsync();
+            return Json(salesOrder);
+
         }
 
         private bool SalesOrderExists(string id)

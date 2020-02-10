@@ -150,6 +150,7 @@
                             <a asp-action="Edit" asp-route-id="@Model.salesOrderId" class="btn btn-primary">Επεξεργασία</a>
                             <a asp-action="ShowSalesOrder" asp-route-id="@Model.salesOrderId" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Εκτύπωση Παραγγελίας</a>
                             <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                            <a asp-action="Create" asp-controller="Shipment" asp-route-Id="@Model.salesOrderId" class="btn btn-default">Αποστολή</a>
                         </div>
                     </div>
                     <!-- /.box-footer-->

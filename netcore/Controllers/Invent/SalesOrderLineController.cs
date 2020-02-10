@@ -105,10 +105,21 @@ namespace netcore.Controllers.Invent
             {
                 _context.Add(salesOrderLine);
                 await _context.SaveChangesAsync();
+            var so = await _context.SalesOrder.Include(x => x.salesOrderLine).SingleOrDefaultAsync(m => m.salesOrderId == salesOrderLine.SalesOrderId);
+            so.totalOrderAmount = so.salesOrderLine.Sum(x => x.TotalAmount);
+            so.totalDiscountAmount = so.salesOrderLine.Sum(x => x.DiscountAmount);
+            so.TotalProductVAT = so.salesOrderLine.Sum(x => x.ProductVATAmount);
+            so.TotalWithSpecialTax = so.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
+            so.TotalBeforeDiscount = so.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
+            _context.Update(so);
+            await _context.SaveChangesAsync();
+
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["productId"] = new SelectList(_context.Product, "productId", "productCode", salesOrderLine.ProductId);
             ViewData["salesOrderId"] = new SelectList(_context.SalesOrder, "salesOrderId", "salesOrderNumber", salesOrderLine.SalesOrderId);
+            
             return View(salesOrderLine);
         }
 

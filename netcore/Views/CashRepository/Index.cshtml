@@ -1,0 +1,70 @@
+﻿@model IEnumerable<netcore.Models.Invent.CashRepository>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-bank";
+    ViewData["ListTitle"] = "Λίστα Πελατών";
+    ViewData["IndexInfo"] = "Ο πελάτης είναι ένας οργανισμός που αγοράζει προϊόντα από την εταιρεία σας. Πουλάτε προϊόντα σε αυτούς.";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CashRepositoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalReceipts)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPayments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Balance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.createdAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CashRepositoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalReceipts)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPayments)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Balance)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CashRepositoryId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CashRepositoryId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CashRepositoryId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

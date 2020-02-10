@@ -47,7 +47,10 @@ namespace netcore.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NumberSequenceRole = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
+                    PaymentReceiveRole = table.Column<bool>(nullable: false),
+                    PaymentTypeRole = table.Column<bool>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     ProductRole = table.Column<bool>(nullable: false),
@@ -124,10 +127,12 @@ namespace netcore.Migrations
                 columns: table => new
                 {
                     EmployeeId = table.Column<string>(maxLength: 38, nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     Commission = table.Column<decimal>(nullable: true),
                     DisplayName = table.Column<string>(maxLength: 50, nullable: true),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    PaymentReceiver = table.Column<bool>(nullable: false),
                     UserName = table.Column<string>(maxLength: 50, nullable: false),
                     city = table.Column<string>(maxLength: 30, nullable: true),
                     country = table.Column<string>(maxLength: 30, nullable: true),
@@ -154,11 +159,26 @@ namespace netcore.Migrations
                     Module = table.Column<string>(nullable: false),
                     MyProperty = table.Column<int>(nullable: false),
                     NumberSequenceName = table.Column<string>(nullable: false),
-                    Prefix = table.Column<string>(nullable: false)
+                    Prefix = table.Column<string>(nullable: false),
+                    createdAt = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NumberSequence", x => x.NumberSequenceId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentType",
+                columns: table => new
+                {
+                    PaymentTypeId = table.Column<string>(maxLength: 38, nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    PaymentTypeName = table.Column<string>(nullable: false),
+                    createdAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentType", x => x.PaymentTypeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -346,6 +366,30 @@ namespace netcore.Migrations
                         column: x => x.branchId,
                         principalTable: "Branch",
                         principalColumn: "branchId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CashRepository",
+                columns: table => new
+                {
+                    CashRepositoryId = table.Column<string>(maxLength: 38, nullable: false),
+                    Balance = table.Column<decimal>(nullable: false),
+                    CashRepositoryName = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    EmployeeId = table.Column<string>(maxLength: 38, nullable: true),
+                    TotalPayments = table.Column<decimal>(nullable: false),
+                    TotalReceipts = table.Column<decimal>(nullable: false),
+                    createdAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CashRepository", x => x.CashRepositoryId);
+                    table.ForeignKey(
+                        name: "FK_CashRepository_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -804,6 +848,7 @@ namespace netcore.Migrations
                     EmployeeId = table.Column<string>(maxLength: 38, nullable: true),
                     HasChild = table.Column<string>(nullable: true),
                     Invoicing = table.Column<bool>(nullable: false),
+                    SalesOrderName = table.Column<string>(nullable: true),
                     TotalBeforeDiscount = table.Column<decimal>(nullable: false),
                     TotalProductVAT = table.Column<decimal>(nullable: false),
                     TotalWithSpecialTax = table.Column<decimal>(nullable: false),
@@ -1052,17 +1097,23 @@ namespace netcore.Migrations
                     CustomerCity = table.Column<string>(maxLength: 30, nullable: true),
                     CustomerCompanyActivity = table.Column<string>(maxLength: 50, nullable: true),
                     CustomerCountry = table.Column<string>(maxLength: 30, nullable: true),
+                    CustomerFax = table.Column<string>(maxLength: 20, nullable: true),
+                    CustomerMobilePhone = table.Column<string>(maxLength: 20, nullable: true),
+                    CustomerOfficePhone = table.Column<string>(maxLength: 20, nullable: true),
                     CustomerPostCode = table.Column<string>(maxLength: 5, nullable: true),
                     CustomerStreet = table.Column<string>(maxLength: 50, nullable: true),
                     CustomerTaxOffice = table.Column<string>(maxLength: 50, nullable: true),
                     CustomerVATRegNumber = table.Column<string>(maxLength: 50, nullable: true),
+                    CustomerWorkEmail = table.Column<string>(maxLength: 50, nullable: true),
                     EmployeeName = table.Column<string>(maxLength: 30, nullable: true),
                     Fax = table.Column<string>(maxLength: 50, nullable: true),
                     Finalized = table.Column<bool>(nullable: false),
                     HasChild = table.Column<string>(nullable: true),
+                    InvoiceBalance = table.Column<decimal>(nullable: false),
                     InvoiceDate = table.Column<DateTime>(nullable: false),
                     InvoiceNumber = table.Column<string>(nullable: true),
                     OfficePhone = table.Column<string>(maxLength: 50, nullable: true),
+                    Paid = table.Column<bool>(nullable: false),
                     PostalCode = table.Column<string>(maxLength: 50, nullable: true),
                     TaxOffice = table.Column<string>(maxLength: 50, nullable: true),
                     TotalBeforeDiscount = table.Column<decimal>(nullable: false),
@@ -1077,7 +1128,8 @@ namespace netcore.Migrations
                     shipmentId = table.Column<string>(nullable: true),
                     street1 = table.Column<string>(maxLength: 50, nullable: true),
                     totalDiscountAmount = table.Column<decimal>(nullable: false),
-                    totalOrderAmount = table.Column<decimal>(nullable: false)
+                    totalOrderAmount = table.Column<decimal>(nullable: false),
+                    totalPaymentReceive = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -1173,6 +1225,43 @@ namespace netcore.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PaymentReceive",
+                columns: table => new
+                {
+                    PaymentReceiveId = table.Column<string>(maxLength: 38, nullable: false),
+                    EmployeeId = table.Column<string>(maxLength: 38, nullable: true),
+                    InvoiceId = table.Column<string>(maxLength: 38, nullable: true),
+                    IsFullPayment = table.Column<bool>(nullable: false),
+                    PaymentAmount = table.Column<decimal>(nullable: false),
+                    PaymentDate = table.Column<DateTime>(nullable: false),
+                    PaymentReceiveName = table.Column<string>(nullable: true),
+                    PaymentTypeId = table.Column<string>(maxLength: 38, nullable: true),
+                    createdAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentReceive", x => x.PaymentReceiveId);
+                    table.ForeignKey(
+                        name: "FK_PaymentReceive_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PaymentReceive_Invoice_InvoiceId",
+                        column: x => x.InvoiceId,
+                        principalTable: "Invoice",
+                        principalColumn: "InvoiceId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PaymentReceive_PaymentType_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentType",
+                        principalColumn: "PaymentTypeId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -1213,6 +1302,11 @@ namespace netcore.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CashRepository_EmployeeId",
+                table: "CashRepository",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Catalog_CustomerId",
                 table: "Catalog",
                 column: "CustomerId");
@@ -1251,6 +1345,21 @@ namespace netcore.Migrations
                 name: "IX_InvoiceLine_ProductId",
                 table: "InvoiceLine",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentReceive_EmployeeId",
+                table: "PaymentReceive",
+                column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentReceive_InvoiceId",
+                table: "PaymentReceive",
+                column: "InvoiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentReceive_PaymentTypeId",
+                table: "PaymentReceive",
+                column: "PaymentTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseOrder_branchId",
@@ -1528,6 +1637,9 @@ namespace netcore.Migrations
                 name: "NumberSequence");
 
             migrationBuilder.DropTable(
+                name: "PaymentReceive");
+
+            migrationBuilder.DropTable(
                 name: "PurchaseOrderLine");
 
             migrationBuilder.DropTable(
@@ -1561,7 +1673,13 @@ namespace netcore.Migrations
                 name: "Catalog");
 
             migrationBuilder.DropTable(
+                name: "CashRepository");
+
+            migrationBuilder.DropTable(
                 name: "Invoice");
+
+            migrationBuilder.DropTable(
+                name: "PaymentType");
 
             migrationBuilder.DropTable(
                 name: "Receiving");

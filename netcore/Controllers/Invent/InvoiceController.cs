@@ -43,37 +43,56 @@ namespace netcore.Controllers.Invent
 
             var invoice = await _context.Invoice
                 .Include(i => i.Shipment)
+                .Include(p=>p.PaymentReceive)
                 .SingleOrDefaultAsync(m => m.InvoiceId == id);
             if (invoice == null)
             {
                 return NotFound();
             }
 
-            var shipment =
+            var shipment =(
                         from Shipment in _context.Shipment
                         join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
                         select new
                         {
                             Shipment.shipmentId,
                             ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
-                        };
-            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName",invoice.shipmentId);
+                        }).ToList();
+            shipment.Insert(0,
+             new
+             {
+                 shipmentId ="0000",
+                 ShipmentName = "Επιλέξτε"
+             });
+
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
+            invoice.totalPaymentReceive = invoice.PaymentReceive.Sum(x => x.PaymentAmount);
+            invoice.InvoiceBalance = invoice.totalOrderAmount - invoice.totalPaymentReceive;
+            _context.Update(invoice);
+            await _context.SaveChangesAsync();
             return View(invoice);
         }
 
         // GET: Invoice/Create
         public IActionResult Create()
         {
-            var shipment =
-            from Shipment in _context.Shipment
-            join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
-            select new
-            {
-                Shipment.shipmentId,
-                ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
-            };
+            var shipment = (
+                        from Shipment in _context.Shipment
+                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+                        select new
+                        {
+                            Shipment.shipmentId,
+                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+                        }).ToList();
+            shipment.Insert(0,
+             new
+             {
+                 shipmentId = "0000",
+                 ShipmentName = "Επιλέξτε"
+             });
+
             ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName");
-            Invoice inv = new Invoice(); 
+            Invoice inv = new Invoice();
             return View(inv);
         }
 
@@ -82,7 +101,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail,Paid")] Invoice invoice)
+        public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail,Paid,totalPaymentReceive,InvoiceBalance")] Invoice invoice)
         {
             var query =
                 from Invoice in _context.Invoice
@@ -133,19 +152,19 @@ namespace netcore.Controllers.Invent
 
             if (ModelState.IsValid)
             {
-               
+
                 //check Invoice
                 Invoice check = await _context.Invoice.Include(x => x.Shipment)
                     .SingleOrDefaultAsync(x => x.shipmentId.Equals(invoice.shipmentId));
                 if (check != null)
                 {
                     ViewData["StatusMessage"] = "Σφάλμα. Το Τιμολόγιο έχει ήδη δημιουργηθεί. " + check.InvoiceNumber;
-                    ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber", invoice.shipmentId);
+                    ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "shipmentNumber");
 
                     return View(invoice);
                 }
 
-                
+
                 _context.Add(invoice);
                 invoice.InvoiceNumber = _numberSequence.GetNumberSequence("ΔΑΠ");
                 var inv = query.Where(x => x.InvoiceId == invoice.InvoiceId).FirstOrDefault();
@@ -191,7 +210,7 @@ namespace netcore.Controllers.Invent
                 foreach (var item in solines)
                 {
                     InvoiceLine line = new InvoiceLine();
-                    
+
                     line.Discount = item.Discount;
                     line.DiscountAmount = item.DiscountAmount;
                     line.InvoiceId = invoice.InvoiceId;
@@ -224,8 +243,8 @@ namespace netcore.Controllers.Invent
                 Shipment.shipmentId,
                 ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
             };
-            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
-            
+            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName");
+
             return View(invoice);
         }
 
@@ -259,14 +278,22 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail,Paid")] Invoice invoice)
+        public async Task<IActionResult> Edit(string id, [Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail,Paid,totalPaymentReceive,InvoiceBalance")] Invoice invoice)
         {
             if (id != invoice.InvoiceId)
             {
                 return NotFound();
             }
 
-            
+            var shipment =
+                        from Shipment in _context.Shipment
+                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+                        select new
+                        {
+                            Shipment.shipmentId,
+                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+                        };
+
             if (ModelState.IsValid)
             {
                 try
@@ -287,15 +314,7 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var shipment =
-                        from Shipment in _context.Shipment
-                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
-                        select new
-                        {
-                            Shipment.shipmentId,
-                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
-                        };
-            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
+            ViewData["shipmentId"] = new SelectList(_context.Shipment, "shipmentId", "ShipmentName", invoice.shipmentId);
             return View(invoice);
         }
 
@@ -339,11 +358,11 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> ShowInvoice(string id)
         {
             Invoice obj = await _context.Invoice
-                .Include(x=>x.InvoiceLine).ThenInclude(x => x.Product)
+                .Include(x => x.InvoiceLine).ThenInclude(x => x.Product)
                 .Include(x => x.Shipment)
                 .ThenInclude(x => x.salesOrder)
-                .ThenInclude(x=>x.branch)
-                .Include(x => x.Shipment).ThenInclude(x=>x.Employee)
+                .ThenInclude(x => x.branch)
+                .Include(x => x.Shipment).ThenInclude(x => x.Employee)
                 .Include(x => x.Shipment).ThenInclude(x => x.customer)
                 .SingleOrDefaultAsync(x => x.InvoiceId.Equals(id));
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace netcore.Migrations
 {
-    public partial class UpdateInvoice4 : Migration
+    public partial class LastUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,6 @@ namespace netcore.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
         }
     }
 }

@@ -123,9 +123,6 @@
 
     <script>
         $(document).ready(function () {
-            var items = "<option value='0'>Επιλέξτε</option>";
-            $('#warehouseId').html(items);
-
             $('#salesOrderId').change(function () { 
                 var url = '@Url.Content("~/")' + "Shipment/GetWarehouseByOrder";
                 var ddlsource = '#salesOrderId';

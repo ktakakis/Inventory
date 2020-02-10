@@ -52,6 +52,7 @@ namespace netcore.Services
 
         List<TimelineViewModel> GetTimelinesByTransferId(string transferId);
         List<TimelineViewModel> GetTimelinesByInvoiceId(string invoiceId);
+        List<TimelineViewModel> GetTimelinesByShipmentId(string shipmentId);
         Task CreateDefaultRoles();
     }
 }

@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<netcore.Models.Invent.Shipment>
+@inject netcore.Data.ApplicationDbContext _context;
 
 @{
     ViewData["Title"] = "Index";
@@ -6,6 +7,8 @@
     ViewData["EntityIcon"] = "fa fa-plane";
     ViewData["ListTitle"] = "Λίστα αποστολών";
     ViewData["IndexInfo"] = "Η αποστολή είναι μια διαδικασία παράδοσης της παραγγελίας στον πελάτη σας. ";
+    netcore.Models.Invent.Invoice invoice = _context.Invoice.FirstOrDefault();
+
 }
 
 
@@ -22,11 +25,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.customer.customerName)
             </th>
-            <th class="hidden">
-                @Html.DisplayNameFor(model => model.customerPO)
+            <th>
+                @Html.DisplayNameFor(model => model.invoice)
             </th>
             <th class="hidden">
-                @Html.DisplayNameFor(model => model.invoice)
+                @Html.DisplayNameFor(model => model.customerPO)
             </th>
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.expeditionType)
@@ -52,49 +55,55 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                <div class="tools">
-                    <a asp-action="Details" asp-route-id="@item.shipmentId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
-                    <a asp-action="Delete" asp-route-id="@item.shipmentId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                </div>
+            <tr>
+                <td>
+                    <div class="tools">
+                        <a asp-action="Details" asp-route-id="@item.shipmentId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.shipmentId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                    </div>
 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.shipmentNumber)
-            </td>
-            <td>
-                @item.shipmentDate.ToString("dd-MMM-yyyy")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.customer.customerName)
-            </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.customerPO)
-            </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.invoice)
-            </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.expeditionType)
-            </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.expeditionMode)
-            </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.branch.branchId)
-            </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.customer.customerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.salesOrder.salesOrderNumber)
-            </td>
-            <td class="hidden">
-                @Html.DisplayFor(modelItem => item.warehouse.warehouseId)
-            </td>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.shipmentNumber)
+                </td>
+                <td>
+                    @item.shipmentDate.ToString("dd-MMM-yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.customer.customerName)
+                </td>
+                <td>
+                    
+                    @if (item.invoiceNumber != null)
+                    {
+                        <span class="label label-success">
+                            @Html.DisplayFor(modelItem => item.invoiceNumber)
+                        </span>
+                    }
+                </td>
+                <td class="hidden">
+                    @Html.DisplayFor(modelItem => item.customerPO)
+                </td>
+                <td class="hidden">
+                    @Html.DisplayFor(modelItem => item.expeditionType)
+                </td>
+                <td class="hidden">
+                    @Html.DisplayFor(modelItem => item.expeditionMode)
+                </td>
+                <td class="hidden">
+                    @Html.DisplayFor(modelItem => item.branch.branchId)
+                </td>
+                <td class="hidden">
+                    @Html.DisplayFor(modelItem => item.customer.customerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.salesOrder.salesOrderNumber)
+                </td>
+                <td class="hidden">
+                    @Html.DisplayFor(modelItem => item.warehouse.warehouseId)
+                </td>
 
-        </tr>
+            </tr>
         }
     </tbody>
 </table>

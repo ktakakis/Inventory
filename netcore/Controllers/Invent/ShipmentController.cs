@@ -73,7 +73,12 @@ namespace netcore.Controllers.Invent
         // GET: Shipment
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Shipment.OrderByDescending(x => x.createdAt).Include(s => s.branch).Include(s => s.customer).Include(s => s.salesOrder).Include(s => s.warehouse).Include(c=>c.customer);
+            var applicationDbContext = _context.Shipment.OrderByDescending(x => x.createdAt)
+                .Include(s => s.branch)
+                .Include(s => s.customer)
+                .Include(s => s.salesOrder)
+                .Include(s => s.warehouse)
+                .Include(c=>c.customer);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -138,32 +143,13 @@ namespace netcore.Controllers.Invent
             return View(shipment);
         }
 
-        // GET: Shipment/CreateFromSalesOrder
-        public IActionResult CreateShipmentFromSalesOrder(string id) 
-        {
-            
-            ViewData["StatusMessage"] = TempData["StatusMessage"];
-            ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName");
-            ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
-            List<SalesOrder> soList = _context.SalesOrder.Where(x => x.salesOrderStatus == SalesOrderStatus.Open).ToList();
-            soList.Insert(0, new SalesOrder { salesOrderId = "0", SalesOrderName = "Επιλέξτε" });
-            ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "SalesOrderName");
-            ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
-            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
-
-            Shipment shipment = new Shipment();
-            shipment.salesOrderId = id;
-            return View(shipment);
-        }
-
-
 
         // POST: Shipment/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("shipmentId,HasChild,branchId,createdAt,customerId,customerPO,expeditionMode,expeditionType,invoice,salesOrderId,shipmentDate,shipmentNumber,warehouseId,EmployeeId")] Shipment shipment)
+        public async Task<IActionResult> Create([Bind("shipmentId,HasChild,branchId,createdAt,customerId,customerPO,expeditionMode,expeditionType,invoiceNumber,salesOrderId,shipmentDate,shipmentNumber,warehouseId,EmployeeId")] Shipment shipment)
         {
             if (shipment.salesOrderId == "0" || shipment.warehouseId == "0")
             {
@@ -299,7 +285,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("shipmentId,HasChild,branchId,createdAt,customerId,customerPO,expeditionMode,expeditionType,invoice,salesOrderId,shipmentDate,shipmentNumber,warehouseId,EmployeeId")] Shipment shipment)
+        public async Task<IActionResult> Edit(string id, [Bind("shipmentId,HasChild,branchId,createdAt,customerId,customerPO,expeditionMode,expeditionType,invoiceNumber,salesOrderId,shipmentDate,shipmentNumber,warehouseId,EmployeeId")] Shipment shipment)
         {
             if (id != shipment.shipmentId)
             {

@@ -87,9 +87,9 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label asp-for="invoice" class="control-label">Τιμολόγιο για τον Πελάτη</label>
-                                        <input disabled asp-for="invoice" class="form-control" />
-                                        <span asp-validation-for="invoice" class="text-danger"></span>
+                                        <label asp-for="invoiceNumber" class="control-label">Αριθμός Τιμολογίου</label>
+                                        <input disabled asp-for="invoiceNumber" class="form-control" />
+                                        <span asp-validation-for="invoiceNumber" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -124,6 +124,10 @@
                 <div class="box-footer">
                     <div class="form-group">
                         <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                        @if (Model.invoiceNumber==null)
+                        {
+                    <a asp-action="Create" asp-controller="Invoice" asp-route-Id="@Model.shipmentId" class="btn btn-primary"><i class="fa fa-certificate"></i> Δημιουργία Τιμολογίου</a>
+                        }
                         <a asp-action="ShowDeliveryOrder" asp-route-id="@Model.shipmentId" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Εκτύπωση Δελτίου Αποστολής</a>
                     </div>
                 </div>

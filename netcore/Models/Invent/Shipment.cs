@@ -50,7 +50,7 @@ namespace netcore.Models.Invent
 
         [StringLength(50)]
         [Display(Name = "Αριθμός Τιμολογίου")]
-        public string invoice { get; set; }
+        public string invoiceNumber { get; set; }
 
         [StringLength(38)]
         [Display(Name = "Id υποκαταστήματος")]
@@ -71,7 +71,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Id Employee")]
         public string EmployeeId { get; set; }
 
-        [Display(Name = "Συνεργάτης")]
+        [Display(Name = "Μεταφορέας")]
         public Employee Employee { get; set; }
 
 
@@ -84,5 +84,8 @@ namespace netcore.Models.Invent
 
         [Display(Name = "Στοιχεία Αποστολής")]
         public List<ShipmentLine> shipmentLine { get; set; } = new List<ShipmentLine>();
+
+        [Display(Name = "Παραστατικά")]
+        public List<Invoice> invoice { get; set; } = new List<Invoice>();
     }
 }

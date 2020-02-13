@@ -6,14 +6,24 @@
     Layout = "_AdminlteNetcore";
     var username = User.Identity.Name;
     
-    int so = Context.SalesOrder.Count();
+    int so = Context.SalesOrder.Where(x=>x.salesOrderStatus==SalesOrderStatus.Open).Count();
     if (!(User.IsInRole("ApplicationUser") || User.IsInRole("Secretary")))    {
-        so = Context.SalesOrder.Where(s=>s.Employee.UserName==username).Count();
+        so = Context.SalesOrder.Where(s=>s.Employee.UserName==username && s.salesOrderStatus==SalesOrderStatus.Open).Count();
     }
+    var query = 
+            from Shipment in Context.Shipment
+            join Invoice in Context.Invoice on Shipment.shipmentId equals Invoice.shipmentId into Invoice_join
+            from Invoice in Invoice_join.DefaultIfEmpty()
+            where
+              Invoice.shipmentId == null
+            select new {
+              Shipment.shipmentId 
+            };
 
-    int po = Context.PurchaseOrder.Count();
-    int shipment = Context.Shipment.Count();
+    int po = Context.PurchaseOrder.Where(x=>x.purchaseOrderStatus==PurchaseOrderStatus.Open).Count();
+    int shipment =query.Count();
     int receive = Context.Receiving.Count();
+
 
     List<VMStock> stocks = new List<VMStock>();
     List<Product> products = new List<Product>();

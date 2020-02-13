@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
             <label asp-for="InvoiceId" class="control-label"></label>
-            <select asp-for="InvoiceId" class="form-control" asp-items="ViewBag.InvoiceId"></select>
+            <select asp-for="InvoiceId" id="invoiceid" class="form-control" asp-items="ViewBag.InvoiceId"></select>
         </div>
         <div class="form-group">
             <label asp-for="PaymentDate" class="control-label"></label>
@@ -37,7 +37,7 @@
         </div>
         <div class="form-group">
             <label asp-for="PaymentAmount" class="control-label"></label>
-            <input asp-for="PaymentAmount" class="form-control" />
+            <input asp-for="PaymentAmount" id="paymentAmount" class="form-control" />
             <span asp-validation-for="PaymentAmount" class="text-danger"></span>
         </div>
         <div class="form-group">
@@ -52,4 +52,16 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $("#invoiceid").change(function () {
+            var invoiceid = $("#invoiceid").val();
+
+            $.getJSON("/PaymentReceive/GetInvoiceBalance", { invoiceId: invoiceid}, function (data) {
+                data['paymentAmount'] = data['paymentAmount'].toString().replace('.', ',');
+                $("#paymentAmount").val(data.paymentAmount);
+            });
+        });
+    </script>
+
 }

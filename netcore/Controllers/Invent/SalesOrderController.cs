@@ -63,7 +63,7 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Index()
         {
 
-            var applicationDbContext = _context.SalesOrder.OrderByDescending(x => x.createdAt).Include(s => s.customer);
+            var applicationDbContext = _context.SalesOrder.OrderBy(x => x.salesOrderStatus).ThenByDescending(x=>x.createdAt).Include(s => s.customer);
             var username = HttpContext.User.Identity.Name;
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {

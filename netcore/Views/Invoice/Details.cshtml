@@ -112,15 +112,18 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <a asp-action="Edit" asp-route-id="@Model.InvoiceId" class="btn btn-primary">Επεξεργασία</a>
-                            <a asp-action="ShowInvoice" asp-route-id="@Model.InvoiceId" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Εκτύπωση Τιμολογίου</a>
+                            <a asp-action="Edit" asp-route-id="@Model.InvoiceId" class="btn btn-primary"> Επεξεργασία</a>
+                            <a asp-action="ShowInvoice" asp-route-id="@Model.InvoiceId" class="btn btn-primary pull-right"><i class="fa fa-print"></i>  Εκτύπωση Τιμολογίου</a>
                             <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
-                        </div>
+                            @if (Model.InvoiceBalance!=0)
+                            {
+                                <a asp-action="Create" asp-controller="PaymentReceive" asp-route-Id="@Model.InvoiceId" class="btn btn-primary"><i class="fa fa-money"></i>  Νέα Είσπραξη</a>
+                            }
+                            </div>
                     </div>
                     <!-- /.box-footer-->
                 </div>

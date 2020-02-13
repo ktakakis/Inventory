@@ -61,7 +61,7 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: PaymentReceive/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
             var username = HttpContext.User.Identity.Name;
             var invoice =(
@@ -69,16 +69,20 @@ namespace netcore.Controllers.Invent
             select new
             {
                 Invoice.InvoiceId,
-                description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
-                Invoice.Paid
-            }).ToList();
-            invoice.Insert(0,
-             new
-             {
-                 InvoiceId = "0000",
-                 description = "Επιλέξτε",
-                 Paid=false
-             });
+                Invoice.InvoiceBalance,
+                Invoice.Paid,
+                description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")")
+            });
+
+            if (id != null)
+            {
+                ViewData["InvoiceId"] = new SelectList(invoice, "InvoiceId", "description", id);
+            }
+            else
+            {
+                ViewData["InvoiceId"] = new SelectList(invoice, "InvoiceId", "description");
+            }
+
 
             ViewData["InvoiceId"] = new SelectList(invoice.Where(x=>x.Paid==false), "InvoiceId", "description");
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName");
@@ -90,6 +94,8 @@ namespace netcore.Controllers.Invent
             PaymentReceive pr = new PaymentReceive();
              
             pr.PaymentDate = DateTime.Today;
+            pr.InvoiceId = id;
+            pr.PaymentAmount = invoice.Where(x => x.InvoiceId == id).FirstOrDefault().InvoiceBalance;
             return View(pr);
         }
 
@@ -114,10 +120,15 @@ namespace netcore.Controllers.Invent
 
                 invoice.totalPaymentReceive = invoice.PaymentReceive.Sum(x => x.PaymentAmount);
                 invoice.InvoiceBalance = invoice.totalOrderAmount - invoice.totalPaymentReceive;
+                if (invoice.InvoiceBalance==0)
+                {
+                    invoice.Paid = true; 
+                }
                 _context.Update(invoice);
                 await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Invoice", new { id = paymentReceive.InvoiceId });
 
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
             }
             var query =
                 from Invoice in _context.Invoice
@@ -134,7 +145,6 @@ namespace netcore.Controllers.Invent
             {
                 ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x => x.PaymentReceiver == true && x.UserName == username), "EmployeeId", "DisplayName");
             }
-
             return View(paymentReceive);
         }
 
@@ -251,6 +261,8 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var paymentReceive = await _context.PaymentReceive.SingleOrDefaultAsync(m => m.PaymentReceiveId == id);
+            var invoice = await _context.Invoice.SingleOrDefaultAsync(m => m.InvoiceId == paymentReceive.InvoiceId);
+            invoice.Paid = false;
             _context.PaymentReceive.Remove(paymentReceive);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -260,6 +272,18 @@ namespace netcore.Controllers.Invent
         {
             return _context.PaymentReceive.Any(e => e.PaymentReceiveId == id);
         }
+        [HttpGet]
+        public JsonResult GetInvoiceBalance(string invoiceId)
+        {
+            var invBalance = _context.Invoice.Where(c => c.InvoiceId == invoiceId).FirstOrDefault();
+            var result = new
+            {
+                paymentAmount = invBalance.InvoiceBalance
+            };
+            return Json(result);
+
+        }
+
     }
 }
 namespace netcore.MVC

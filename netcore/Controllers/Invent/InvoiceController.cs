@@ -30,7 +30,13 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Invoice.Include(i => i.Shipment);
-            return View(await applicationDbContext.ToListAsync());
+            var username = HttpContext.User.Identity.Name;
+
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                applicationDbContext = _context.Invoice.Where(x=>x.Shipment.Employee.UserName==username).Include(i => i.Shipment);
+            }
+                return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Invoice/Details/5
@@ -74,16 +80,17 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: Invoice/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
+
             var shipment = (
-                        from Shipment in _context.Shipment
-                        join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
-                        select new
-                        {
-                            Shipment.shipmentId,
-                            ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
-                        }).ToList();
+                    from Shipment in _context.Shipment
+                    join Customer in _context.Customer on Shipment.customerId equals Customer.customerId
+                    select new
+                    {
+                        Shipment.shipmentId,
+                        ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
+                    }).ToList();
             shipment.Insert(0,
              new
              {
@@ -91,8 +98,16 @@ namespace netcore.Controllers.Invent
                  ShipmentName = "Επιλέξτε"
              });
 
-            ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName");
+            if (id != null)
+            {
+                ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName", id);
+            }
+            else
+            {
+                ViewData["shipmentId"] = new SelectList(shipment, "shipmentId", "ShipmentName");
+            }
             Invoice inv = new Invoice();
+            inv.shipmentId = id;
             return View(inv);
         }
 
@@ -164,10 +179,16 @@ namespace netcore.Controllers.Invent
                     return View(invoice);
                 }
 
-
                 _context.Add(invoice);
                 invoice.InvoiceNumber = _numberSequence.GetNumberSequence("ΔΑΠ");
+
+                Shipment ship = await _context.Shipment.Where(x => x.shipmentId == invoice.shipmentId).FirstOrDefaultAsync();
+                ship.invoiceNumber = invoice.InvoiceNumber;
+                _context.Update(ship);
+
+
                 var inv = query.Where(x => x.InvoiceId == invoice.InvoiceId).FirstOrDefault();
+                
                 if (inv.Invoicing)
                 {
                     invoice.InvoiceNumber = _numberSequence.GetNumberSequence("ΤΔΑ");
@@ -202,7 +223,10 @@ namespace netcore.Controllers.Invent
                 invoice.totalOrderAmount = inv.totalOrderAmount;
                 invoice.TotalProductVAT = inv.TotalProductVAT;
 
+
                 await _context.SaveChangesAsync();
+
+
                 //auto create shipment line, full shipment               
                 List<SalesOrderLine> solines = new List<SalesOrderLine>();
                 var salesOrderId = _context.Shipment.Where(x => x.shipmentId == invoice.shipmentId).FirstOrDefault().salesOrderId;
@@ -351,6 +375,9 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var invoice = await _context.Invoice.SingleOrDefaultAsync(m => m.InvoiceId == id);
+            var shipment = _context.Shipment.Where(x => x.shipmentId == invoice.shipmentId).FirstOrDefault();
+            shipment.invoiceNumber = null;
+
             _context.Invoice.Remove(invoice);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

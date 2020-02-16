@@ -3,58 +3,88 @@
 @{
     ViewData["Title"] = "Δημιουργία";
     Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
-    ViewData["EntityIcon"] = "fa fa-building-o";
-    ViewData["CreateInfo"] = "Οι κατάλογοι αποτελούν την υλοποίηση της συμφωνίας που έχουμε κάνει τον κάθε πελάτη ξεχωριστά.";
+    ViewData["EntityIcon"] = "fa fa-google-wallet";
+    ViewData["CreateInfo"] = "Ταμείο έχουν μόνο οι παραλήπτες χρημάτων για λογαριασμό της εταιρίας.";
 }
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CashRepositoryName" class="control-label"></label>
-                <input asp-for="CashRepositoryName" class="form-control" />
-                <span asp-validation-for="CashRepositoryName" class="text-danger"></span>
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="CashRepositoryId" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CashRepositoryName" class="control-label"></label>
+                    <input  asp-for="CashRepositoryName" class="form-control" />
+                    <span asp-validation-for="CashRepositoryName" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="col-md-6">
+                <div class="form-group has-success">
+                    <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
+                    <select  asp-for="EmployeeId" class="form-control select2" asp-items="ViewBag.employeeId"></select>
+                    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="TotalReceipts" class="control-label"></label>
-                <input asp-for="TotalReceipts" class="form-control" />
-                <span asp-validation-for="TotalReceipts" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input  asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="TotalPayments" class="control-label"></label>
-                <input asp-for="TotalPayments" class="form-control" />
-                <span asp-validation-for="TotalPayments" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="TotalReceipts" class="control-label"></label>
+                    <input disabled asp-for="TotalReceipts" class="form-control" />
+                    <span asp-validation-for="TotalReceipts" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Balance" class="control-label"></label>
-                <input asp-for="Balance" class="form-control" />
-                <span asp-validation-for="Balance" class="text-danger"></span>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="TotalPayments" class="control-label"></label>
+                    <input disabled asp-for="TotalPayments" class="form-control" />
+                    <span asp-validation-for="TotalPayments" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.EmployeeId"></select>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="Balance" class="control-label"></label>
+                    <input disabled asp-for="Balance" class="form-control" />
+                    <span asp-validation-for="Balance" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="createdAt" class="control-label"></label>
-                <input asp-for="createdAt" class="form-control" />
-                <span asp-validation-for="createdAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Styles{
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
+
+}
 
 @section Scripts {
+
+    <!-- iCheck -->
+    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+
+
 }

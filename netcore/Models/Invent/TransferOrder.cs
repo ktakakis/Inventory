@@ -49,18 +49,18 @@ namespace netcore.Models.Invent
         public Branch branchFrom { get; set; }
 
         [StringLength(38)]
-        [Display(Name = "Από Αποθήκη Id")]
-        public string warehouseIdFrom { get; set; }
-
-        [Display(Name = "Από Αποθήκη")]
-        public Warehouse warehouseFrom { get; set; }
-
-        [StringLength(38)]
         [Display(Name = "Στο υποκατάστημα Id")]
         public string branchIdTo { get; set; }
 
         [Display(Name = "Στο υποκατάστημα")]
         public Branch branchTo { get; set; }
+
+        [StringLength(38)]
+        [Display(Name = "Από Αποθήκη Id")]
+        public string warehouseIdFrom { get; set; }
+
+        [Display(Name = "Από Αποθήκη")]
+        public Warehouse warehouseFrom { get; set; }
 
         [StringLength(38)]
         [Display(Name = "Στην Αποθήκη Id")]

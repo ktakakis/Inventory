@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using netcore.Models.Invent;
 
 namespace netcore.Controllers.Invent
 {
+    [Authorize(Roles = "CashRepository")]
     public class CashRepositoryController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +26,11 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.CashRepository.Include(c => c.Employee);
+            var username = HttpContext.User.Identity.Name;
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                applicationDbContext = _context.CashRepository.Where(x => x.Employee.UserName == username).Include(c => c.Employee);
+            }
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -41,14 +49,34 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            var employee = (from Employee in _context.Employee
+                            select new
+                            {
+                                Employee.EmployeeId,
+                                Employee.DisplayName
+                            }).ToList();
 
+            ViewData["EmployeeId"] = new SelectList(employee, "EmployeeId", "DisplayName",id);
             return View(cashRepository);
         }
 
         // GET: CashRepository/Create
         public IActionResult Create()
         {
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "EmployeeId");
+            var employee = (from Employee in _context.Employee
+                            select new
+                            {
+                                Employee.EmployeeId,
+                                Employee.DisplayName
+                            }).ToList();
+            employee.Insert(0,
+                new
+                {
+                    EmployeeId = "0000",
+                    DisplayName = "Επιλέξτε"
+                });
+
+            ViewData["EmployeeId"] = new SelectList(employee, "EmployeeId", "DisplayName");
             return View();
         }
 
@@ -65,7 +93,7 @@ namespace netcore.Controllers.Invent
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "EmployeeId", cashRepository.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", cashRepository.EmployeeId);
             return View(cashRepository);
         }
 
@@ -82,7 +110,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "EmployeeId", cashRepository.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", cashRepository.EmployeeId);
             return View(cashRepository);
         }
 
@@ -118,7 +146,7 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "EmployeeId", cashRepository.EmployeeId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", cashRepository.EmployeeId);
             return View(cashRepository);
         }
 
@@ -156,5 +184,29 @@ namespace netcore.Controllers.Invent
         {
             return _context.CashRepository.Any(e => e.CashRepositoryId == id);
         }
+    }
+}
+
+
+namespace netcore.MVC
+{
+    public static partial class Pages
+    {
+        public static class CashRepository
+        {
+            public const string Controller = "CashRepository";
+            public const string Action = "Index";
+            public const string Role = "CashRepository";
+            public const string Url = "/CashRepository/Index";
+            public const string Name = "CashRepository";
+        }
+    }
+}
+namespace netcore.Models
+{
+    public partial class ApplicationUser
+    {
+        [Display(Name = "Ταμείο")]
+        public bool CashRepositoryRole { get; set; } = false;
     }
 }

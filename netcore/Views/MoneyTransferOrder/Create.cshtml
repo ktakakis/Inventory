@@ -1,0 +1,56 @@
+﻿@model netcore.Models.Invent.MoneyTransferOrder
+
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
+    ViewData["EntityIcon"] = "fa fa-recycle";
+    ViewData["CreateInfo"] = "Transfer Order (TO) is a process of transfering products from one warehouse to another warehouse. From and To Warehouse should be different";
+}
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MoneyTransferOrderNumber" class="control-label"></label>
+                <input asp-for="MoneyTransferOrderNumber" class="form-control" />
+                <span asp-validation-for="MoneyTransferOrderNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MoneyTransferOrderDate" class="control-label"></label>
+                <input asp-for="MoneyTransferOrderDate" class="form-control" />
+                <span asp-validation-for="MoneyTransferOrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CashRepositoryIdFrom" class="control-label"></label>
+                <input asp-for="CashRepositoryIdFrom" class="form-control" />
+                <span asp-validation-for="CashRepositoryIdFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CashRepositoryIdTo" class="control-label"></label>
+                <input asp-for="CashRepositoryIdTo" class="form-control" />
+                <span asp-validation-for="CashRepositoryIdTo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaymentAmount" class="control-label"></label>
+                <input asp-for="PaymentAmount" class="form-control" />
+                <span asp-validation-for="PaymentAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MoneyTransferOrderStatus" class="control-label"></label>
+                <select asp-for="MoneyTransferOrderStatus" class="form-control"></select>
+                <span asp-validation-for="MoneyTransferOrderStatus" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

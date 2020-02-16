@@ -49,5 +49,14 @@ namespace netcore.Models.Invent
 
         [Display(Name = "Πλήρης Είσπραξη")]
         public bool IsFullPayment { get; set; } = true;
+
+        [StringLength(38)]
+        [Display(Name = "Ταμείο")]
+        public string CashRepositoryId { get; set; }
+
+        [Display(Name = "Ταμείο")]
+        public CashRepository CashRepository { get; set; }
+
+
     }
 }

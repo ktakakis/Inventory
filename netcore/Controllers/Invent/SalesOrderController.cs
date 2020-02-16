@@ -179,6 +179,8 @@ namespace netcore.Controllers.Invent
             return Json(customerLinelist);
 
         }
+
+
         // GET: SalesOrder/Edit/5
         public async Task<IActionResult> Edit(string id)
         {

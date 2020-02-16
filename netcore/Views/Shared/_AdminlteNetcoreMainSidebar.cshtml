@@ -212,6 +212,24 @@
             </li>
         }
 
+        @if (appUser.CashRepositoryRole)
+        {
+            <li class="@Html.IsSelected(controller: "CashRepository")">
+                <a href="@Url.Action("Index", "CashRepository")">
+                    <i class="fa fa-google-wallet"></i> <span> Ταμεία</span>
+                </a>
+            </li>
+        }
+
+        @if (appUser.CashRepositoryRole)
+        {
+            <li class="@Html.IsSelected(controller: "MoneyTransferOrder")">
+                <a href="@Url.Action("Index", "MoneyTransferOrder")">
+                    <i class="fa fa-exchange"></i> <span> Μεταφορές Χρημάτων</span>
+                </a>
+            </li>
+        }
+
         @if (appUser.NumberSequenceRole)
         {
         }

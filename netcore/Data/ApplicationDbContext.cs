@@ -84,8 +84,9 @@ namespace netcore.Data
 
         public DbSet<netcore.Models.Invent.PaymentReceive> PaymentReceive { get; set; }
 
-        public DbSet<netcore.Models.Invent.CashRepository> CashRepository { get; set; }
+        public DbSet<netcore.Models.Invent.CashRepository> CashRepository { get; set; } 
 
+        public DbSet<netcore.Models.Invent.MoneyTransferOrder> MoneyTransferOrder { get; set; }
 
     }
 }

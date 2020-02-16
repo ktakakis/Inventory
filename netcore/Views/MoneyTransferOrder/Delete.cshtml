@@ -1,0 +1,73 @@
+﻿@model netcore.Models.Invent.MoneyTransferOrder
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-recycle";
+    ViewData["DeleteInfo"] = "[Ολοκληρωμένη] Η εντολή μεταφοράς χρημάτων (MX) δεν μπορεί να διαγραφεί.";
+    ViewData["IsCanDeleted"] = false;
+    if (Model.MoneyTransferOrderStatus != netcore.Models.Invent.MoneyTransferOrderStatus.Completed)
+    {
+        ViewData["IsCanDeleted"] = true;
+    }
+}
+
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+    <div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderNumber)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MoneyTransferOrderNumber)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MoneyTransferOrderDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CashRepositoryIdFrom)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.CashRepositoryIdTo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CashRepositoryIdTo)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PaymentAmount)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PaymentAmount)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderStatus)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.MoneyTransferOrderStatus)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.HasChild)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.HasChild)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.createdAt)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.createdAt)
+            </dd>
+        </dl>
+    </div>

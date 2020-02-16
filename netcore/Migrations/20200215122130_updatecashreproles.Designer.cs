@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200215122130_updatecashreproles")]
+    partial class updatecashreproles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,8 +172,6 @@ namespace netcore.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<bool>("MoneyTransferOrderRole");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -728,49 +727,6 @@ namespace netcore.Migrations
                     b.ToTable("InvoiceLine");
                 });
 
-            modelBuilder.Entity("netcore.Models.Invent.MoneyTransferOrder", b =>
-                {
-                    b.Property<string>("MoneyTransferOrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CashRepositoryFromCashRepositoryId");
-
-                    b.Property<string>("CashRepositoryIdFrom")
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CashRepositoryIdTo")
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CashRepositoryToCashRepositoryId");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("HasChild");
-
-                    b.Property<DateTime>("MoneyTransferOrderDate");
-
-                    b.Property<string>("MoneyTransferOrderNumber")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
-                    b.Property<int>("MoneyTransferOrderStatus");
-
-                    b.Property<decimal>("PaymentAmount");
-
-                    b.Property<DateTime>("createdAt");
-
-                    b.HasKey("MoneyTransferOrderId");
-
-                    b.HasIndex("CashRepositoryFromCashRepositoryId");
-
-                    b.HasIndex("CashRepositoryToCashRepositoryId");
-
-                    b.ToTable("MoneyTransferOrder");
-                });
-
             modelBuilder.Entity("netcore.Models.Invent.NumberSequence", b =>
                 {
                     b.Property<int>("NumberSequenceId")
@@ -802,8 +758,7 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<string>("CashRepositoryId")
-                        .HasMaxLength(38);
+                    b.Property<string>("CashRepositoryId");
 
                     b.Property<string>("EmployeeId")
                         .HasMaxLength(38);
@@ -1824,20 +1779,9 @@ namespace netcore.Migrations
                         .HasForeignKey("ProductId");
                 });
 
-            modelBuilder.Entity("netcore.Models.Invent.MoneyTransferOrder", b =>
-                {
-                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepositoryFrom")
-                        .WithMany()
-                        .HasForeignKey("CashRepositoryFromCashRepositoryId");
-
-                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepositoryTo")
-                        .WithMany()
-                        .HasForeignKey("CashRepositoryToCashRepositoryId");
-                });
-
             modelBuilder.Entity("netcore.Models.Invent.PaymentReceive", b =>
                 {
-                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepository")
+                    b.HasOne("netcore.Models.Invent.CashRepository")
                         .WithMany("paymentReceive")
                         .HasForeignKey("CashRepositoryId");
 

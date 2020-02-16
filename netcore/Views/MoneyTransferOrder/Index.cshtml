@@ -1,0 +1,85 @@
+﻿@model IEnumerable<netcore.Models.Invent.MoneyTransferOrder>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-recycle";
+    ViewData["ListTitle"] = "Λίστα παραγγελιών μεταφοράς";
+    ViewData["IndexInfo"] = "Η παραγγελία μεταφοράς (TO) είναι μια διαδικασία μεταφοράς προϊόντων από μια αποθήκη σε μια άλλη αποθήκη.";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashRepositoryIdTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HasChild)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.createdAt)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.MoneyTransferOrderId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.MoneyTransferOrderId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.MoneyTransferOrderId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoneyTransferOrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoneyTransferOrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashRepositoryIdFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashRepositoryIdTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoneyTransferOrderStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HasChild)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

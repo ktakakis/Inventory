@@ -2,14 +2,15 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
-    ViewData["EntityIcon"] = "fa fa-bank";
-    ViewData["ListTitle"] = "Λίστα Πελατών";
-    ViewData["IndexInfo"] = "Ο πελάτης είναι ένας οργανισμός που αγοράζει προϊόντα από την εταιρεία σας. Πουλάτε προϊόντα σε αυτούς.";
+    ViewData["EntityIcon"] = "fa fa-google-wallet";
+    ViewData["ListTitle"] = "Λίστα Ταμείων";
+    ViewData["IndexInfo"] = "Ταμείο είναι ο χώρος αποθήκευσης χρημάτων.  Ταμείο υπάρχει όπου γίνονται συναλλαγές για λογαριασμό της εταιρίας.";
 }
 
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.CashRepositoryName)
             </th>
@@ -31,40 +32,41 @@
             <th>
                 @Html.DisplayNameFor(model => model.Employee)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CashRepositoryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalReceipts)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.TotalPayments)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Balance)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.createdAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee.EmployeeId)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CashRepositoryId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CashRepositoryId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CashRepositoryId">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.CashRepositoryId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.CashRepositoryId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.CashRepositoryId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashRepositoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalReceipts)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPayments)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.DisplayName)
+            </td>
+        </tr>
         }
     </tbody>
 </table>

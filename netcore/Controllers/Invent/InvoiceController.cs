@@ -34,7 +34,7 @@ namespace netcore.Controllers.Invent
 
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
-                applicationDbContext = _context.Invoice.Where(x=>x.Shipment.Employee.UserName==username).Include(i => i.Shipment);
+                applicationDbContext = _context.Invoice.Where(x=>x.Shipment.Employee.UserName==username && x.Paid!=true).Include(i => i.Shipment);
             }
                 return View(await applicationDbContext.ToListAsync());
         }

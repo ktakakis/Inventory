@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Διαγραφή";
     Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
-    ViewData["EntityIcon"] = "fa fa-recycle";
+    ViewData["EntityIcon"] = "fa fa-exchange";
     ViewData["DeleteInfo"] = "[Ολοκληρωμένη] Η εντολή μεταφοράς χρημάτων (MX) δεν μπορεί να διαγραφεί.";
     ViewData["IsCanDeleted"] = false;
     if (Model.MoneyTransferOrderStatus != netcore.Models.Invent.MoneyTransferOrderStatus.Completed)
@@ -13,61 +13,66 @@
 
 
 @Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
-    <div>
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.MoneyTransferOrderNumber)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.MoneyTransferOrderNumber)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.MoneyTransferOrderDate)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.MoneyTransferOrderDate)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.CashRepositoryIdFrom)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.CashRepositoryIdTo)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.CashRepositoryIdTo)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.PaymentAmount)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.PaymentAmount)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.MoneyTransferOrderStatus)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.MoneyTransferOrderStatus)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.HasChild)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.HasChild)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.createdAt)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.createdAt)
-            </dd>
-        </dl>
+<div class="col-md-12">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="MoneyTransferOrderId" />
+    <input type="hidden" asp-for="MoneyTransferOrderNumber" />
+    <input type="hidden" asp-for="MoneyTransferOrderStatus" />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="MoneyTransferOrderNumber" class="control-label"></label>
+                <input asp-for="MoneyTransferOrderNumber" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="MoneyTransferOrderDate" class="control-label"></label>
+                <div class="input-group date  time">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input disabled asp-for="MoneyTransferOrderDate" value="@Model.MoneyTransferOrderDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea disabled asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label  asp-for="CashRepositoryIdFrom" class="control-label">Από Ταμείο</label>
+                <select  disabled  asp-for="CashRepositoryIdFrom" id="CashRepositoryIdFrom" class="form-control select2" asp-items="ViewBag.CashRepositoryIdFrom"></select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="CashRepositoryIdTo" class="control-label">Στο Ταμείο</label>
+                <select  disabled asp-for="CashRepositoryIdTo" id="CashRepositoryIdTo" class="form-control select2" asp-items="ViewBag.CashRepositoryIdTo"></select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="PaymentAmount" class="control-label"></label>
+                <input disabled asp-for="PaymentAmount" class="form-control" />
+                <span asp-validation-for="PaymentAmount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label disabled asp-for="MoneyTransferOrderStatus" class="control-label"></label>
+                <select disabled  asp-for="MoneyTransferOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.MoneyTransferOrderStatus>()" ></select>
+            </div>
+        </div>
+    </div>
+</div>

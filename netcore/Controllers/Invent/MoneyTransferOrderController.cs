@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using netcore.Data;
 using netcore.Models.Invent;
+using netcore.Services;
 
 namespace netcore.Controllers.Invent
 {
@@ -16,16 +17,33 @@ namespace netcore.Controllers.Invent
     public class MoneyTransferOrderController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INetcoreService _netcoreService;
+        private readonly INumberSequence _numberSequence;
 
-        public MoneyTransferOrderController(ApplicationDbContext context)
+
+        public MoneyTransferOrderController(ApplicationDbContext context, INetcoreService netcoreService,
+                        INumberSequence numberSequence)
         {
             _context = context;
+            _netcoreService = netcoreService;
+            _numberSequence = numberSequence;
         }
 
         // GET: MoneyTransferOrder
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MoneyTransferOrder.ToListAsync());
+            var applicationDbContext = _context.MoneyTransferOrder
+                                            .Include(s => s.CashRepositoryFrom)
+                                            .Include(x => x.CashRepositoryTo);
+            var username = HttpContext.User.Identity.Name;
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                applicationDbContext = _context.MoneyTransferOrder
+                                            .Include(s => s.CashRepositoryFrom)
+                                            .Include(x => x.CashRepositoryTo);
+            }
+
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: MoneyTransferOrder/Details/5
@@ -42,6 +60,8 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", id);
+            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", id);
 
             return View(moneyTransferOrder);
         }
@@ -49,7 +69,11 @@ namespace netcore.Controllers.Invent
         // GET: MoneyTransferOrder/Create
         public IActionResult Create()
         {
-            return View();
+            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["StatusMessage"] = TempData["StatusMessage"];
+            MoneyTransferOrder obj = new MoneyTransferOrder();
+            return View(obj);
         }
 
         // POST: MoneyTransferOrder/Create
@@ -61,10 +85,12 @@ namespace netcore.Controllers.Invent
         {
             if (ModelState.IsValid)
             {
+                moneyTransferOrder.MoneyTransferOrderNumber = _numberSequence.GetNumberSequence("ΕΜΧ");
                 _context.Add(moneyTransferOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(moneyTransferOrder);
         }
 
@@ -81,6 +107,9 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", id);
+            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", id);
+
             return View(moneyTransferOrder);
         }
 
@@ -133,6 +162,8 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName",id);
+            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName",id);
 
             return View(moneyTransferOrder);
         }

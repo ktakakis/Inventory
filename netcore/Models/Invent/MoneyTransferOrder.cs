@@ -11,6 +11,7 @@ namespace netcore.Models.Invent
         public MoneyTransferOrder()
         {
             createdAt = DateTime.UtcNow;
+            MoneyTransferOrderDate = DateTime.UtcNow;
         }
 
         [StringLength(38)] 
@@ -18,7 +19,6 @@ namespace netcore.Models.Invent
         public string MoneyTransferOrderId { get; set; }
 
         [StringLength(20)]
-        [Required]
         [Display(Name = "Αριθμός Μεταφοράς")]
         public string MoneyTransferOrderNumber { get; set; }
 

@@ -41,7 +41,7 @@ namespace netcore.Models.Invent
         public Employee Employee { get; set; }
 
         [Display(Name = "Εισπράξεις")]
-        public List<PaymentReceive> paymentReceive { get; set; } = new List<PaymentReceive>(); 
+        public List<PaymentReceive> paymentReceive { get; set; } = new List<PaymentReceive>();
 
     }
 }

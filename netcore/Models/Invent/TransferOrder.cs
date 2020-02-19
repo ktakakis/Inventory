@@ -32,7 +32,6 @@ namespace netcore.Models.Invent
         public DateTime transferOrderDate { get; set; }
 
         [StringLength(100)]
-        [Required]
         [Display(Name = "Περιγραφή")]
         public string description { get; set; }
 

@@ -12,6 +12,9 @@ namespace netcore.Models.Invent
         {
             createdAt = DateTime.UtcNow;
             MoneyTransferOrderDate = DateTime.UtcNow;
+            MoneyTransferOrderStatus = MoneyTransferOrderStatus.Draft;
+            isIssued = false;
+            isReceived = false;
         }
 
         [StringLength(38)] 
@@ -27,7 +30,6 @@ namespace netcore.Models.Invent
         public DateTime MoneyTransferOrderDate { get; set; }
 
         [StringLength(100)]
-        [Required]
         [Display(Name = "Περιγραφή")]
         public string Description { get; set; }
 
@@ -50,5 +52,12 @@ namespace netcore.Models.Invent
          
         [Display(Name = "Κατάσταση Μεταφοράς")]
         public MoneyTransferOrderStatus MoneyTransferOrderStatus { get; set; }
+
+        [Display(Name = "Έχει Εκδοθεί")]
+        public bool isIssued { get; set; }
+
+        [Display(Name = "Έχει παραληφθεί")]
+        public bool isReceived { get; set; }
+
     }
 }

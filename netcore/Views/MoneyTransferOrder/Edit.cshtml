@@ -1,4 +1,5 @@
 ﻿@model netcore.Models.Invent.MoneyTransferOrder
+
 @{
     ViewData["Title"] = "Επεξεργασία";
     Layout = "~/Views/Shared/_AdminlteNetcoreEdit.cshtml";
@@ -12,12 +13,14 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="MoneyTransferOrderId" />
         <input type="hidden" asp-for="MoneyTransferOrderNumber" />
-        <input type="hidden" asp-for="MoneyTransferOrderStatus" />
+        <input type="hidden" asp-for="isIssued" />
+        <input type="hidden" asp-for="isReceived" />
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="MoneyTransferOrderNumber" class="control-label"></label>
                     <input asp-for="MoneyTransferOrderNumber" class="form-control" disabled />
+                    <span asp-validation-for="MoneyTransferOrderNumber" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
@@ -66,14 +69,12 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="MoneyTransferOrderStatus" class="control-label"></label>
-                    <select asp-for="MoneyTransferOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.MoneyTransferOrderStatus>()" disabled></select>
+                    <select asp-for="MoneyTransferOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.MoneyTransferOrderStatus>()"></select>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

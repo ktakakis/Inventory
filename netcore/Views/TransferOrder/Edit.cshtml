@@ -16,11 +16,6 @@
         <input type="hidden" asp-for="isIssued" />
         <input type="hidden" asp-for="isReceived" />
         <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Περίληψη</i></small>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="transferOrderNumber" class="control-label"></label>
@@ -53,11 +48,6 @@
                     <select asp-for="transferOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TransferOrderStatus>()"></select>
                     <span asp-validation-for="transferOrderStatus" class="text-danger"></span>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Property</i></small>
             </div>
         </div>
         <div class="row hidden">
@@ -103,14 +93,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -32,18 +32,12 @@ namespace netcore.Controllers.Invent
         // GET: MoneyTransferOrder
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.MoneyTransferOrder
-                                            .Include(s => s.CashRepositoryFrom)
-                                            .Include(x => x.CashRepositoryTo);
-            var username = HttpContext.User.Identity.Name;
-            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
-            {
-                applicationDbContext = _context.MoneyTransferOrder
-                                            .Include(s => s.CashRepositoryFrom)
-                                            .Include(x => x.CashRepositoryTo);
-            }
-
-            return View(await applicationDbContext.ToListAsync());
+            List<MoneyTransferOrder> lists = new List<MoneyTransferOrder>();
+            lists = await _context.MoneyTransferOrder.OrderByDescending(x => x.createdAt)
+                .Include(x => x.CashRepositoryFrom)
+                .Include(x => x.CashRepositoryTo)
+                .ToListAsync();
+            return View(lists);
         }
 
         // GET: MoneyTransferOrder/Details/5
@@ -55,6 +49,8 @@ namespace netcore.Controllers.Invent
             }
 
             var moneyTransferOrder = await _context.MoneyTransferOrder
+                .Include(x=>x.CashRepositoryFrom)
+                .Include(x=>x.CashRepositoryTo)
                 .SingleOrDefaultAsync(m => m.MoneyTransferOrderId == id);
             if (moneyTransferOrder == null)
             {
@@ -69,9 +65,9 @@ namespace netcore.Controllers.Invent
         // GET: MoneyTransferOrder/Create
         public IActionResult Create()
         {
+            ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
             ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
-            ViewData["StatusMessage"] = TempData["StatusMessage"];
             MoneyTransferOrder obj = new MoneyTransferOrder();
             return View(obj);
         }
@@ -81,13 +77,24 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MoneyTransferOrderId,MoneyTransferOrderNumber,MoneyTransferOrderDate,Description,CashRepositoryIdFrom,CashRepositoryIdTo,PaymentAmount,MoneyTransferOrderStatus,HasChild,createdAt")] MoneyTransferOrder moneyTransferOrder)
+        public async Task<IActionResult> Create([Bind("MoneyTransferOrderId,CashRepositoryFromCashRepositoryId,CashRepositoryIdFrom,CashRepositoryIdTo,CashRepositoryToCashRepositoryId,Description,HasChild,MoneyTransferOrderDate,MoneyTransferOrderNumber,MoneyTransferOrderStatus,PaymentAmount,createdAt,isIssued,isReceived")] MoneyTransferOrder moneyTransferOrder)
         {
+            if (moneyTransferOrder.CashRepositoryIdFrom == moneyTransferOrder.CashRepositoryIdTo)
+            {
+                TempData["StatusMessage"] = "Σφάλμα. Το Ταμείο από και προς είναι το ίδιο. Η μεταφορά χρημάτων γίνεται μεταξύ διαφορετικών ταμείων";
+                return RedirectToAction(nameof(Create));
+            }
+
+
             if (ModelState.IsValid)
             {
+                moneyTransferOrder.CashRepositoryFrom = await _context.CashRepository.Include(x => x.Employee).SingleOrDefaultAsync(x => x.CashRepositoryId.Equals(moneyTransferOrder.CashRepositoryIdFrom));
+                moneyTransferOrder.CashRepositoryTo = await _context.CashRepository.Include(x => x.Employee).SingleOrDefaultAsync(x => x.CashRepositoryId.Equals(moneyTransferOrder.CashRepositoryIdTo));
+
                 moneyTransferOrder.MoneyTransferOrderNumber = _numberSequence.GetNumberSequence("ΕΜΧ");
                 _context.Add(moneyTransferOrder);
                 await _context.SaveChangesAsync();
+                TempData["TransMessage"] = "Η Εντολή Μεταφοράς χρημάτων " + moneyTransferOrder.MoneyTransferOrderNumber + " έγινε με Επιτυχία";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -101,7 +108,6 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-
             var moneyTransferOrder = await _context.MoneyTransferOrder.SingleOrDefaultAsync(m => m.MoneyTransferOrderId == id);
             if (moneyTransferOrder == null)
             {
@@ -109,7 +115,8 @@ namespace netcore.Controllers.Invent
             }
             ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", id);
             ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", id);
-
+            TempData["MoneyTransferOrderStatus"] = moneyTransferOrder.MoneyTransferOrderStatus;
+            ViewData["StatusMessage"] = TempData["StatusMessage"];
             return View(moneyTransferOrder);
         }
 
@@ -118,18 +125,37 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("MoneyTransferOrderId,MoneyTransferOrderNumber,MoneyTransferOrderDate,Description,CashRepositoryIdFrom,CashRepositoryIdTo,PaymentAmount,MoneyTransferOrderStatus,HasChild,createdAt")] MoneyTransferOrder moneyTransferOrder)
+        public async Task<IActionResult> Edit(string id, [Bind("MoneyTransferOrderId,MoneyTransferOrderNumber,MoneyTransferOrderDate,Description,CashRepositoryIdFrom,CashRepositoryIdTo,PaymentAmount,MoneyTransferOrderStatus,isIssued,isReceived,HasChild,createdAt")] MoneyTransferOrder moneyTransferOrder)
         {
             if (id != moneyTransferOrder.MoneyTransferOrderId)
             {
                 return NotFound();
             }
+            if ((MoneyTransferOrderStatus)TempData["MoneyTransferOrderStatus"] == MoneyTransferOrderStatus.Completed)
+            {
+                TempData["StatusMessage"] = "Σφάλμα. Δεν είναι δυνατή η επεξεργασία [Ολοκληρωμένης] παραγγελίας.";
+                return RedirectToAction(nameof(Edit), new { id = moneyTransferOrder.MoneyTransferOrderId });
+            }
 
+            if (moneyTransferOrder.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Completed)
+            {
+                TempData["StatusMessage"] = "Σφάλμα. Δεν είναι δυνατή η επεξεργασία της κατάστασης όταν είναι [Ολοκληρωμένη] η Παραγγελία.";
+                return RedirectToAction(nameof(Edit), new { id = moneyTransferOrder.MoneyTransferOrderId});
+            }
+
+            if (moneyTransferOrder.isIssued == true
+            || moneyTransferOrder.isReceived == true)
+            {
+                TempData["StatusMessage"] = "Σφάλμα. Δεν είναι δυνατή η επεξεργασία της εντολής με κατάσταση [Ανοιχτή] που ήδη επεξεργάζεται την Αποστολή ή την Παραλαβή χρημάτων.";
+                return RedirectToAction(nameof(Edit), new { id = moneyTransferOrder.MoneyTransferOrderId });
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(moneyTransferOrder);
+                    moneyTransferOrder.CashRepositoryFrom = await _context.CashRepository.Include(x => x.Employee).SingleOrDefaultAsync(x => x.CashRepositoryId.Equals(moneyTransferOrder.CashRepositoryIdFrom));
+                    moneyTransferOrder.CashRepositoryTo = await _context.CashRepository.Include(x => x.Employee).SingleOrDefaultAsync(x => x.CashRepositoryId.Equals(moneyTransferOrder.CashRepositoryIdTo));
+                  _context.Update(moneyTransferOrder);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -143,10 +169,12 @@ namespace netcore.Controllers.Invent
                         throw;
                     }
                 }
+                TempData["TransMessage"] = "Η Επεξεργασία της Μεταφοράς " + moneyTransferOrder.MoneyTransferOrderNumber + " έγινε με Επιτυχία!";
                 return RedirectToAction(nameof(Index));
             }
             return View(moneyTransferOrder);
         }
+
 
         // GET: MoneyTransferOrder/Delete/5
         public async Task<IActionResult> Delete(string id)
@@ -157,6 +185,8 @@ namespace netcore.Controllers.Invent
             }
 
             var moneyTransferOrder = await _context.MoneyTransferOrder
+                .Include(x=>x.CashRepositoryFrom)
+                .Include(x=>x.CashRepositoryTo)
                 .SingleOrDefaultAsync(m => m.MoneyTransferOrderId == id);
             if (moneyTransferOrder == null)
             {
@@ -173,9 +203,11 @@ namespace netcore.Controllers.Invent
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var moneyTransferOrder = await _context.MoneyTransferOrder.SingleOrDefaultAsync(m => m.MoneyTransferOrderId == id);
+            var moneyTransferOrder = await _context.MoneyTransferOrder
+                .SingleOrDefaultAsync(m => m.MoneyTransferOrderId == id);
             _context.MoneyTransferOrder.Remove(moneyTransferOrder);
             await _context.SaveChangesAsync();
+            TempData["TransMessage"] = "Η Διαγραφή της Μεταφοράς " + moneyTransferOrder.MoneyTransferOrderNumber + " έγινε με Επιτυχία";
             return RedirectToAction(nameof(Index));
         }
 

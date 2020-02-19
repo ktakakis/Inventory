@@ -30,7 +30,10 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Index()
         {
            var username = HttpContext.User.Identity.Name;
-           var applicationDbContext = _context.PaymentReceive.Include(e=>e.Employee).Include(p => p.invoice).Include(p => p.paymentType);
+           var applicationDbContext = _context.PaymentReceive
+                .Include(e=>e.Employee)
+                .Include(p => p.invoice)
+                .Include(p => p.paymentType);
            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 applicationDbContext = _context.PaymentReceive.Where(s => s.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(e => e.Employee).Include(p => p.invoice).Include(p => p.paymentType);

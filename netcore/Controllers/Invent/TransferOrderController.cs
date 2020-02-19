@@ -13,8 +13,6 @@ using netcore.Models.Invent;
 
 namespace netcore.Controllers.Invent
 {
-
-
     [Authorize(Roles = "TransferOrder")]
     public class TransferOrderController : Controller
     {
@@ -164,7 +162,6 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-
             if ((TransferOrderStatus)TempData["TransferOrderStatus"] == TransferOrderStatus.Completed)
             {
                 TempData["StatusMessage"] = "Σφάλμα. Δεν είναι δυνατή η επεξεργασία [Ολοκληρωμένης] παραγγελίας.";
@@ -239,9 +236,6 @@ namespace netcore.Controllers.Invent
             ViewData["warehouseIdTo"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
             return View(transferOrder);
         }
-
-
-
 
         // POST: TransferOrder/Delete/5
         [HttpPost, ActionName("Delete")]

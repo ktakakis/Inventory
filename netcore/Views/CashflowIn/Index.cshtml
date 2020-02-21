@@ -1,0 +1,59 @@
+﻿@model IEnumerable<netcore.Models.Invent.CashflowIn>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-exchange";
+    ViewData["ListTitle"] = "Λίστα Ταμειακών Εισροών";
+    ViewData["IndexInfo"] = "Με τον όρο ταμειακή εισροή εννοούμε την αποδοχή χρημάτων από ένα άλλο ταμείο";
+}
+<table  class="table table-hover table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashflowInNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashflowInDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashRepositoryIdTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrder)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.CashflowInId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.CashflowInId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.CashflowInId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashflowInNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashflowInDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashRepositoryIdFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashRepositoryIdTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MoneyTransferOrder.MoneyTransferOrderId)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

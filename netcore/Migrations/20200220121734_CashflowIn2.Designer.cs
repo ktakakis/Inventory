@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200220121734_CashflowIn2")]
+    partial class CashflowIn2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,10 +142,6 @@ namespace netcore.Migrations
                     b.Property<bool>("BranchRole");
 
                     b.Property<bool>("CashRepositoryRole");
-
-                    b.Property<bool>("CashflowInRole");
-
-                    b.Property<bool>("CashflowOutRole");
 
                     b.Property<bool>("CatalogLineRole");
 
@@ -354,51 +351,6 @@ namespace netcore.Migrations
                     b.HasIndex("MoneyTransferOrderId");
 
                     b.ToTable("CashflowIn");
-                });
-
-            modelBuilder.Entity("netcore.Models.Invent.CashflowOut", b =>
-                {
-                    b.Property<string>("CashflowOutId")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CashRepositoryFromCashRepositoryId");
-
-                    b.Property<string>("CashRepositoryIdFrom")
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CashRepositoryIdTo")
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CashRepositoryToCashRepositoryId");
-
-                    b.Property<DateTime>("CashflowOutDate");
-
-                    b.Property<string>("CashflowOutNumber")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("HasChild");
-
-                    b.Property<string>("MoneyTransferOrderId")
-                        .IsRequired()
-                        .HasMaxLength(38);
-
-                    b.Property<DateTime>("createdAt");
-
-                    b.HasKey("CashflowOutId");
-
-                    b.HasIndex("CashRepositoryFromCashRepositoryId");
-
-                    b.HasIndex("CashRepositoryToCashRepositoryId");
-
-                    b.HasIndex("MoneyTransferOrderId");
-
-                    b.ToTable("CashflowOut");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.CashRepository", b =>
@@ -1861,22 +1813,6 @@ namespace netcore.Migrations
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.CashflowIn", b =>
-                {
-                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepositoryFrom")
-                        .WithMany()
-                        .HasForeignKey("CashRepositoryFromCashRepositoryId");
-
-                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepositoryTo")
-                        .WithMany()
-                        .HasForeignKey("CashRepositoryToCashRepositoryId");
-
-                    b.HasOne("netcore.Models.Invent.MoneyTransferOrder", "MoneyTransferOrder")
-                        .WithMany()
-                        .HasForeignKey("MoneyTransferOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("netcore.Models.Invent.CashflowOut", b =>
                 {
                     b.HasOne("netcore.Models.Invent.CashRepository", "CashRepositoryFrom")
                         .WithMany()

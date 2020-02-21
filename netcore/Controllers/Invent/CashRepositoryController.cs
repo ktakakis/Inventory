@@ -49,6 +49,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+
             var employee = (from Employee in _context.Employee
                             select new
                             {
@@ -56,7 +57,10 @@ namespace netcore.Controllers.Invent
                                 Employee.DisplayName
                             }).ToList();
 
-            ViewData["EmployeeId"] = new SelectList(employee, "EmployeeId", "DisplayName",id);
+            ViewData["EmployeeId"] = new SelectList(employee, "EmployeeId", "DisplayName", cashRepository.EmployeeId);
+            cashRepository.TotalReceipts = cashRepository.Employee.PaymentReceive.Sum(x => x.PaymentAmount);
+            _context.Update(cashRepository);
+            await _context.SaveChangesAsync();
             return View(cashRepository);
         }
 

@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200220124510_CashflowOut2")]
+    partial class CashflowOut2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,10 +142,6 @@ namespace netcore.Migrations
                     b.Property<bool>("BranchRole");
 
                     b.Property<bool>("CashRepositoryRole");
-
-                    b.Property<bool>("CashflowInRole");
-
-                    b.Property<bool>("CashflowOutRole");
 
                     b.Property<bool>("CatalogLineRole");
 

@@ -82,5 +82,9 @@ namespace netcore.Models.Invent
         [Display(Name = "Αποστολές Προϊόντων")]
         public List<Shipment> Shipment { get; set; } = new List<Shipment>();
 
+        [Display(Name = "Εισπράξεις")]
+        public List<PaymentReceive> PaymentReceive { get; set; } = new List<PaymentReceive>();
+
+
     }
 }

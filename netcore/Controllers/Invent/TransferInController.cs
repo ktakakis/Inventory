@@ -297,10 +297,6 @@ namespace netcore.Controllers.Invent
     }
 }
 
-
-
-
-
 namespace netcore.MVC
 {
     public static partial class Pages

@@ -67,6 +67,7 @@ namespace netcore.Controllers.Invent
         public IActionResult Create(string id)
         {
             PaymentReceive pr = new PaymentReceive();             
+            
             var username = HttpContext.User.Identity.Name;
             var invoice =(
             from Invoice in _context.Invoice
@@ -108,6 +109,7 @@ namespace netcore.Controllers.Invent
                 ViewData["InvoiceId"] = new SelectList(invoice, "InvoiceId", "description", id);
                 pr.PaymentDate = DateTime.Today;
                 pr.InvoiceId = id;
+                pr.EmployeeId = _context.Invoice.Where(x => x.InvoiceId == id).Include(x=>x.Shipment).FirstOrDefault().Shipment.EmployeeId;
                 pr.PaymentAmount = _context.Invoice.Where(x => x.InvoiceId == id).FirstOrDefault().InvoiceBalance;
             }
             else
@@ -141,6 +143,7 @@ namespace netcore.Controllers.Invent
             if (ModelState.IsValid)
             {
                 paymentReceive.PaymentReceiveName = _numberSequence.GetNumberSequence("ΕΙΣ");
+                
                 _context.Add(paymentReceive);
                 await _context.SaveChangesAsync();
 

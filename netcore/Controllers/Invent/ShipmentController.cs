@@ -136,7 +136,7 @@ namespace netcore.Controllers.Invent
 
 
             ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "SalesOrderName",id);
-            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+            ViewData["employeeId"] = new SelectList(_context.Employee.Where(x=>x.PaymentReceiver==true), "EmployeeId", "DisplayName");
 
             Shipment shipment = new Shipment();
             shipment.salesOrderId = id;

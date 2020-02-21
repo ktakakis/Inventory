@@ -68,7 +68,7 @@ namespace netcore.Models.Invent
         public Warehouse warehouse { get; set; }
 
         [StringLength(38)]
-        [Display(Name = "Id Employee")]
+        [Display(Name = "Μεταφορέας")]
         public string EmployeeId { get; set; }
 
         [Display(Name = "Μεταφορέας")]

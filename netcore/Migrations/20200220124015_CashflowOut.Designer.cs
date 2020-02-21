@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200220124015_CashflowOut")]
+    partial class CashflowOut
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,10 +142,6 @@ namespace netcore.Migrations
                     b.Property<bool>("BranchRole");
 
                     b.Property<bool>("CashRepositoryRole");
-
-                    b.Property<bool>("CashflowInRole");
-
-                    b.Property<bool>("CashflowOutRole");
 
                     b.Property<bool>("CatalogLineRole");
 
@@ -370,7 +367,7 @@ namespace netcore.Migrations
                     b.Property<string>("CashRepositoryIdTo")
                         .HasMaxLength(38);
 
-                    b.Property<string>("CashRepositoryToCashRepositoryId");
+                    b.Property<string>("CashRepositoryTowarehouseId");
 
                     b.Property<DateTime>("CashflowOutDate");
 
@@ -394,7 +391,7 @@ namespace netcore.Migrations
 
                     b.HasIndex("CashRepositoryFromCashRepositoryId");
 
-                    b.HasIndex("CashRepositoryToCashRepositoryId");
+                    b.HasIndex("CashRepositoryTowarehouseId");
 
                     b.HasIndex("MoneyTransferOrderId");
 
@@ -1882,11 +1879,11 @@ namespace netcore.Migrations
                         .WithMany()
                         .HasForeignKey("CashRepositoryFromCashRepositoryId");
 
-                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepositoryTo")
+                    b.HasOne("netcore.Models.Invent.Warehouse", "CashRepositoryTo")
                         .WithMany()
-                        .HasForeignKey("CashRepositoryToCashRepositoryId");
+                        .HasForeignKey("CashRepositoryTowarehouseId");
 
-                    b.HasOne("netcore.Models.Invent.MoneyTransferOrder", "MoneyTransferOrder")
+                    b.HasOne("netcore.Models.Invent.TransferOrder", "MoneyTransferOrder")
                         .WithMany()
                         .HasForeignKey("MoneyTransferOrderId")
                         .OnDelete(DeleteBehavior.Cascade);

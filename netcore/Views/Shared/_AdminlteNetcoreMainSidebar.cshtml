@@ -229,6 +229,23 @@
                 </a>
             </li>
         }
+        @if (appUser.CashflowInRole)
+        {
+            <li class="@Html.IsSelected(controller: "CashflowIn")">
+                <a href="@Url.Action("Index", "CashflowIn")">
+                    <i class="fa fa-arrow-circle-down"></i> <span> Ταμειακές Εισροές</span>
+                </a>
+            </li>
+        }
+
+        @if (appUser.CashflowOutRole)
+        {
+            <li class="@Html.IsSelected(controller: "CashflowOut")">
+                <a href="@Url.Action("Index", "CashflowOut")">
+                    <i class="fa fa-arrow-circle-up"></i> <span> Ταμειακές Εκροές</span>
+                </a>
+            </li>
+        }
 
         @if (appUser.NumberSequenceRole)
         {

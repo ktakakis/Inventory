@@ -15,6 +15,9 @@
         <tr>
             <th></th>
             <th>
+                @Html.DisplayNameFor(model => model.vendor)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.purchaseOrderNumber)
             </th>
             <th class="hidden">
@@ -56,9 +59,6 @@
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.purchaseReceiveNumber)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.vendor)
-            </th>
 
         </tr>
     </thead>
@@ -73,6 +73,9 @@
                     <a asp-action="Delete" asp-route-id="@item.purchaseOrderId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                 </div>
 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.vendor.vendorName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.purchaseOrderNumber)
@@ -136,9 +139,6 @@
             </td>
             <td class="hidden">
                 @Html.DisplayFor(modelItem => item.purchaseReceiveNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vendor.vendorName)
             </td>
 
         </tr>

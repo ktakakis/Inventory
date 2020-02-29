@@ -113,7 +113,6 @@ namespace netcore.Controllers.Invent
         {
             if (ModelState.IsValid)
             {
-
                 //check transfer order
                 TransferOut check = await _context.TransferOut
                     .Include(x => x.transferOrder)
@@ -127,8 +126,6 @@ namespace netcore.Controllers.Invent
                     ViewData["warehouseIdFrom"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
                     ViewData["branchIdTo"] = new SelectList(_context.Branch, "branchId", "branchName");
                     ViewData["warehouseIdTo"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
-                    
-
                     return View(transferOut);
                 }
 
@@ -288,6 +285,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+
             ViewData["transferOrderId"] = new SelectList(_context.TransferOrder, "transferOrderId", "transferOrderNumber", transferOut.transferOrderId);
             ViewData["branchIdFrom"] = new SelectList(_context.Branch, "branchId", "branchName");
             ViewData["warehouseIdFrom"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");

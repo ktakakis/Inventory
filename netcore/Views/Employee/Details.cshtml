@@ -87,27 +87,35 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label asp-for="Commission" class="control-label"></label>
-                                    <input disabled  asp-for="Commission" class="form-control" />
+                                    <input disabled asp-for="Commission" class="form-control" />
                                     <span asp-validation-for="Commission" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label asp-for="Active" class="control-label"></label>
-                                    <input disabled  type="checkbox" asp-for="Active" class="checkbox" />
+                                    <input disabled type="checkbox" asp-for="Active" class="checkbox" />
                                     <span asp-validation-for="Active" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label asp-for="PaymentReceiver" class="control-label"></label>
-                                    <input disabled  type="checkbox" asp-for="PaymentReceiver" class="checkbox" />
+                                    <input disabled type="checkbox" asp-for="PaymentReceiver" class="checkbox" />
                                     <span asp-validation-for="PaymentReceiver" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="DefaultCarrier" class="control-label"></label>
+                                    <input disabled type="checkbox" asp-for="DefaultCarrier" class="checkbox" />
+                                    <span asp-validation-for="DefaultCarrier" class="text-danger"></span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

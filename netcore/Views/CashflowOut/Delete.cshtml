@@ -5,11 +5,6 @@
     Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
     ViewData["EntityIcon"] = "fa fa-exchange";
     ViewData["DeleteInfo"] = "[Ολοκληρωμένη] Η εντολή μεταφοράς χρημάτων (MX) δεν μπορεί να διαγραφεί.";
-    ViewData["IsCanDeleted"] = false;
-    if (Model.MoneyTransferOrder.MoneyTransferOrderStatus != netcore.Models.Invent.MoneyTransferOrderStatus.Completed)
-    {
-        ViewData["IsCanDeleted"] = true;
-    }
 }
 
 
@@ -38,19 +33,13 @@
             @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CashRepositoryIdFrom)
+            @Html.DisplayFor(model => model.CashRepositoryFrom.CashRepositoryName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.CashRepositoryIdTo)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.CashRepositoryIdTo)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.HasChild)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.HasChild)
+            @Html.DisplayFor(model => model.CashRepositoryTo.CashRepositoryName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.createdAt)

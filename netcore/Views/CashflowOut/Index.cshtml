@@ -19,9 +19,6 @@
                 @Html.DisplayNameFor(model => model.CashflowOutDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
             </th>
             <th>
@@ -29,6 +26,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MoneyTransferOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrder.PaymentAmount)
             </th>
         </tr>
     </thead>
@@ -50,16 +50,16 @@
                 @Html.DisplayFor(modelItem => item.CashflowOutDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
+                @Html.DisplayFor(modelItem => item.CashRepositoryFrom.CashRepositoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CashRepositoryIdFrom)
+                @Html.DisplayFor(modelItem => item.CashRepositoryTo.CashRepositoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CashRepositoryIdTo)
+                @Html.DisplayFor(modelItem => item.MoneyTransferOrder.MoneyTransferOrderNumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MoneyTransferOrder.MoneyTransferOrderId)
+                @Html.DisplayFor(modelItem => item.MoneyTransferOrder.PaymentAmount)
             </td>
         </tr>
         }

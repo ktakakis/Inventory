@@ -113,7 +113,8 @@ namespace netcore.Controllers.Invent
         // GET: Shipment/Create
         public IActionResult Create(string id)
         {
-            
+
+            var defaultcarrier = _context.Employee.Where(x => x.DefaultCarrier == true).FirstOrDefault().EmployeeId;
             ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName");
             ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
@@ -135,8 +136,9 @@ namespace netcore.Controllers.Invent
             soList.Insert(0, new SalesOrder { salesOrderId = "0", SalesOrderName = "Επιλέξτε" });
 
 
+
             ViewData["salesOrderId"] = new SelectList(soList, "salesOrderId", "SalesOrderName",id);
-            ViewData["employeeId"] = new SelectList(_context.Employee.Where(x=>x.PaymentReceiver==true), "EmployeeId", "DisplayName");
+            ViewData["employeeId"] = new SelectList(_context.Employee.Where(x=>x.PaymentReceiver==true), "EmployeeId", "DisplayName", defaultcarrier);
 
             Shipment shipment = new Shipment();
             shipment.salesOrderId = id;

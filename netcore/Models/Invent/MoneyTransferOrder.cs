@@ -22,11 +22,11 @@ namespace netcore.Models.Invent
         public string MoneyTransferOrderId { get; set; }
 
         [StringLength(20)]
-        [Display(Name = "Αριθμός Μεταφοράς")]
+        [Display(Name = "Αρ. Μεταφοράς")]
         public string MoneyTransferOrderNumber { get; set; }
 
         [Required] 
-        [Display(Name = "Ημερομηνία Μεταφοράς")]
+        [Display(Name = "Ημερομηνία")]
         public DateTime MoneyTransferOrderDate { get; set; }
 
         [StringLength(100)]
@@ -50,7 +50,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Ποσόν")]
         public decimal PaymentAmount { get; set; }
          
-        [Display(Name = "Κατάσταση Μεταφοράς")]
+        [Display(Name = "Κατάσταση")]
         public MoneyTransferOrderStatus MoneyTransferOrderStatus { get; set; }
 
         [Display(Name = "Έχει Εκδοθεί")]

@@ -24,11 +24,11 @@ namespace netcore.Models.Invent
 
         [StringLength(20)]
         [Required]
-        [Display(Name = "Αριθμός Μεταφοράς")]
+        [Display(Name = "Αριθμός")]
         public string transferOrderNumber { get; set; }
 
         [Required]
-        [Display(Name = "Ημερομηνία Μεταφοράς")]
+        [Display(Name = "Ημερομηνία")]
         public DateTime transferOrderDate { get; set; }
 
         [StringLength(100)]
@@ -68,7 +68,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Στην Αποθήκη")]
         public Warehouse warehouseTo { get; set; }
 
-        [Display(Name = "Κατάσταση παραγγελίας Μεταφοράς")]
+        [Display(Name = "Κατάσταση")]
         public TransferOrderStatus transferOrderStatus { get; set; }
 
         [Display(Name = "Έχει Εκδοθεί")]

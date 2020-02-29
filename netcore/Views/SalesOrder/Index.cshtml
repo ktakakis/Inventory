@@ -13,6 +13,9 @@
         <tr>
             <th></th>
             <th>
+                @Html.DisplayNameFor(model => model.customer)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.salesOrderNumber)
             </th>
             <th class="hidden">
@@ -45,80 +48,77 @@
             <th class="hidden">
                 @Html.DisplayNameFor(model => model.salesShipmentNumber)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.customer)
-            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <div class="tools">
-                        <a asp-action="Edit" asp-route-id="@item.salesOrderId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                        <a asp-action="Details" asp-route-id="@item.salesOrderId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
-                        <a asp-action="Delete" asp-route-id="@item.salesOrderId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
-                    </div>
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.salesOrderId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.salesOrderId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.salesOrderId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
 
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.salesOrderNumber)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.top)
-                </td>
-                <td>
-                    @item.soDate.ToString("dd-MMM-yyyy")
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.deliveryDate)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.customerLine.street1)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.description)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.Employee.DisplayName)
-                </td>
-                <td>
-                    @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Completed)
-                    {
-                        <span class="label label-success">
-                            @Html.DisplayFor(modelItem => item.salesOrderStatus)
-                        </span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.customer.customerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.salesOrderNumber)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.top)
+            </td>
+            <td>
+                @item.soDate.ToString("dd-MMM-yyyy")
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.deliveryDate)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.customerLine.street1)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.Employee.DisplayName)
+            </td>
+            <td>
+                @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Completed)
+                {
+                    <span class="label label-success">
+                        @Html.DisplayFor(modelItem => item.salesOrderStatus)
+                    </span>
 
-                    }
-                    @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Open)
-                    {
-                        <span class="label label-primary">
-                            @Html.DisplayFor(modelItem => item.salesOrderStatus)
-                        </span>
+                }
+                @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Open)
+                {
+                    <span class="label label-primary">
+                        @Html.DisplayFor(modelItem => item.salesOrderStatus)
+                    </span>
 
-                    }
-                    @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Draft)
-                    {
-                        <span class="label label-warning">
-                            @Html.DisplayFor(modelItem => item.salesOrderStatus)
-                        </span>
+                }
+                @if (item.salesOrderStatus == netcore.Models.Invent.SalesOrderStatus.Draft)
+                {
+                    <span class="label label-warning">
+                        @Html.DisplayFor(modelItem => item.salesOrderStatus)
+                    </span>
 
-                    }
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.totalDiscountAmount)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.totalOrderAmount)
-                </td>
-                <td class="hidden">
-                    @Html.DisplayFor(modelItem => item.salesShipmentNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.customer.customerName)
-                </td>
-            </tr>
+                }
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.totalDiscountAmount)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.totalOrderAmount)
+            </td>
+            <td class="hidden">
+                @Html.DisplayFor(modelItem => item.salesShipmentNumber)
+            </td>
+        </tr>
         }
     </tbody>
 </table>

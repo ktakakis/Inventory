@@ -27,7 +27,7 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: PaymentReceive
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
            var username = HttpContext.User.Identity.Name;
            var applicationDbContext = _context.PaymentReceive
@@ -38,8 +38,12 @@ namespace netcore.Controllers.Invent
             {
                 applicationDbContext = _context.PaymentReceive.Where(s => s.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(e => e.Employee).Include(p => p.invoice).Include(p => p.paymentType);
             }
+            if (id != null)
+            {
+                return View(await applicationDbContext.Where(x=>x.CashRepositoryId==id).ToListAsync());    
+            }
+            return View(await applicationDbContext.ToListAsync());    
 
-            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: PaymentReceive/Details/5
@@ -127,7 +131,7 @@ namespace netcore.Controllers.Invent
             {
                 ViewData["employeeId"] = new SelectList(employee.Where(x => x.PaymentReceiver == true), "EmployeeId", "DisplayName");
             }
-            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository.Where(x=>x.EmployeeId==pr.EmployeeId), "CashRepositoryId", "CashRepositoryName");
 
             return View(pr);
         }

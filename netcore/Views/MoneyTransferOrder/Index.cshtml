@@ -16,16 +16,16 @@
                 @Html.DisplayNameFor(model => model.MoneyTransferOrderNumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MoneyTransferOrderStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MoneyTransferOrderDate)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CashRepositoryIdTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MoneyTransferOrderDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PaymentAmount)
@@ -45,6 +45,14 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MoneyTransferOrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isIssued)
+                @Html.DisplayFor(modelItem => item.CashRepositoryFrom.CashRepositoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isReceived)
+                @Html.DisplayFor(modelItem => item.CashRepositoryTo.CashRepositoryName)
             </td>
             <td>
                 @if (item.MoneyTransferOrderStatus == netcore.Models.Invent.MoneyTransferOrderStatus.Completed)
@@ -68,12 +76,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MoneyTransferOrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CashRepositoryFrom.CashRepositoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CashRepositoryTo.CashRepositoryName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PaymentAmount)

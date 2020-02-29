@@ -21,20 +21,29 @@ namespace netcore.Models.Invent
         [Display(Name = "Όνομα Ταμείου")]
         public string CashRepositoryName { get; set; }
 
+        [Display(Name = "Κεντρικό Ταμείο")]
+        public Boolean MainRepository { get; set; }
+
         [Display(Name = "Περιγραφή")]
         public string Description { get; set; }
 
-        [Display(Name = "Σύνολο Εισπράξεων")]
+        [Display(Name = "Εισπράξεις")]
         public decimal TotalReceipts { get; set; } 
 
-        [Display(Name = "Σύνολο Πληρωμών")]
+        [Display(Name = "Πληρωμές")]
         public decimal TotalPayments { get; set; }
+
+        [Display(Name = "Εισροές")]
+        public decimal TotalCashflowIn { get; set; }
+        
+        [Display(Name = "Εκροές")]
+        public decimal TotalCashflowOut { get; set; }
 
         [Display(Name = "Υπόλοιπο")]
         public decimal Balance { get; set; }
 
         [StringLength(38)]
-        [Display(Name = "Id Συνεργάτη")]
+        [Display(Name = "Συνεργάτης")]
         public string EmployeeId { get; set; }
 
         [Display(Name = "Συνεργάτης")]

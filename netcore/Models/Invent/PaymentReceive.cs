@@ -17,7 +17,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Id Τύπου Είσπραξης")]
         public string PaymentReceiveId { get; set; }
 
-        [Display(Name = "Αριθμός Είσπραξης")]
+        [Display(Name = "Αριθμός")]
         public string PaymentReceiveName { get; set; }
 
         [StringLength(38)]
@@ -47,7 +47,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Συνεργάτης")]
         public Employee Employee { get; set; }
 
-        [Display(Name = "Πλήρης Είσπραξη")]
+        [Display(Name = "Πλήρης")]
         public bool IsFullPayment { get; set; } = true;
 
         [StringLength(38)]

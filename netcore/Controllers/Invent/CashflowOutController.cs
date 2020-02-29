@@ -24,9 +24,19 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: CashflowOut
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
-            var applicationDbContext = _context.CashflowOut.Include(c => c.MoneyTransferOrder);
+            var applicationDbContext = _context.CashflowOut
+                .Include(x=>x.CashRepositoryFrom)
+                .Include(x=>x.CashRepositoryTo)
+                .Include(c => c.MoneyTransferOrder);
+            if (id != null)
+            {
+                applicationDbContext = _context.CashflowOut.Where(x => x.CashRepositoryIdFrom == id)
+                .Include(x => x.CashRepositoryFrom)
+                .Include(x => x.CashRepositoryTo)
+                .Include(c => c.MoneyTransferOrder);
+            }
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -39,6 +49,8 @@ namespace netcore.Controllers.Invent
             }
 
             var cashflowOut = await _context.CashflowOut
+                .Include(x=>x.CashRepositoryFrom)
+                .Include(x => x.CashRepositoryTo)
                 .Include(c => c.MoneyTransferOrder)
                 .SingleOrDefaultAsync(m => m.CashflowOutId == id);
             if (cashflowOut == null)
@@ -50,10 +62,15 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: CashflowOut/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
-            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId");
-            return View();
+            ViewData["StatusMessage"] = TempData["StatusMessage"];
+            ViewData["moneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder.Where(x => x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Open && x.isIssued == false).ToList(), "MoneyTransferOrderId", "MoneyTransferOrderNumber");
+            ViewData["cashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["cashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            CashflowOut obj = new CashflowOut();
+            obj.MoneyTransferOrderId = id;
+            return View(obj);
         }
 
         // POST: CashflowOut/Create
@@ -65,9 +82,53 @@ namespace netcore.Controllers.Invent
         {
             if (ModelState.IsValid)
             {
+                //check MoneyTransferOrder
+                CashflowOut check = await _context.CashflowOut
+                    .Include(x => x.MoneyTransferOrder)
+                    .SingleOrDefaultAsync(x => x.MoneyTransferOrderId.Equals(cashflowOut.MoneyTransferOrderId));
+                if (check != null)
+                {
+                    ViewData["StatusMessage"] = "Σφάλμα. Η εντολή εκροής έχει ήδη εκδοθεί. " + check.CashflowOutNumber;
+                    ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder.ToList(), "MoneyTransferOrderId", "MoneyTransferOrderNumber");
+                    ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+                    ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+                    return View(cashflowOut);
+                }
+                //check Balance
+                bool isBalanceOK = true;
+
+                MoneyTransferOrder mto = _context.MoneyTransferOrder.Where(x => x.MoneyTransferOrderId == cashflowOut.MoneyTransferOrderId).FirstOrDefault();
+                 MoneyTransferOrder to = await _context.MoneyTransferOrder.Where(x => x.MoneyTransferOrderId.Equals(cashflowOut.MoneyTransferOrderId)).FirstOrDefaultAsync();
+                cashflowOut.CashRepositoryIdFrom = to.CashRepositoryIdFrom;
+                cashflowOut.CashRepositoryIdTo = to.CashRepositoryIdTo;
+
+                cashflowOut.CashRepositoryFrom = await _context.CashRepository.Include(x => x.Employee).SingleOrDefaultAsync(x => x.CashRepositoryId.Equals(cashflowOut.CashRepositoryIdFrom));
+                cashflowOut.CashRepositoryTo = await _context.CashRepository.Include(x => x.Employee).SingleOrDefaultAsync(x => x.CashRepositoryId.Equals(cashflowOut.CashRepositoryIdTo));
+                to.isIssued = true;
+
+                CashRepository cashrepository =await  _context.CashRepository.Where(x => x.CashRepositoryId == cashflowOut.CashRepositoryIdFrom).FirstAsync();
+                if (mto != null && cashrepository != null)
+                {
+                    if (cashrepository.Balance < mto.PaymentAmount)
+                    {
+                        isBalanceOK = false;
+                    }
+                }
+                else
+                {
+                    isBalanceOK = false;
+                }
+
+
+                if (!isBalanceOK)
+                {
+                    TempData["StatusMessage"] = "Σφάλμα. Υπάρχει πρόβλημα στα ταμειακά διαθέσιμα, το ταμείο σας έχει " + cashrepository.Balance + " €";
+                    return RedirectToAction(nameof(Create));
+                }
                 _context.Add(cashflowOut);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                TempData["TransMessage"] = "Η ταμειακή εκροή " + cashflowOut.CashflowOutNumber + " έγινε με Επιτυχία!";
+                return RedirectToAction("Details","CashRepository", new { id = cashflowOut.CashRepositoryIdTo });
             }
             ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowOut.MoneyTransferOrderId);
             return View(cashflowOut);
@@ -135,12 +196,17 @@ namespace netcore.Controllers.Invent
             }
 
             var cashflowOut = await _context.CashflowOut
+                .Include(x=>x.CashRepositoryFrom)
+                .Include(x=>x.CashRepositoryTo)
                 .Include(c => c.MoneyTransferOrder)
                 .SingleOrDefaultAsync(m => m.CashflowOutId == id);
             if (cashflowOut == null)
             {
                 return NotFound();
             }
+            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowOut.MoneyTransferOrderId);
+            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
 
             return View(cashflowOut);
         }
@@ -150,10 +216,32 @@ namespace netcore.Controllers.Invent
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var cashflowOut = await _context.CashflowOut.SingleOrDefaultAsync(m => m.CashflowOutId == id);
-            _context.CashflowOut.Remove(cashflowOut);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var cashflowOut = await _context.CashflowOut
+                .Include(x=>x.CashRepositoryFrom)
+                .Include(x=>x.CashRepositoryTo)
+                .Include(c => c.MoneyTransferOrder)
+                .SingleOrDefaultAsync(m => m.CashflowOutId == id);
+
+            if (cashflowOut.MoneyTransferOrder.isReceived == true)
+            {
+                ViewData["StatusMessage"] = "Σφάλμα. Παρακαλώ πρώτα διαγράψτε τις εγγραφές των χρημάτων που έχετε πάρει.";
+                return View(cashflowOut);
+            }
+
+            try
+            {
+                _context.CashflowOut.Remove(cashflowOut);
+                cashflowOut.MoneyTransferOrder.isIssued = false;
+                await _context.SaveChangesAsync();
+                TempData["TransMessage"] = "Η Διαγραφή της εγγραφής μεταφοράς χρημάτων, " + cashflowOut.CashflowOutNumber + ", έγινε με Επιτυχία";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+
+                ViewData["StatusMessage"] = "Σφάλμα. Ηρεμήστε ^ _ ^ και παρακαλούμε επικοινωνήστε διαχειριστή του συστήματός σας με αυτό το μήνυμα: " + ex;
+                return View(cashflowOut);
+            }
         }
 
         private bool CashflowOutExists(string id)

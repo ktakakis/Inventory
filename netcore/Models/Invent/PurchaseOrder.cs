@@ -25,16 +25,16 @@ namespace netcore.Models.Invent
 
         [StringLength(20)]
         [Required]
-        [Display(Name = "Αριθμός Παραγγελίας Αγοράς")]
+        [Display(Name = "Αριθμός")]
         public string purchaseOrderNumber { get; set; }
         
-        [Display(Name = "Οροι πληρωμής (TOP)")]
+        [Display(Name = "Τρόπος πληρωμής")]
         public TOP top { get; set; }
 
-        [Display(Name = "Ημερομηνία Παραγγελίας Αγοράς")]
+        [Display(Name = "Ημ. Παραγγελίας")]
         public DateTime poDate { get; set; }
 
-        [Display(Name = "Ημερομηνία παράδοσης")]
+        [Display(Name = "Ημ. Παράδοσης")]
         public DateTime deliveryDate { get; set; }
 
         [StringLength(50)]
@@ -79,7 +79,7 @@ namespace netcore.Models.Invent
         [Display(Name = "PIC Προμηθευτή")]
         public string picVendor { get; set; }
 
-        [Display(Name = "Κατάσταση Παραγγελίας Αγοράς")]
+        [Display(Name = "Κατάσταση")]
         public PurchaseOrderStatus purchaseOrderStatus { get; set; }
 
         [Display(Name = "Συνολική έκπτωση")]
@@ -88,7 +88,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Σύνολο Παραγγελίας")]
         public decimal totalOrderAmount { get; set; }
 
-        [Display(Name = "Αριθμός παραλαβής αγοράς")]
+        [Display(Name = "Αριθμός παραλαβής")]
         public string purchaseReceiveNumber { get; set; }
 
         [Display(Name = "Στοιχεία Παραγγελίας")]

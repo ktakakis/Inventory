@@ -76,6 +76,9 @@ namespace netcore.Models.Invent
         [Display(Name = "Αποδέκτης Πληρωμών")]
         public Boolean PaymentReceiver { get; set; }
 
+        [Display(Name = "Προεπιλεγμένος Μεταφορέας")]
+        public Boolean DefaultCarrier { get; set; }
+
         [Display(Name = "Παραγγελίες Πώλησης")]
         public List<SalesOrder> SalesOrder { get; set; } = new List<SalesOrder>();
 

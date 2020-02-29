@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200226122858_updateempl")]
+    partial class updateempl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -416,8 +417,6 @@ namespace netcore.Migrations
 
                     b.Property<string>("EmployeeId")
                         .HasMaxLength(38);
-
-                    b.Property<bool>("MainRepository");
 
                     b.Property<decimal>("TotalCashflowIn");
 

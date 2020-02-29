@@ -15,19 +15,16 @@
                 @Html.DisplayNameFor(model => model.PaymentReceiveName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.invoice.customerName)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.PaymentDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PaymentAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsFullPayment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.paymentType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee.DisplayName)
             </th>
         </tr>
     </thead>
@@ -42,24 +39,20 @@
                     <a asp-action="Delete" asp-route-id="@item.PaymentReceiveId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                 </div>
             </td>
-
             <td>
                 @Html.DisplayFor(modelItem => item.PaymentReceiveName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.invoice.customerName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PaymentDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PaymentAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsFullPayment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.paymentType.PaymentTypeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.DisplayName)
             </td>
         </tr>
         }

@@ -7,55 +7,75 @@
     ViewData["DetailInfo"] = "Εάν η διαδικασία μεταφοράς τρέχει ήδη (αποστολή και παραλαβή προϊόντων ), τα προϊόντα δεν μπορούν να υποστούν επεξεργασία, διαγραφή ή προσθήκη.";
 }
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CashflowOutNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CashflowOutNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CashflowOutDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CashflowOutDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CashRepositoryIdFrom)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CashRepositoryIdFrom)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.CashRepositoryIdTo)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CashRepositoryIdTo)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.HasChild)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.HasChild)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.createdAt)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.createdAt)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.MoneyTransferOrder)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.MoneyTransferOrder.MoneyTransferOrderId)
-        </dd>
-    </dl>
-</div>
+    <div class="row">
+        <div class="col-md-9">
+            <!-- Default box -->
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="CashflowOutId" />
+                            <input type="hidden" asp-for="CashflowOutNumber" />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="CashflowOutNumber" class="control-label"></label>
+                                        <input asp-for="CashflowOutNumber" class="form-control" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="CashflowOutDate" class="control-label"></label>
+                                        <input asp-for="CashflowOutDate" class="form-control" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label asp-for="Description" class="control-label"></label>
+                                        <textarea disabled asp-for="Description" class="form-control" rows="3"></textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="CashRepositoryIdFrom" class="control-label"></label>
+                                        <input asp-for="CashRepositoryFrom.CashRepositoryName" class="form-control" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="CashRepositoryIdTo" class="control-label"></label>
+                                        <input asp-for="CashRepositoryTo.CashRepositoryName" class="form-control" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="MoneyTransferOrder" class="control-label"></label>
+                                        <input asp-for="MoneyTransferOrder.MoneyTransferOrderNumber" class="form-control" disabled />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <div class="form-group">
+                            <a asp-action="Edit" asp-route-id="@Model.MoneyTransferOrderId" class="btn btn-primary">Επεξεργασία</a>
+                            <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                        </div>
+                    </div>
+                    <!-- /.box-footer-->
+                </div>
+            </div>
+            <div class="col-md-3">
+                @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
+            </div>
+        </div>
+    </div>

@@ -25,11 +25,24 @@ namespace netcore.Controllers.Invent
         // GET: CashRepository
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.CashRepository.Include(c => c.Employee);
+            var applicationDbContext = _context.CashRepository.Include(c => c.Employee).ThenInclude(x=>x.PaymentReceive);
+            
+            foreach (var cashRepository in applicationDbContext)
+            {
+                var mto = _context.MoneyTransferOrder.Where(x => x.CashRepositoryIdFrom == cashRepository.CashRepositoryId && x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Completed);
+                var mti = _context.MoneyTransferOrder.Where(x => x.CashRepositoryIdTo == cashRepository.CashRepositoryId && x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Completed);
+                cashRepository.TotalReceipts = cashRepository.Employee.PaymentReceive.Sum(x => x.PaymentAmount);
+                cashRepository.TotalCashflowOut = mto.Sum(x => x.PaymentAmount);
+                cashRepository.TotalCashflowIn = mti.Sum(x => x.PaymentAmount);
+                cashRepository.Balance = cashRepository.TotalReceipts + cashRepository.TotalCashflowIn - cashRepository.TotalCashflowOut;
+                _context.Update(cashRepository);
+                await _context.SaveChangesAsync();
+            }
+
             var username = HttpContext.User.Identity.Name;
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
-                applicationDbContext = _context.CashRepository.Where(x => x.Employee.UserName == username).Include(c => c.Employee);
+                applicationDbContext = _context.CashRepository.Where(x => x.Employee.UserName == username).Include(c => c.Employee).ThenInclude(x => x.PaymentReceive);
             }
             return View(await applicationDbContext.ToListAsync());
         }
@@ -43,23 +56,20 @@ namespace netcore.Controllers.Invent
             }
 
             var cashRepository = await _context.CashRepository
-                .Include(c => c.Employee)
+                .Include(c => c.Employee).ThenInclude(x=>x.PaymentReceive)
                 .SingleOrDefaultAsync(m => m.CashRepositoryId == id);
             if (cashRepository == null)
             {
                 return NotFound();
             }
-
             var employee = (from Employee in _context.Employee
                             select new
                             {
                                 Employee.EmployeeId,
                                 Employee.DisplayName
                             }).ToList();
-
             ViewData["EmployeeId"] = new SelectList(employee, "EmployeeId", "DisplayName", cashRepository.EmployeeId);
-            cashRepository.TotalReceipts = cashRepository.Employee.PaymentReceive.Sum(x => x.PaymentAmount);
-            _context.Update(cashRepository);
+            ViewData["IsCashflowIn"] = true;
             await _context.SaveChangesAsync();
             return View(cashRepository);
         }
@@ -89,7 +99,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CashRepositoryId,CashRepositoryName,Description,TotalReceipts,TotalPayments,Balance,EmployeeId,createdAt")] CashRepository cashRepository)
+        public async Task<IActionResult> Create([Bind("CashRepositoryId,Balance,CashRepositoryName,Description,EmployeeId,TotalPayments,TotalReceipts,createdAt,TotalCashflowIn,TotalCashflowOut,MainRepository")] CashRepository cashRepository)
         {
             if (ModelState.IsValid)
             {
@@ -123,7 +133,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CashRepositoryId,CashRepositoryName,Description,TotalReceipts,TotalPayments,Balance,EmployeeId,createdAt")] CashRepository cashRepository)
+        public async Task<IActionResult> Edit(string id, [Bind("CashRepositoryId,Balance,CashRepositoryName,Description,EmployeeId,TotalPayments,TotalReceipts,createdAt,TotalCashflowIn,TotalCashflowOut,MainRepository")] CashRepository cashRepository)
         {
             if (id != cashRepository.CashRepositoryId)
             {

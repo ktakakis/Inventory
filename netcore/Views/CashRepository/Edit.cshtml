@@ -26,36 +26,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <div class="form-group">
                     <label asp-for="Description" class="control-label"></label>
                     <input asp-for="Description" class="form-control" />
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <label asp-for="TotalReceipts" class="control-label"></label>
-                    <input disabled asp-for="TotalReceipts" class="form-control" />
-                    <span asp-validation-for="TotalReceipts" class="text-danger"></span>
+                    <label asp-for="MainRepository" class="control-label"></label>
+                    <input type="checkbox" asp-for="MainRepository" class="checkbox" />
+                    <span asp-validation-for="MainRepository" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label asp-for="TotalPayments" class="control-label"></label>
-                    <input disabled asp-for="TotalPayments" class="form-control" />
-                    <span asp-validation-for="TotalPayments" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label asp-for="Balance" class="control-label"></label>
-                    <input disabled asp-for="Balance" class="form-control" />
-                    <span asp-validation-for="Balance" class="text-danger"></span>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

@@ -1,9 +1,15 @@
 ﻿@model netcore.Models.Invent.CashRepository
-
+@inject netcore.Data.ApplicationDbContext _context;
 @{
     ViewData["Title"] = "Λεπτομέρειες";
     Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
     ViewData["EntityIcon"] = "fa fa-google-wallet";
+    netcore.Models.Invent.MoneyTransferOrder MoneyTransferOrder = _context.MoneyTransferOrder.Where(x => x.CashRepositoryIdTo.Equals(Model.CashRepositoryId) && x.MoneyTransferOrderStatus != netcore.Models.Invent.MoneyTransferOrderStatus.Completed).FirstOrDefault();
+    if (MoneyTransferOrder == null)
+    {
+        ViewData["IsCashflowIn"] = false;
+    }
+
 }
 
 <div class="row">
@@ -32,53 +38,88 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-10">
                                 <div class="form-group">
                                     <label asp-for="Description" class="control-label"></label>
                                     <input disabled asp-for="Description" class="form-control" />
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="MainRepository" class="control-label"></label>
+                                    <input disabled type="checkbox" asp-for="MainRepository" class="checkbox" />
+                                    <span asp-validation-for="MainRepository" class="text-danger"></span>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="TotalReceipts" class="control-label"></label>
                                     <input disabled asp-for="TotalReceipts" class="form-control" />
                                     <span asp-validation-for="TotalReceipts" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="TotalPayments" class="control-label"></label>
                                     <input disabled asp-for="TotalPayments" class="form-control" />
                                     <span asp-validation-for="TotalPayments" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="TotalCashflowIn" class="control-label"></label>
+                                    <input disabled asp-for="TotalCashflowIn" class="form-control" />
+                                    <span asp-validation-for="TotalCashflowIn" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="TotalCashflowOut" class="control-label"></label>
+                                    <input disabled asp-for="TotalCashflowOut" class="form-control" />
+                                    <span asp-validation-for="TotalCashflowOut" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Balance" class="control-label"></label>
                                     <input disabled asp-for="Balance" class="form-control" />
                                     <span asp-validation-for="Balance" class="text-danger"></span>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-                <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="@Model.CashRepositoryId" class="btn btn-primary">Επεξεργασία</a>
-                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="form-group">
+                        <a asp-action="Edit" asp-route-id="@Model.CashRepositoryId" class="btn btn-primary">Επεξεργασία</a>
+                        <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                        @if (Model.Balance > 0)
+                        {
+                            <a asp-action="Create" asp-controller="MoneyTransferOrder" asp-route-Id="@Model.CashRepositoryId" class="btn btn-primary"><i class="fa fa-plane"></i>Μεταφορά Χρημάτων</a>
+                        }
+                        @if (ViewBag.IsCashflowIn)
+                        {
+                                <a asp-action="Create" asp-controller="CashflowIn" class="btn btn-primary"><i class="fa fa-plane"></i>Εισροή χρημάτων</a>
+                        }
+                    </div>
                 </div>
+                <!-- /.box-footer-->
             </div>
-            <!-- /.box-footer-->
+            <!-- /.box -->
         </div>
-        <!-- /.box -->
-    </div>
-    <div class="col-md-3">
-        @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
+        <div class="col-md-3">
+            @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
+        </div>
     </div>
 </div>
 @section Styles{

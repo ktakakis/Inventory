@@ -24,16 +24,16 @@ namespace netcore.Models.Invent
         [Display(Name = "Id Εντολής")]
         public string MoneyTransferOrderId { get; set; }
 
-        [Display(Name = "Εντολή μεταφοράς χρημάτων")]
+        [Display(Name = "Εντολή μεταφοράς")]
         public MoneyTransferOrder MoneyTransferOrder { get; set; }
 
         [StringLength(20)]
         [Required]
-        [Display(Name = "Αριθμός Εκροής")]
+        [Display(Name = "Αριθμός")]
         public string CashflowOutNumber { get; set; } 
 
         [Required]
-        [Display(Name = "Ημερομηνία Εκροής")]
+        [Display(Name = "Ημερομηνία")]
         public DateTime CashflowOutDate { get; set; }
 
         [StringLength(100)]

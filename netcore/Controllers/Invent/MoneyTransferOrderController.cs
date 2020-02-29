@@ -63,12 +63,21 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: MoneyTransferOrder/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
             ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
             ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
             MoneyTransferOrder obj = new MoneyTransferOrder();
+            CashRepository cr = _context.CashRepository.Where(x => x.CashRepositoryId == id).FirstOrDefault();
+            if (id != null)
+            {
+                obj.CashRepositoryIdFrom = id;
+                obj.CashRepositoryIdTo = _context.CashRepository.Where(x => x.MainRepository == true).FirstOrDefault().CashRepositoryId;
+                obj.MoneyTransferOrderStatus = MoneyTransferOrderStatus.Open;
+                obj.PaymentAmount = cr.Balance;
+            }
+
             return View(obj);
         }
 
@@ -95,7 +104,7 @@ namespace netcore.Controllers.Invent
                 _context.Add(moneyTransferOrder);
                 await _context.SaveChangesAsync();
                 TempData["TransMessage"] = "Η Εντολή Μεταφοράς χρημάτων " + moneyTransferOrder.MoneyTransferOrderNumber + " έγινε με Επιτυχία";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details","MoneyTransferOrder", new { id = moneyTransferOrder.MoneyTransferOrderId });
             }
 
             return View(moneyTransferOrder);

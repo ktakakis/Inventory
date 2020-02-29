@@ -118,52 +118,6 @@ namespace netcore.Controllers.Invent
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InvoiceId,HasChild,InvoiceDate,InvoiceNumber,createdAt,shipmentId,Finalized,CustomerCity,CustomerCountry,CustomerPostCode,CustomerStreet,CustomerTaxOffice,CustomerVATRegNumber,EmployeeName,Fax,OfficePhone,PostalCode,TaxOffice,VATNumber,branchName,city,customerName,description,email,street1,Comments,TotalBeforeDiscount,TotalProductVAT,totalDiscountAmount,totalOrderAmount,CustomerCompanyActivity,CustomerFax,CustomerMobilePhone,CustomerOfficePhone,CustomerWorkEmail,Paid,totalPaymentReceive,InvoiceBalance")] Invoice invoice)
         {
-            var query =
-                from Invoice in _context.Invoice
-                join Shipment in _context.Shipment on Invoice.shipmentId equals Shipment.shipmentId
-                join SalesOrder in _context.SalesOrder on Shipment.salesOrderId equals SalesOrder.salesOrderId
-                join Customer in _context.Customer
-                      on new { Shipment.customerId, Column1 = SalesOrder.customerId }
-                  equals new { Customer.customerId, Column1 = Customer.customerId }
-                join Employee in _context.Employee on Customer.EmployeeId equals Employee.EmployeeId
-                join Branch in _context.Branch on Shipment.branchId equals Branch.branchId
-                join CustomerLine in _context.CustomerLine on SalesOrder.customerLineId equals CustomerLine.customerLineId
-                select new
-                {
-                    Branch.branchName,
-                    Branch.description,
-                    Branch.street1,
-                    Branch.PostalCode,
-                    Branch.city,
-                    Branch.OfficePhone,
-                    Branch.Fax,
-                    Branch.email,
-                    Branch.VATNumber,
-                    Branch.TaxOffice,
-                    EmployeeName = Employee.DisplayName,
-                    SalesOrder.deliveryDate,
-                    Customer.customerName,
-                    Customer.CompanyActivity,
-                    customerStreet1 = CustomerLine.street1,
-                    customerPostCode = CustomerLine.PostCode,
-                    customerCity = CustomerLine.city,
-                    customerCountry = CustomerLine.country,
-                    customerVATRegNumber = Customer.VATRegNumber,
-                    customerTaxOffice = Customer.TaxOffice,
-                    CustomerEmail = Customer.workEmail,
-                    CustomerOfficePhone = Customer.officePhone,
-                    CustomerMobilePhone = Customer.mobilePhone,
-                    CustomerFax = Customer.fax,
-                    Invoice.InvoiceId,
-                    Comments = SalesOrder.description,
-                    SalesOrder.salesOrderNumber,
-                    SalesOrder.totalDiscountAmount,
-                    SalesOrder.totalOrderAmount,
-                    SalesOrder.TotalProductVAT,
-                    SalesOrder.TotalWithSpecialTax,
-                    SalesOrder.TotalBeforeDiscount,
-                    SalesOrder.Invoicing
-                };
 
             if (ModelState.IsValid)
             {
@@ -186,6 +140,52 @@ namespace netcore.Controllers.Invent
                 ship.invoiceNumber = invoice.InvoiceNumber;
                 _context.Update(ship);
 
+                var query =
+                    from Invoice in _context.Invoice
+                    join Shipment in _context.Shipment on Invoice.shipmentId equals Shipment.shipmentId
+                    join SalesOrder in _context.SalesOrder on Shipment.salesOrderId equals SalesOrder.salesOrderId
+                    join Customer in _context.Customer
+                          on new { Shipment.customerId, Column1 = SalesOrder.customerId }
+                      equals new { Customer.customerId, Column1 = Customer.customerId }
+                    join Employee in _context.Employee on Customer.EmployeeId equals Employee.EmployeeId
+                    join Branch in _context.Branch on Shipment.branchId equals Branch.branchId
+                    join CustomerLine in _context.CustomerLine on SalesOrder.customerLineId equals CustomerLine.customerLineId
+                    select new
+                    {
+                        Branch.branchName,
+                        Branch.description,
+                        Branch.street1,
+                        Branch.PostalCode,
+                        Branch.city,
+                        Branch.OfficePhone,
+                        Branch.Fax,
+                        Branch.email,
+                        Branch.VATNumber,
+                        Branch.TaxOffice,
+                        EmployeeName = Employee.DisplayName,
+                        SalesOrder.deliveryDate,
+                        Customer.customerName,
+                        Customer.CompanyActivity,
+                        customerStreet1 = CustomerLine.street1,
+                        customerPostCode = CustomerLine.PostCode,
+                        customerCity = CustomerLine.city,
+                        customerCountry = CustomerLine.country,
+                        customerVATRegNumber = Customer.VATRegNumber,
+                        customerTaxOffice = Customer.TaxOffice,
+                        CustomerEmail = Customer.workEmail,
+                        CustomerOfficePhone = Customer.officePhone,
+                        CustomerMobilePhone = Customer.mobilePhone,
+                        CustomerFax = Customer.fax,
+                        Invoice.InvoiceId,
+                        Comments = SalesOrder.description,
+                        SalesOrder.salesOrderNumber,
+                        SalesOrder.totalDiscountAmount,
+                        SalesOrder.totalOrderAmount,
+                        SalesOrder.TotalProductVAT,
+                        SalesOrder.TotalWithSpecialTax,
+                        SalesOrder.TotalBeforeDiscount,
+                        SalesOrder.Invoicing
+                    };
 
                 var inv = query.Where(x => x.InvoiceId == invoice.InvoiceId).FirstOrDefault();
                 
@@ -257,7 +257,7 @@ namespace netcore.Controllers.Invent
                     _context.InvoiceLine.Add(line);
                     await _context.SaveChangesAsync();
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), new { id = invoice.InvoiceId });
             }
             var shipment =
             from Shipment in _context.Shipment

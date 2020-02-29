@@ -15,22 +15,19 @@
                 @Html.DisplayNameFor(model => model.CashRepositoryName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.TotalReceipts)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalPayments)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.TotalCashflowIn)                
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalCashflowOut)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Balance)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.createdAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee)
             </th>
         </tr>
     </thead>
@@ -49,22 +46,19 @@
                 @Html.DisplayFor(modelItem => item.CashRepositoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalReceipts)
+                <a asp-controller="PaymentReceive" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalReceipts)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TotalPayments)
             </td>
             <td>
+                <a asp-controller="CashflowIn"  asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalCashflowIn)</a>
+            </td>
+            <td>
+                <a asp-controller="CashflowOut" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalCashflowOut)</a>
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Balance)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.createdAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.DisplayName)
             </td>
         </tr>
         }

@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200229214556_Category1")]
+    partial class Category1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,8 +239,6 @@ namespace netcore.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("VendorLineRole");
-
-                    b.Property<bool>("VendorPaymentRole");
 
                     b.Property<bool>("VendorRole");
 
@@ -500,11 +499,13 @@ namespace netcore.Migrations
                     b.Property<string>("CategoryName")
                         .IsRequired();
 
-                    b.Property<int?>("ParentCategoryID");
+                    b.Property<int?>("ParenetCategoryID");
+
+                    b.Property<int?>("ParentCategoryCategoryID");
 
                     b.HasKey("CategoryID");
 
-                    b.HasIndex("ParentCategoryID");
+                    b.HasIndex("ParentCategoryCategoryID");
 
                     b.ToTable("Category");
                 });
@@ -1803,45 +1804,6 @@ namespace netcore.Migrations
                     b.ToTable("VendorLine");
                 });
 
-            modelBuilder.Entity("netcore.Models.Invent.VendorPayment", b =>
-                {
-                    b.Property<string>("VendorPaymentId")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(38);
-
-                    b.Property<string>("CashRepositoryId")
-                        .HasMaxLength(38);
-
-                    b.Property<string>("EmployeeId")
-                        .HasMaxLength(38);
-
-                    b.Property<decimal>("PaymentAmount");
-
-                    b.Property<DateTime>("PaymentDate");
-
-                    b.Property<string>("PaymentNumber");
-
-                    b.Property<string>("PaymentTypeId")
-                        .HasMaxLength(38);
-
-                    b.Property<DateTime>("createdAt");
-
-                    b.Property<string>("purchaseOrderId")
-                        .HasMaxLength(38);
-
-                    b.HasKey("VendorPaymentId");
-
-                    b.HasIndex("CashRepositoryId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("PaymentTypeId");
-
-                    b.HasIndex("purchaseOrderId");
-
-                    b.ToTable("VendorPayment");
-                });
-
             modelBuilder.Entity("netcore.Models.Invent.Warehouse", b =>
                 {
                     b.Property<string>("warehouseId")
@@ -1990,7 +1952,7 @@ namespace netcore.Migrations
                 {
                     b.HasOne("netcore.Models.Invent.Category", "ParentCategory")
                         .WithMany("Categories")
-                        .HasForeignKey("ParentCategoryID");
+                        .HasForeignKey("ParentCategoryCategoryID");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.Customer", b =>
@@ -2302,25 +2264,6 @@ namespace netcore.Migrations
                     b.HasOne("netcore.Models.Invent.Vendor", "vendor")
                         .WithMany("vendorLine")
                         .HasForeignKey("vendorId");
-                });
-
-            modelBuilder.Entity("netcore.Models.Invent.VendorPayment", b =>
-                {
-                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepository")
-                        .WithMany()
-                        .HasForeignKey("CashRepositoryId");
-
-                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId");
-
-                    b.HasOne("netcore.Models.Invent.PaymentType", "paymentType")
-                        .WithMany()
-                        .HasForeignKey("PaymentTypeId");
-
-                    b.HasOne("netcore.Models.Invent.PurchaseOrder", "purchaseOrder")
-                        .WithMany()
-                        .HasForeignKey("purchaseOrderId");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.Warehouse", b =>

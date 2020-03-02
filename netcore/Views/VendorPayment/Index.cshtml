@@ -1,0 +1,60 @@
+﻿@model IEnumerable<netcore.Models.Invent.VendorPayment>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-money";
+    ViewData["ListTitle"] = "Λίστα Συναλλαγών";
+    ViewData["IndexInfo"] = "Η Λίστα περιέχει όλες τις Εισπράξεις που έχουν πραγματοποιηθεί.";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CashRepository)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.purchaseOrder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentAmount)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.VendorPaymentId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.VendorPaymentId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.VendorPaymentId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CashRepository.CashRepositoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.purchaseOrder.purchaseOrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentAmount)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

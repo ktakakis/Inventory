@@ -141,12 +141,15 @@
 
             if (transMessage) {
                 toastr.success(transMessage);
-            }
-            
+            }         
 
             var mainTable;
-
             mainTable = $('.table').DataTable({
+                'treeGrid': {
+                                'left': 10,
+                                'expandIcon': '<span>+</span>',
+                                'collapseIcon': '<span>-</span>'
+                            },
                 "language": {
                 "url": '..\\..\\locale\\DataTable-GR.json'
             },
@@ -187,15 +190,11 @@
             $("#btn-export-pdf").on("click", function() {
                 mainTable.button( '.buttons-pdf' ).trigger();
             })
-
         });
         
-       
     </script>
 
     @RenderSection("Scripts", required: false)
-
-
 
 </body>
 </html>

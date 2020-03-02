@@ -184,6 +184,14 @@
                 </a>
             </li>
         }
+        @if (appUser.PaymentReceiveRole)
+        {
+            <li class="@Html.IsSelected(controller: "VendorPayment")">
+                <a href="@Url.Action("Index", "VendorPayment")">
+                    <i class="fa fa-money"></i><span> Πληρωμές Προμηθευτών</span>
+                </a>
+            </li>
+        }
 
         @if (appUser.TransferOrderRole)
         {
@@ -247,8 +255,14 @@
             </li>
         }
 
-        @if (appUser.NumberSequenceRole)
+        @if (appUser.CategoryRole)
         {
+            <li class="@Html.IsSelected(controller: "Category")">
+                <a href="@Url.Action("Index", "Category")">
+                    <i class="fa fa-list"></i> <span> Κατηγορίες</span>
+                </a>
+            </li>
+
         }
 
         @if (appUser.ApplicationUserRole)

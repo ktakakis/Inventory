@@ -89,7 +89,12 @@ namespace netcore.Data
         public DbSet<netcore.Models.Invent.MoneyTransferOrder> MoneyTransferOrder { get; set; }
 
         public DbSet<netcore.Models.Invent.CashflowIn> CashflowIn { get; set; }
+
         public DbSet<netcore.Models.Invent.CashflowOut> CashflowOut { get; set; }
+
+        public DbSet<netcore.Models.Invent.Category> Category { get; set; }
+
+        public DbSet<netcore.Models.Invent.VendorPayment> VendorPayment { get; set; }
 
     }
 }

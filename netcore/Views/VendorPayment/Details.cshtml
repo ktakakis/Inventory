@@ -1,0 +1,69 @@
+﻿@model netcore.Models.Invent.VendorPayment
+
+@{
+    ViewData["Title"] = "Λεπτομέρειες";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
+    ViewData["EntityIcon"] = "fa fa-money";
+}
+
+
+<div>
+    <h4>VendorPayment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CashRepository)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CashRepository.CashRepositoryId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.EmployeeId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.paymentType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.paymentType.PaymentTypeId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.purchaseOrder)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.purchaseOrder.purchaseOrderId)
+        </dd>
+    </dl>
+</div>
+<div class="box-footer">
+    <div class="form-group">
+        <a asp-action="Edit" asp-route-id="@Model.VendorPaymentId" class="btn btn-primary">Επεξεργασία</a>
+        <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+    </div>
+</div>

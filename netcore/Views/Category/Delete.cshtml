@@ -1,0 +1,32 @@
+﻿@model netcore.Models.Invent.Category
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-list";
+    ViewData["DeleteInfo"] = "Η Κατηγορία που έχει υποκατηγορίες δεν μπορεί να διαγραφεί.";
+    ViewData["IsCanDeleted"] = false;
+}
+
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="CategoryID" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group has-success">
+                    <label asp-for="CategoryName" class="control-label"></label>
+                    <input asp-for="CategoryName" class="form-control" disabled />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ParentCategoryID" class="control-label">Πελάτης</label>
+                    <select asp-for="ParentCategoryID" id="customerList" class="form-control select2" disabled asp-items="ViewBag.ParentCategoryID" role="combobox"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

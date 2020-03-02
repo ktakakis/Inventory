@@ -1,0 +1,29 @@
+﻿@model netcore.Models.Invent.Category
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
+    ViewData["EntityIcon"] = "fa fa-list";
+    ViewData["CreateInfo"] = "Οι Κατηγορίες χρησιμοποιούνται για την ομαδοποίηση των Πληρωμών..";
+}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CategoryName" class="control-label"></label>
+                <input asp-for="CategoryName" class="form-control" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ParentCategoryID" class="control-label">Γονέας</label>
+                <select asp-for="ParentCategoryID" id="EmployeeList" class="form-control select2" asp-items="ViewBag.ParentCategoryID"></select>
+            </div>
+        </div>
+    </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

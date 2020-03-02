@@ -44,6 +44,8 @@
     <Compile Remove="Migrations\20200119154030_Payments2.Designer.cs" />
     <Compile Remove="Migrations\20200119160030_Payments3.cs" />
     <Compile Remove="Migrations\20200119160030_Payments3.Designer.cs" />
+    <Compile Remove="Migrations\20200229005634_category.cs" />
+    <Compile Remove="Migrations\20200229005634_category.Designer.cs" />
   </ItemGroup>
 
 
@@ -68,6 +70,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\adminlte\components\dataTables.treeGrid.js-master\.gitignore" />
+    <None Include="wwwroot\adminlte\components\dataTables.treeGrid.js-master\dataTables.treeGrid.js" />
+    <None Include="wwwroot\adminlte\components\dataTables.treeGrid.js-master\LICENSE" />
+    <None Include="wwwroot\adminlte\components\dataTables.treeGrid.js-master\README.md" />
     <None Include="wwwroot\lib\cldrjs\.bowerrc" />
     <None Include="wwwroot\lib\cldrjs\.gitignore" />
     <None Include="wwwroot\lib\cldrjs\.jshintrc" />
@@ -163,6 +169,9 @@
     <None Include="wwwroot\lib\cldrjs\test\unit\util\json\merge.js" />
     <None Include="wwwroot\lib\cldrjs\test\unit_unresolved.js" />
     <None Include="wwwroot\lib\cldrjs\test\util.js" />
+    <None Include="wwwroot\lib\Drop-Down-Combo-Tree\comboTreePlugin.js" />
+    <None Include="wwwroot\lib\Drop-Down-Combo-Tree\LICENSE" />
+    <None Include="wwwroot\lib\Drop-Down-Combo-Tree\README.md" />
     <None Include="wwwroot\lib\globalize\.bowerrc" />
     <None Include="wwwroot\lib\globalize\.gitattributes" />
     <None Include="wwwroot\lib\globalize\.gitignore" />

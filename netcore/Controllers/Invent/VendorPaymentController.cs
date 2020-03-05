@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using netcore.Data;
 using netcore.Models.Invent;
+using netcore.Services;
 
 namespace netcore.Controllers.Invent
 {
@@ -16,10 +17,13 @@ namespace netcore.Controllers.Invent
     public class VendorPaymentController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly INumberSequence _numberSequence;
 
-        public VendorPaymentController(ApplicationDbContext context)
+        public VendorPaymentController(ApplicationDbContext context,
+                        INumberSequence numberSequence)
         {
             _context = context;
+            _numberSequence = numberSequence;
         }
 
         // GET: VendorPayment
@@ -47,6 +51,10 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
+            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", vendorPayment.CashRepositoryId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", vendorPayment.EmployeeId);
+            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", vendorPayment.PaymentTypeId);
+            ViewData["purchaseOrderId"] = new SelectList(_context.PurchaseOrder, "purchaseOrderId", "purchaseOrderNumber", vendorPayment.purchaseOrderId);
 
             return View(vendorPayment);
         }
@@ -54,11 +62,12 @@ namespace netcore.Controllers.Invent
         // GET: VendorPayment/Create
         public IActionResult Create()
         {
-            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+            var cashrepository = _context.CashRepository.Include(x=>x.Employee).Where(x => x.MainRepository == true).FirstOrDefault();
+            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName",cashrepository.CashRepositoryId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",cashrepository.Employee.EmployeeId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName");
             List<PurchaseOrder> poList = _context.PurchaseOrder.Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Completed).ToList();
-            poList.Insert(0, new PurchaseOrder { purchaseOrderId = "0", purchaseOrderNumber = "Select" });
+            poList.Insert(0, new PurchaseOrder { purchaseOrderId = "0", purchaseOrderNumber = "Επιλέξτε" });
             ViewData["purchaseOrderId"] = new SelectList(poList, "purchaseOrderId", "purchaseOrderNumber");
             VendorPayment vp = new VendorPayment();
             vp.PaymentDate = DateTime.Today;
@@ -74,6 +83,7 @@ namespace netcore.Controllers.Invent
         {
             if (ModelState.IsValid)
             {
+                vendorPayment.PaymentNumber = _numberSequence.GetNumberSequence("ΠΛΠ");
                 _context.Add(vendorPayment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -181,6 +191,27 @@ namespace netcore.Controllers.Invent
         {
             return _context.VendorPayment.Any(e => e.VendorPaymentId == id);
         }
+
+        [HttpGet]
+        public JsonResult GetEmployeeRepositories(string employeeId)
+        {
+            var EmployeeRepositorylist = new SelectList(_context.CashRepository.Where(c => c.EmployeeId == employeeId), "CashRepositoryId", "CashRepositoryName");
+            return Json(EmployeeRepositorylist);
+
+        }
+
+        [HttpGet]
+        public JsonResult GetPurchaseOrderBalance(string purchaseOrderId)
+        {
+            var poBalance = _context.PurchaseOrder.Where(c => c.purchaseOrderId == purchaseOrderId).FirstOrDefault();
+            var result = new
+            {
+                paymentAmount = poBalance.totalOrderAmount
+            };
+            return Json(result);
+
+        }
+
     }
 }
 namespace netcore.MVC

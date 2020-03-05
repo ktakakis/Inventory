@@ -130,7 +130,7 @@ namespace netcore.Controllers.Invent
                 TempData["TransMessage"] = "Η ταμειακή εκροή " + cashflowOut.CashflowOutNumber + " έγινε με Επιτυχία!";
                 return RedirectToAction("Details","CashRepository", new { id = cashflowOut.CashRepositoryIdTo });
             }
-            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowOut.MoneyTransferOrderId);
+            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowOut.MoneyTransferOrderId);
             return View(cashflowOut);
         }
 
@@ -147,7 +147,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowOut.MoneyTransferOrderId);
+            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowOut.MoneyTransferOrderId);
             return View(cashflowOut);
         }
 
@@ -183,7 +183,7 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowOut.MoneyTransferOrderId);
+            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowOut.MoneyTransferOrderId);
             return View(cashflowOut);
         }
 
@@ -204,7 +204,7 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowOut.MoneyTransferOrderId);
+            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowOut.MoneyTransferOrderId);
             ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
             ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
 

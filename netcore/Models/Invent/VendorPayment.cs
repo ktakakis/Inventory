@@ -24,7 +24,7 @@ namespace netcore.Models.Invent
         public DateTime PaymentDate { get; set; }
 
         [StringLength(38)]
-        [Display(Name = "Id Τιμολογίου")]
+        [Display(Name = "Παραγγελία")]
         public string purchaseOrderId { get; set; }
 
         [Display(Name = "Παραγγελία")]

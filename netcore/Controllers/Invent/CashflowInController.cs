@@ -126,9 +126,10 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowIn.MoneyTransferOrderId);
-            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
-            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["moneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowIn.MoneyTransferOrderId);
+            ViewData["cashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["cashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+
             return View(cashflowIn);
         }
 
@@ -165,9 +166,9 @@ namespace netcore.Controllers.Invent
                 TempData["TransMessage"] = "Η Επεξεργασία της εγγραφής παραλαβής," + cashflowIn.CashflowInNumber + " έγινε με Επιτυχία";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MoneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder, "MoneyTransferOrderId", "MoneyTransferOrderId", cashflowIn.MoneyTransferOrderId);
-            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
-            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["moneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder.Where(x => x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Open && x.isIssued == true).ToList(), "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowIn.MoneyTransferOrderId);
+            ViewData["cashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["cashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
             return View(cashflowIn);
         }
 
@@ -188,8 +189,9 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-            ViewData["CashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
-            ViewData["CashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["moneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder.Where(x => x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Open && x.isIssued == true).ToList(), "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowIn.MoneyTransferOrderId);
+            ViewData["cashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["cashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
             return View(cashflowIn);
         }
 
@@ -201,7 +203,10 @@ namespace netcore.Controllers.Invent
             var cashflowIn = await _context.CashflowIn
                 .Include(x=>x.MoneyTransferOrder)
                 .SingleOrDefaultAsync(m => m.CashflowInId == id);
-            try
+            ViewData["moneyTransferOrderId"] = new SelectList(_context.MoneyTransferOrder.Where(x => x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Open && x.isIssued == true).ToList(), "MoneyTransferOrderId", "MoneyTransferOrderNumber", cashflowIn.MoneyTransferOrderId);
+            ViewData["cashRepositoryIdFrom"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+            ViewData["cashRepositoryIdTo"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+           try
             {
                 _context.CashflowIn.Remove(cashflowIn);
                 cashflowIn.MoneyTransferOrder.MoneyTransferOrderStatus = MoneyTransferOrderStatus.Open;

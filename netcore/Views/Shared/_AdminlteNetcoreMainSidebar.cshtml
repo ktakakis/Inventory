@@ -11,6 +11,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
+       
         @if (Model != null)
         {
             <div class="user-panel">
@@ -24,13 +25,9 @@
             </div>
 
         }
-
         @if (appUser != null)
         {
     <ul class="sidebar-menu" data-widget="tree">
-
-
-        <li class="header">ΔΙΑΧΕΙΡΙΣΗ ΑΠΟΘΕΜΑΤΩΝ</li>
         @if (appUser.HomeRole)
         {
             <li class="@Html.IsSelected(controller: "Home")">
@@ -39,71 +36,7 @@
                 </a>
             </li>
         }
-
-        @if (appUser.CitiesRole)
-        {
-            <li class="@Html.IsSelected(controller: "Cities")">
-                <a href="@Url.Action("Index", "Cities")">
-                    <i class="fa fa-universal-access"></i> <span>Πόλεις</span>
-                </a>
-            </li>
-
-        }
-
-        @if (appUser.CatalogRole)
-        {
-            <li class="@Html.IsSelected(controller: "Catalog")">
-                <a href="@Url.Action("Index", "Catalog")">
-                    <i class="fa fa-address-book"></i> <span>Κατάλογοι</span>
-                </a>
-            </li>
-        }
-        @if (appUser.EmployeeRole)
-        {
-            <li class="@Html.IsSelected(controller: "Employee")">
-                <a href="@Url.Action("Index", "Employee")">
-                    <i class="fa fa-user"></i> <span>Συνεργάτες</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.BranchRole)
-        {
-            <li class="@Html.IsSelected(controller: "Branch")">
-                <a href="@Url.Action("Index", "Branch")">
-                    <i class="fa fa-building-o"></i> <span>Υποκαταστήματα</span>
-                </a>
-            </li>
-        }
-
-
-        @if (appUser.WarehouseRole)
-        {
-            <li class="@Html.IsSelected(controller: "Warehouse")">
-                <a href="@Url.Action("Index", "Warehouse")">
-                    <i class="fa fa-cubes"></i> <span>Αποθήκες</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.ProductRole)
-        {
-            <li class="@Html.IsSelected(controller: "Product")">
-                <a href="@Url.Action("Index", "Product")">
-                    <i class="fa fa-tags"></i> <span>Προϊόντα</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.StockRole)
-        {
-            <li class="@Html.IsSelected(controller: "Stock")">
-                <a href="@Url.Action("Index", "Stock")">
-                    <i class="fa fa-cube"></i> <span>Απόθεματα</span>
-                </a>
-            </li>
-        }
-
+        <li class="header">ΔΙΑΧΕΙΡΙΣΗ ΑΓΟΡΩΝ</li>
         @if (appUser.VendorRole)
         {
             <li class="@Html.IsSelected(controller: "Vendor")">
@@ -112,7 +45,6 @@
                 </a>
             </li>
         }
-
         @if (appUser.PurchaseOrderRole)
         {
             <li class="@Html.IsSelected(controller: "PurchaseOrder")">
@@ -121,66 +53,11 @@
                 </a>
             </li>
         }
-
         @if (appUser.ReceivingRole)
         {
             <li class="@Html.IsSelected(controller: "Receiving")">
                 <a href="@Url.Action("Index", "Receiving")">
                     <i class="fa fa-truck"></i> <span>Παραλαβές</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.CustomerRole)
-        {
-            <li class="@Html.IsSelected(controller: "Customer")">
-                <a href="@Url.Action("Index", "Customer")">
-                    <i class="fa fa-bank"></i> <span>Πελάτες</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.SalesOrderRole)
-        {
-            <li class="@Html.IsSelected(controller: "SalesOrder")">
-                <a href="@Url.Action("Index", "SalesOrder")">
-                    <i class="fa fa-cart-plus"></i> <span> Πωλήσεις</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.ShipmentRole)
-        {
-            <li class="@Html.IsSelected(controller: "Shipment")">
-                <a href="@Url.Action("Index", "Shipment")">
-                    <i class="fa fa-plane"></i><span> Αποστολές</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.InvoiceRole)
-        {
-            <li class="@Html.IsSelected(controller: "Invoice")">
-                <a href="@Url.Action("Index", "Invoice")">
-                    <i class="fa fa-certificate"></i><span> Τιμολόγια</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.PaymentTypeRole)
-        {
-            <li class="@Html.IsSelected(controller: "PaymentType")">
-                <a href="@Url.Action("Index", "PaymentType")">
-                    <i class="fa fa-get-pocket"></i><span> Τρόποι Είσπραξης</span>
-                </a>
-            </li>
-        }
-
-        @if (appUser.PaymentReceiveRole)
-        {
-            <li class="@Html.IsSelected(controller: "PaymentReceive")">
-                <a href="@Url.Action("Index", "PaymentReceive")">
-                    <i class="fa fa-money"></i><span> Εισπράξεις</span>
                 </a>
             </li>
         }
@@ -192,34 +69,56 @@
                 </a>
             </li>
         }
-
-        @if (appUser.TransferOrderRole)
+        <li class="header">ΔΙΑΧΕΙΡΙΣΗ ΠΩΛΗΣΕΩΝ</li>
+        @if (appUser.CustomerRole)
         {
-            <li class="@Html.IsSelected(controller: "TransferOrder")">
-                <a href="@Url.Action("Index", "TransferOrder")">
-                    <i class="fa fa-recycle"></i> <span> Μεταφορές</span>
+            <li class="@Html.IsSelected(controller: "Customer")">
+                <a href="@Url.Action("Index", "Customer")">
+                    <i class="fa fa-bank"></i> <span>Πελάτες</span>
                 </a>
             </li>
         }
-
-        @if (appUser.TransferOutRole)
+        @if (appUser.CatalogRole)
         {
-            <li class="@Html.IsSelected(controller: "TransferOut")">
-                <a href="@Url.Action("Index", "TransferOut")">
-                    <i class="fa fa-upload"></i> <span> Εξαγωγές</span>
+            <li class="@Html.IsSelected(controller: "Catalog")">
+                <a href="@Url.Action("Index", "Catalog")">
+                    <i class="fa fa-address-book"></i> <span>Κατάλογοι</span>
                 </a>
             </li>
         }
-
-        @if (appUser.TransferInRole)
+        @if (appUser.SalesOrderRole)
         {
-            <li class="@Html.IsSelected(controller: "TransferIn")">
-                <a href="@Url.Action("Index", "TransferIn")">
-                    <i class="fa fa-download"></i> <span> Εισαγωγές</span>
+            <li class="@Html.IsSelected(controller: "SalesOrder")">
+                <a href="@Url.Action("Index", "SalesOrder")">
+                    <i class="fa fa-cart-plus"></i> <span> Πωλήσεις</span>
                 </a>
             </li>
         }
-
+        @if (appUser.ShipmentRole)
+        {
+            <li class="@Html.IsSelected(controller: "Shipment")">
+                <a href="@Url.Action("Index", "Shipment")">
+                    <i class="fa fa-plane"></i><span> Αποστολές</span>
+                </a>
+            </li>
+        }
+        @if (appUser.InvoiceRole)
+        {
+            <li class="@Html.IsSelected(controller: "Invoice")">
+                <a href="@Url.Action("Index", "Invoice")">
+                    <i class="fa fa-certificate"></i><span> Τιμολόγια</span>
+                </a>
+            </li>
+        }
+        @if (appUser.PaymentReceiveRole)
+        {
+            <li class="@Html.IsSelected(controller: "PaymentReceive")">
+                <a href="@Url.Action("Index", "PaymentReceive")">
+                    <i class="fa fa-money"></i><span> Εισπράξεις</span>
+                </a>
+            </li>
+        }
+        <li class="header">ΔΙΑΧΕΙΡΙΣΗ ΤΑΜΕΙΟΥ</li>
         @if (appUser.CashRepositoryRole)
         {
             <li class="@Html.IsSelected(controller: "CashRepository")">
@@ -228,7 +127,6 @@
                 </a>
             </li>
         }
-
         @if (appUser.CashRepositoryRole)
         {
             <li class="@Html.IsSelected(controller: "MoneyTransferOrder")">
@@ -245,7 +143,6 @@
                 </a>
             </li>
         }
-
         @if (appUser.CashflowOutRole)
         {
             <li class="@Html.IsSelected(controller: "CashflowOut")">
@@ -254,7 +151,64 @@
                 </a>
             </li>
         }
-
+        <li class="header">ΔΙΑΧΕΙΡΙΣΗ ΑΠΟΘΗΚΩΝ</li>
+        @if (appUser.WarehouseRole)
+        {
+            <li class="@Html.IsSelected(controller: "Warehouse")">
+                <a href="@Url.Action("Index", "Warehouse")">
+                    <i class="fa fa-cubes"></i> <span>Αποθήκες</span>
+                </a>
+            </li>
+        }
+        @if (appUser.TransferOrderRole)
+        {
+            <li class="@Html.IsSelected(controller: "TransferOrder")">
+                <a href="@Url.Action("Index", "TransferOrder")">
+                    <i class="fa fa-recycle"></i> <span> Μεταφορές</span>
+                </a>
+            </li>
+        }
+        @if (appUser.TransferOutRole)
+        {
+            <li class="@Html.IsSelected(controller: "TransferOut")">
+                <a href="@Url.Action("Index", "TransferOut")">
+                    <i class="fa fa-upload"></i> <span> Εξαγωγές</span>
+                </a>
+            </li>
+        }
+        @if (appUser.TransferInRole)
+        {
+            <li class="@Html.IsSelected(controller: "TransferIn")">
+                <a href="@Url.Action("Index", "TransferIn")">
+                    <i class="fa fa-download"></i> <span> Εισαγωγές</span>
+                </a>
+            </li>
+        }
+        @if (appUser.ProductRole)
+        {
+            <li class="@Html.IsSelected(controller: "Product")">
+                <a href="@Url.Action("Index", "Product")">
+                    <i class="fa fa-tags"></i> <span>Προϊόντα</span>
+                </a>
+            </li>
+        }
+        @if (appUser.StockRole)
+        {
+            <li class="@Html.IsSelected(controller: "Stock")">
+                <a href="@Url.Action("Index", "Stock")">
+                    <i class="fa fa-cube"></i> <span>Απόθεματα</span>
+                </a>
+            </li>
+        }
+        <li class="header">ΡΥΘΜΙΣΕΙΣ</li>
+        @if (appUser.BranchRole)
+        {
+            <li class="@Html.IsSelected(controller: "Branch")">
+                <a href="@Url.Action("Index", "Branch")">
+                    <i class="fa fa-building-o"></i> <span>Υποκαταστήματα</span>
+                </a>
+            </li>
+        }
         @if (appUser.CategoryRole)
         {
             <li class="@Html.IsSelected(controller: "Category")">
@@ -262,26 +216,50 @@
                     <i class="fa fa-list"></i> <span> Κατηγορίες</span>
                 </a>
             </li>
-
         }
-
         @if (appUser.ApplicationUserRole)
         {
-            <li class="header">ΡΥΘΜΙΣΕΙΣ</li>
             <li class="@Html.IsSelected(controller: "ApplicationUser")">
                 <a href="@Url.Action("Index", "ApplicationUser")">
                     <i class="fa fa-users"></i> <span>Ρόλοι χρηστών</span>
                 </a>
             </li>
+        }
+        @if (appUser.EmployeeRole)
+        {
+            <li class="@Html.IsSelected(controller: "Employee")">
+                <a href="@Url.Action("Index", "Employee")">
+                    <i class="fa fa-user"></i> <span>Συνεργάτες</span>
+                </a>
+            </li>
+        }
+        @if (appUser.CitiesRole)
+        {
+            <li class="@Html.IsSelected(controller: "Cities")">
+                <a href="@Url.Action("Index", "Cities")">
+                    <i class="fa fa-universal-access"></i> <span>Πόλεις</span>
+                </a>
+            </li>
+
+        }
+        @if (appUser.PaymentTypeRole)
+        {
+            <li class="@Html.IsSelected(controller: "PaymentType")">
+                <a href="@Url.Action("Index", "PaymentType")">
+                    <i class="fa fa-get-pocket"></i><span> Τρόποι Είσπραξης</span>
+                </a>
+            </li>
+        }
+        @if (appUser.ApplicationUserRole)
+        {
+
             <li class="@Html.IsSelected(controller: "NumberSequence")">
                 <a href="@Url.Action("Index", "NumberSequence")">
                     <i class="fa fa-barcode"></i> <span> Σειρές Αριθμών</span>
                 </a>
             </li>
         }
-
     </ul>
-
         }
 
     </section>

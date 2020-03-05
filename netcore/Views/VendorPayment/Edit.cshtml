@@ -6,46 +6,93 @@
     ViewData["EntityIcon"] = "fa fa-money";
 }
 <div class="row">
-    <div class="col-md-4">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="PaymentNumber" class="control-label"></label>
-            <input disabled asp-for="PaymentNumber" class="form-control" />
-            <span asp-validation-for="PaymentNumber" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
-            <select asp-for="EmployeeId" id="EmployeeList" class="form-control select2" asp-items="ViewBag.EmployeeId"></select>
-        </div>
-        <div class="form-group">
-            <label asp-for="purchaseOrderId" class="control-label"></label>
-            <select asp-for="purchaseOrderId" id="invoiceid" class="form-control" asp-items="ViewBag.purchaseOrderId"></select>
-        </div>
-        <div class="form-group">
-            <label asp-for="PaymentDate" class="control-label"></label>
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="PaymentNumber" class="control-label"></label>
+                    <input asp-for="PaymentNumber" class="form-control" />
+                    <span asp-validation-for="PaymentNumber" class="text-danger"></span>
                 </div>
-                <input asp-for="PaymentDate" value="@Model.PaymentDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
+                    <select asp-for="EmployeeId" id="EmployeeList" class="form-control select2" asp-items="ViewBag.EmployeeId"></select>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="PaymentTypeId" class="control-label"></label>
-            <select asp-for="PaymentTypeId" class="form-control" asp-items="ViewBag.PaymentTypeId"></select>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="purchaseOrderId" class="control-label"></label>
+                    <select asp-for="purchaseOrderId" id="purchaseOrderId" class="form-control" asp-items="ViewBag.purchaseOrderId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PaymentDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="PaymentDate" value="@Model.PaymentDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="PaymentAmount" class="control-label"></label>
-            <input asp-for="PaymentAmount" id="paymentAmount" class="form-control" />
-            <span asp-validation-for="PaymentAmount" class="text-danger"></span>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PaymentTypeId" class="control-label"></label>
+                    <select asp-for="PaymentTypeId" class="form-control" asp-items="ViewBag.PaymentTypeId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PaymentAmount" class="control-label"></label>
+                    <input asp-for="PaymentAmount" id="paymentAmount" class="form-control" />
+                    <span asp-validation-for="PaymentAmount" class="text-danger"></span>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="CashRepositoryId" class="control-label">Ταμείο</label>
-            <select asp-for="CashRepositoryId" id="CashRepository" class="form-control select2" asp-items="ViewBag.CashRepositoryId"></select>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CashRepositoryId" class="control-label">Ταμείο</label>
+                    <select asp-for="CashRepositoryId" id="CashRepository" class="form-control select2" asp-items="ViewBag.CashRepositoryId"></select>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $("#purchaseOrderId").change(function () {
+            var purchaseOrderId = $("#purchaseOrderId").val();
+
+            $.getJSON("/VendorPayment/GetPurchaseOrderBalance", { purchaseOrderId: purchaseOrderId }, function (data) {
+                data['paymentAmount'] = data['paymentAmount'].toString().replace('.', ',');
+                $("#paymentAmount").val(data.paymentAmount);
+            });
+        });
+
+        $("#EmployeeList").change(function () {
+            var employeeId = $("#EmployeeList").val();
+            var url = "/VendorPayment/GetEmployeeRepositories";
+
+            $.getJSON(url, { EmployeeId: employeeId }, function (data) {
+                var item = "";
+                $("#CashRepository").empty();
+                $.each(data, function (i, cashrepository) {
+                    item += '<option value="' + cashrepository.value + '">' + cashrepository.text + '</option>'
+                });
+                $("#CashRepository").html(item);
+            });
+        });
+
+    </script>
 }

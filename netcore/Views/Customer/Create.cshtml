@@ -13,11 +13,6 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="customerId" />
         <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Περίληψη</i></small>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group has-success">
                     <label asp-for="customerName" class="control-label"></label>
@@ -38,11 +33,6 @@
             <label asp-for="description" class="control-label"></label>
             <textarea asp-for="description" class="form-control" rows="3"></textarea>
             <span asp-validation-for="description" class="text-danger"></span>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Διεύθυνση</i></small>
-            </div>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -82,11 +72,6 @@
                     <input type="checkbox" asp-for="SalesCount" class="checkbox" />
                     <span asp-validation-for="SalesCount" class="text-danger"></span>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Επικοινωνία</i></small>
             </div>
         </div>
         <div class="row">

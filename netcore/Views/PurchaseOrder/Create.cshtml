@@ -17,11 +17,6 @@
         <input type="hidden" asp-for="purchaseOrderNumber" />
         <input type="hidden" asp-for="purchaseOrderStatus" />
         <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Περίληψη</i></small>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="purchaseOrderNumber" class="control-label"></label>
@@ -82,21 +77,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Διεύθυνση</i></small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="deliveryAddress" class="control-label"></label>
-            <textarea asp-for="deliveryAddress" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="deliveryAddress" class="text-danger"></span>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Property</i></small>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="branchId" class="control-label">Branch</label>
@@ -104,15 +84,15 @@
                     <span asp-validation-for="branchId" class="text-danger"></span>
                 </div>
             </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="referenceNumberInternal" class="control-label"></label>
-                    <input asp-for="referenceNumberInternal" class="form-control" />
-                    <span asp-validation-for="referenceNumberInternal" class="text-danger"></span>
+                    <label asp-for="Paid" class="control-label"></label>
+                    <input type="checkbox" asp-for="Paid" class="checkbox" />
+                    <span asp-validation-for="Paid" class="text-danger"></span>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="referenceNumberExternal" class="control-label"></label>
@@ -156,8 +136,6 @@
 
     </div>
 </div>
-
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

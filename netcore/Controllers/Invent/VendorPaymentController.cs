@@ -27,9 +27,21 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: VendorPayment
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
-            var applicationDbContext = _context.VendorPayment.Include(v => v.CashRepository).Include(v => v.Employee).Include(v => v.paymentType).Include(v => v.purchaseOrder);
+            var applicationDbContext = _context.VendorPayment
+                .Include(v => v.CashRepository)
+                .Include(v => v.Employee)
+                .Include(v => v.paymentType)
+                .Include(v => v.purchaseOrder);
+            if (id != null)
+            {
+                applicationDbContext = _context.VendorPayment.Where(x => x.CashRepositoryId == id)
+                .Include(v => v.CashRepository)
+                .Include(v => v.Employee)
+                .Include(v => v.paymentType)
+                .Include(v => v.purchaseOrder);
+            }
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -60,16 +72,66 @@ namespace netcore.Controllers.Invent
         }
 
         // GET: VendorPayment/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
+            VendorPayment vp = new VendorPayment();
+            var username = HttpContext.User.Identity.Name;
+
+            var purchaseorder = (
+            from PurchaseOrder in _context.PurchaseOrder
+            select new
+            {
+                PurchaseOrder.purchaseOrderId,
+                description = (PurchaseOrder.purchaseOrderNumber + " (" + PurchaseOrder.vendor.vendorName + ")"),
+                PurchaseOrder.Paid,
+                PurchaseOrder.InvoiceBalance,
+            }).ToList();
+            purchaseorder.Insert(0,
+             new
+             {
+                 purchaseOrderId = "0000",
+                 description = "Επιλέξτε",
+                 Paid = false,
+                 InvoiceBalance = 0.0m
+             });
+            var employee = (from Employee in _context.Employee
+                            select new
+                            {
+                                Employee.EmployeeId,
+                                Employee.DisplayName,
+                                Employee.UserName,
+                                Employee.PaymentReceiver
+                            }).ToList();
+            employee.Insert(0,
+                new
+                {
+                    EmployeeId = "0000",
+                    DisplayName = "Επιλέξτε",
+                    UserName = "",
+                    PaymentReceiver = true
+                });
+            if (id != null)
+            {
+                ViewData["purchaseOrderId"] = new SelectList(purchaseorder, "purchaseOrderId", "description", id);
+                vp.PaymentDate = DateTime.Today;
+                vp.purchaseOrderId = id;
+                vp.EmployeeId = _context.Invoice.Where(x => x.InvoiceId == id).Include(x => x.Shipment).FirstOrDefault().Shipment.EmployeeId;
+                vp.PaymentAmount = _context.PurchaseOrder.Where(x => x.purchaseOrderId == id).FirstOrDefault().InvoiceBalance;
+
+            }
+            else
+            {
+                ViewData["purchaseOrderId"] = new SelectList(purchaseorder, "purchaseOrderId", "description");
+            }
+
             var cashrepository = _context.CashRepository.Include(x=>x.Employee).Where(x => x.MainRepository == true).FirstOrDefault();
+            List<PurchaseOrder> poList = _context.PurchaseOrder.Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Completed && x.Paid==false).ToList();
+            poList.Insert(0, new PurchaseOrder { purchaseOrderId = "0", purchaseOrderNumber = "Επιλέξτε" });
+            
             ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName",cashrepository.CashRepositoryId);
             ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",cashrepository.Employee.EmployeeId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName");
-            List<PurchaseOrder> poList = _context.PurchaseOrder.Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Completed).ToList();
-            poList.Insert(0, new PurchaseOrder { purchaseOrderId = "0", purchaseOrderNumber = "Επιλέξτε" });
             ViewData["purchaseOrderId"] = new SelectList(poList, "purchaseOrderId", "purchaseOrderNumber");
-            VendorPayment vp = new VendorPayment();
             vp.PaymentDate = DateTime.Today;
             return View(vp);
         }
@@ -79,19 +141,54 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VendorPaymentId,PaymentNumber,PaymentDate,purchaseOrderId,PaymentTypeId,PaymentAmount,EmployeeId,CashRepositoryId,createdAt")] VendorPayment vendorPayment)
+        public async Task<IActionResult> Create([Bind("VendorPaymentId,CashRepositoryId,EmployeeId,PaymentAmount,PaymentDate,PaymentNumber,PaymentTypeId,createdAt,purchaseOrderId")] VendorPayment vendorPayment)
         {
+            var username = HttpContext.User.Identity.Name;
+
             if (ModelState.IsValid)
             {
                 vendorPayment.PaymentNumber = _numberSequence.GetNumberSequence("ΠΛΠ");
                 _context.Add(vendorPayment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var purchaseorder = await _context.PurchaseOrder
+                    .Include(p => p.vendorPayment)
+                    .SingleOrDefaultAsync(m => m.purchaseOrderId == vendorPayment.purchaseOrderId);
+
+                var cashRepository = await _context.CashRepository.Where(x => x.CashRepositoryId == vendorPayment.CashRepositoryId).FirstOrDefaultAsync();
+                cashRepository.TotalReceipts += vendorPayment.PaymentAmount;
+                cashRepository.Balance = cashRepository.TotalReceipts - cashRepository.TotalPayments;
+                _context.Update(cashRepository);
+                await _context.SaveChangesAsync();
+                purchaseorder.totalVendorPayment = purchaseorder.vendorPayment.Sum(x => x.PaymentAmount);
+                purchaseorder.InvoiceBalance = purchaseorder.totalOrderAmount - purchaseorder.totalVendorPayment;
+
+                if (purchaseorder.InvoiceBalance == 0)
+                {
+                    purchaseorder.Paid = true;
+                }
+                _context.Update(purchaseorder);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "purchaseOrder", new { id = vendorPayment.purchaseOrderId });
             }
-            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", vendorPayment.CashRepositoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", vendorPayment.EmployeeId);
+            var query =
+                from PurchaseOrder in _context.PurchaseOrder
+                select new
+                {
+                    PurchaseOrder.purchaseOrderId,
+                    description = (PurchaseOrder.purchaseOrderNumber + " (" + PurchaseOrder.vendor.vendorName + ")"),
+                    PurchaseOrder.Paid
+                };
+            ViewData["purchaseOrderId"] = new SelectList(query.Where(x => x.Paid == false), "purchaseOrderId", "description", vendorPayment.purchaseOrderId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", vendorPayment.PaymentTypeId);
-            ViewData["purchaseOrderId"] = new SelectList(_context.PurchaseOrder, "purchaseOrderId", "purchaseOrderNumber", vendorPayment.purchaseOrderId);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName");
+
+            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
+            {
+                ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x => x.PaymentReceiver == true && x.UserName == username), "EmployeeId", "DisplayName");
+                ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository.Where(x => x.Employee.UserName == username), "CashRepositoryId", "CashRepositoryName");
+
+            }
             return View(vendorPayment);
         }
 
@@ -111,7 +208,7 @@ namespace netcore.Controllers.Invent
             ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", vendorPayment.CashRepositoryId);
             ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", vendorPayment.EmployeeId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", vendorPayment.PaymentTypeId);
-            ViewData["purchaseOrderId"] = new SelectList(_context.PurchaseOrder, "purchaseOrderId", "purchaseOrderNumber", vendorPayment.purchaseOrderId);
+            ViewData["purchaseOrderId"] = new SelectList(_context.PurchaseOrder.Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Completed && x.Paid == false).ToList(), "purchaseOrderId", "purchaseOrderNumber", vendorPayment.purchaseOrderId);
             return View(vendorPayment);
         }
 
@@ -120,7 +217,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("VendorPaymentId,PaymentNumber,PaymentDate,purchaseOrderId,PaymentTypeId,PaymentAmount,EmployeeId,CashRepositoryId,createdAt")] VendorPayment vendorPayment)
+        public async Task<IActionResult> Edit(string id, [Bind("VendorPaymentId,CashRepositoryId,EmployeeId,PaymentAmount,PaymentDate,PaymentNumber,PaymentTypeId,createdAt,purchaseOrderId")] VendorPayment vendorPayment)
         {
             if (id != vendorPayment.VendorPaymentId)
             {
@@ -172,7 +269,10 @@ namespace netcore.Controllers.Invent
             {
                 return NotFound();
             }
-
+            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", vendorPayment.CashRepositoryId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", vendorPayment.EmployeeId);
+            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", vendorPayment.PaymentTypeId);
+            ViewData["purchaseOrderId"] = new SelectList(_context.PurchaseOrder, "purchaseOrderId", "purchaseOrderNumber", vendorPayment.purchaseOrderId);
             return View(vendorPayment);
         }
 

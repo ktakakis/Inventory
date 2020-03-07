@@ -1,0 +1,59 @@
+﻿@model netcore.Models.Invent.VendorCatalogLine
+
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcorePopup.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="VendorCatalogLineId" />
+        <div class="form-group hidden">
+            <label asp-for="VendorCatalogId" class="control-label"></label>
+            <select asp-for="VendorCatalogId" class="form-control select2" asp-items="ViewBag.vendorCatalogId"></select>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductId" class="control-label"></label>
+                    <select asp-for="ProductId" class="form-control select2" asp-items="ViewBag.productId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Discount" class="control-label"></label>
+                    <input asp-for="Discount" class="form-control" />
+                    <span asp-validation-for="Discount" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Price" class="control-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="EndDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="EndDate" value="@Model.EndDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                    </div>
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

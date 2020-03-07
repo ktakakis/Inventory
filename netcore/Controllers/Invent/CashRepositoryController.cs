@@ -31,10 +31,12 @@ namespace netcore.Controllers.Invent
             {
                 var mto = _context.MoneyTransferOrder.Where(x => x.CashRepositoryIdFrom == cashRepository.CashRepositoryId && x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Completed);
                 var mti = _context.MoneyTransferOrder.Where(x => x.CashRepositoryIdTo == cashRepository.CashRepositoryId && x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Completed);
+                var vp = _context.VendorPayment.Where(x=>x.CashRepositoryId==cashRepository.CashRepositoryId);
                 cashRepository.TotalReceipts = cashRepository.Employee.PaymentReceive.Sum(x => x.PaymentAmount);
                 cashRepository.TotalCashflowOut = mto.Sum(x => x.PaymentAmount);
                 cashRepository.TotalCashflowIn = mti.Sum(x => x.PaymentAmount);
-                cashRepository.Balance = cashRepository.TotalReceipts + cashRepository.TotalCashflowIn - cashRepository.TotalCashflowOut;
+                cashRepository.TotalPayments = vp.Sum(x => x.PaymentAmount);
+                cashRepository.Balance = cashRepository.TotalReceipts + cashRepository.TotalCashflowIn - cashRepository.TotalCashflowOut- cashRepository.TotalPayments;
                 _context.Update(cashRepository);
                 await _context.SaveChangesAsync();
             }

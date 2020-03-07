@@ -145,7 +145,8 @@ namespace netcore.Models.Invent
         public string CustomerWorkEmail { get; set; }
 
         [Display(Name = "Σύνολο Εισπράξεων")]
-        public decimal totalPaymentReceive { get; set; } 
+        public decimal totalPaymentReceive { get; set; }
+        
         [Display(Name = "Υπόλοιπο Τιμολογίου")]
         public decimal InvoiceBalance { get; set; } 
 

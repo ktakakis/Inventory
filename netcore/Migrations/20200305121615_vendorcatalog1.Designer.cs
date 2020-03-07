@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200305121615_vendorcatalog1")]
+    partial class vendorcatalog1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,10 +237,6 @@ namespace netcore.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
-
-                    b.Property<bool>("VendorCatalogLineRole");
-
-                    b.Property<bool>("VendorCatalogRole");
 
                     b.Property<bool>("VendorLineRole");
 
@@ -1052,6 +1049,9 @@ namespace netcore.Migrations
 
                     b.Property<DateTime>("createdAt");
 
+                    b.Property<string>("deliveryAddress")
+                        .HasMaxLength(50);
+
                     b.Property<DateTime>("deliveryDate");
 
                     b.Property<string>("description")
@@ -1078,13 +1078,14 @@ namespace netcore.Migrations
                     b.Property<string>("referenceNumberExternal")
                         .HasMaxLength(30);
 
+                    b.Property<string>("referenceNumberInternal")
+                        .HasMaxLength(30);
+
                     b.Property<int>("top");
 
                     b.Property<decimal>("totalDiscountAmount");
 
                     b.Property<decimal>("totalOrderAmount");
-
-                    b.Property<decimal>("totalVendorPayment");
 
                     b.Property<string>("vendorId")
                         .IsRequired()
@@ -2396,7 +2397,7 @@ namespace netcore.Migrations
                         .HasForeignKey("PaymentTypeId");
 
                     b.HasOne("netcore.Models.Invent.PurchaseOrder", "purchaseOrder")
-                        .WithMany("vendorPayment")
+                        .WithMany()
                         .HasForeignKey("purchaseOrderId");
                 });
 

@@ -1,0 +1,222 @@
+﻿@model netcore.Models.Invent.VendorCatalog
+
+@{
+    ViewData["Title"] = "Λεπτομέρειες";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
+    ViewData["EntityIcon"] = "fa fa-building-o";
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="VendorCatalogId" />
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group has-success">
+                                    <label asp-for="VendorCatalogName" class="control-label"></label>
+                                    <input asp-for="VendorCatalogName" class="form-control" disabled />
+                                    <span asp-validation-for="VendorCatalogName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="VendorId" class="control-label">Προμηθευτής</label>
+                                    <select asp-for="VendorId" id="vendorList" class="form-control select2" disabled asp-items="ViewBag.VendorId" role="combobox"></select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group has-success">
+                                    <label asp-for="createdAt" class="control-label"></label>
+                                    <input asp-for="createdAt" class="form-control" disabled />
+                                    <span asp-validation-for="createdAt" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.VendorCatalogId" class="btn btn-primary">Επεξεργασία</a>
+                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+        @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
+    </div>
+</div>
+
+<!--Discount Child-->
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="grid" name="grid" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-lg-3">Προϊόν</th>
+                                    <th class="col-lg-3">Τιμή</th>
+                                    <th class="col-lg-3">Έκπτωση</th>
+                                    <th class="col-lg-3">Ημερομηνία</th>
+                                    <th class="col-lg-1"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("Create","VendorCatalogLine", new { masterid = Model.VendorCatalogId})')"><i class="fa fa-plus"></i> Προσθήκη Προϊόντος</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+    </div>
+</div>
+
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <!--CatalogLine-->
+    <script>
+        var popup, dataTable;
+        var entity = 'VendorCatalogLine';
+        var apiurl = '/api/' + entity;
+
+        $(document).ready(function () {
+            dataTable = $('#grid').DataTable({
+                        "language": {
+                            "url": '..\\..\\locale\\DataTable-GR.json'
+                 },
+                "ajax": {
+                    "url": apiurl + '?masterid=@Model.VendorCatalogId',
+                    "type": 'GET',
+                    "datatype": 'json'
+                },
+                "columns": [
+                    { "data": "product.productCode" },
+                    {
+                        "data": "price",
+                        render: $.fn.dataTable.render.number( '.', ',', 2, '€' )
+                    },
+                    {
+                        "data": "discount",
+                        render: $.fn.dataTable.render.number( '.', ',', 2, '' )
+                    },
+                    { "data": "createdAt"},
+                    {
+                        "data": "vendorCatalogLineId",
+                        "render": function (data) {
+                            var btnEdit = "<a class='btn btn-primary btn-xs' onclick=ShowPopup('/" + entity + "/Create/" + data + "')><i class='fa fa-pencil'></i></a>";
+                            var btnDelete = "<a class='btn btn-danger btn-xs' style='margin-left:2px' onclick=Delete('" + data + "')><i class='fa fa-trash'></i></a>";
+                            return "<div class='tools pull-right'>" + btnEdit + btnDelete + "</div>";
+                        }
+                    }
+                ],
+                "lengthChange": false,
+                "info": false,
+                "searching": false,
+                "paging": false,
+            });
+        });
+
+        function ShowPopup(url) {
+            var modalId = 'modalDefault';
+            var modalPlaceholder = $('#' + modalId + ' .modal-dialog .modal-content');
+            $.get(url)
+                .done(function (response) {
+                    modalPlaceholder.html(response);
+                    popup = $('#' + modalId + '').modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                });
+        }
+
+        function SubmitAddEdit(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                var data = $(form).serializeJSON();
+                data['Price'] = data['Price'].toString().replace(',', '.');
+                data['Discount'] = (data['Discount']).toString().replace(',', '.');
+                data = JSON.stringify(data);
+                $.ajax({
+                    type: 'POST',
+                    url: apiurl,
+                    data: data,
+                    contentType: 'application/json',
+                    success: function (data) {
+                        if (data.success) {
+                            popup.modal('hide');
+                            ShowMessage(data.message);
+                            dataTable.ajax.reload();
+                        } else {
+                            popup.modal('hide');
+                            ShowMessageError(data.message);
+                            dataTable.ajax.reload();
+                        }
+                    }
+                });
+
+            }
+            return false;
+        }
+
+        function Delete(id) {
+            swal({
+                title: "Είστε βέβαιοι ότι θέλετε να γίνει Διαγραφή;",
+                text: "Δεν θα μπορείτε να επαναφέρετε τα δεδομένα!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#dd4b39",
+                confirmButtonText: "Ναι, διαγράψτε το!",
+                closeOnConfirm: true
+            }, function () {
+                $.ajax({
+                    type: 'DELETE',
+                    url: apiurl + '/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            ShowMessage(data.message);
+                            dataTable.ajax.reload();
+                        } else {
+                            ShowMessageError(data.message);
+                            dataTable.ajax.reload();
+                        }
+                    }
+                });
+            });
+
+
+        }
+    </script>
+}

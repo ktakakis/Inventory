@@ -49,10 +49,10 @@
                 <a asp-controller="PaymentReceive" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalReceipts)</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalPayments)
+                <a asp-controller="VendorPayment" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalPayments)</a>
             </td>
             <td>
-                <a asp-controller="CashflowIn"  asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalCashflowIn)</a>
+                <a asp-controller="CashflowIn" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalCashflowIn)</a>
             </td>
             <td>
                 <a asp-controller="CashflowOut" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalCashflowOut)</a>

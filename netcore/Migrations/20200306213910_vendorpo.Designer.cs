@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200306213910_vendorpo")]
+    partial class vendorpo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1052,6 +1053,9 @@ namespace netcore.Migrations
 
                     b.Property<DateTime>("createdAt");
 
+                    b.Property<string>("deliveryAddress")
+                        .HasMaxLength(50);
+
                     b.Property<DateTime>("deliveryDate");
 
                     b.Property<string>("description")
@@ -1076,6 +1080,9 @@ namespace netcore.Migrations
                     b.Property<string>("purchaseReceiveNumber");
 
                     b.Property<string>("referenceNumberExternal")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("referenceNumberInternal")
                         .HasMaxLength(30);
 
                     b.Property<int>("top");

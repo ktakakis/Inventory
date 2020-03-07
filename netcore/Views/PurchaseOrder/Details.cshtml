@@ -20,7 +20,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="purchaseOrderNumber" class="control-label"></label>
-                                    <input disabled asp-for="purchaseOrderNumber" class="form-control"  />
+                                    <input disabled asp-for="purchaseOrderNumber" class="form-control" />
                                     <span asp-validation-for="purchaseOrderNumber" class="text-danger"></span>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="form-group">
                             <label asp-for="description" class="control-label"></label>
-                            <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
+                            <textarea disabled asp-for="description" class="form-control" rows="2"></textarea>
                             <span asp-validation-for="description" class="text-danger"></span>
                         </div>
                         <div class="row">
@@ -71,15 +71,10 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="purchaseOrderStatus" class="control-label"></label>
-                                    <select disabled asp-for="purchaseOrderStatus" class="form-control " asp-items="Html.GetEnumSelectList<netcore.Models.Invent.PurchaseOrderStatus>()" ></select>
+                                    <select disabled asp-for="purchaseOrderStatus" class="form-control " asp-items="Html.GetEnumSelectList<netcore.Models.Invent.PurchaseOrderStatus>()"></select>
                                     <span asp-validation-for="purchaseOrderStatus" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="deliveryAddress" class="control-label"></label>
-                            <textarea disabled asp-for="deliveryAddress" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="deliveryAddress" class="text-danger"></span>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -89,48 +84,68 @@
                                     <span asp-validation-for="branchId" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label asp-for="referenceNumberInternal" class="control-label"></label>
-                                    <input disabled asp-for="referenceNumberInternal" class="form-control" />
-                                    <span asp-validation-for="referenceNumberInternal" class="text-danger"></span>
+                                    <label asp-for="Paid" class="control-label"></label>
+                                    <input disabled type="checkbox" asp-for="Paid" class="checkbox" />
+                                    <span asp-validation-for="Paid" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="referenceNumberExternal" class="control-label"></label>
                                     <input disabled asp-for="referenceNumberExternal" class="form-control" />
                                     <span asp-validation-for="referenceNumberExternal" class="text-danger"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="picInternal" class="control-label">Υπεύθυνος (Εσωτερικός)</label>
+                                    <label asp-for="picInternal" class="control-label">Υπ. Παραλήπτης</label>
                                     <input disabled asp-for="picInternal" class="form-control" />
                                     <span asp-validation-for="picInternal" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="picVendor" class="control-label">Υπεύθυνος (Προμηθευτής)</label>
+                                    <label asp-for="picVendor" class="control-label">Υπ. Αποστολέας</label>
                                     <input disabled asp-for="picVendor" class="form-control" />
                                     <span asp-validation-for="picVendor" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group hidden">
-                            <label asp-for="totalDiscountAmount" class="control-label"></label>
-                            <input disabled asp-for="totalDiscountAmount" class="form-control" />
-                            <span asp-validation-for="totalDiscountAmount" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label asp-for="totalDiscountAmount" class="control-label"></label>
+                                    <input disabled asp-for="totalDiscountAmount" class="form-control" />
+                                    <span asp-validation-for="totalDiscountAmount" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label asp-for="totalVendorPayment" class="control-label"></label>
+                                    <input disabled asp-for="totalVendorPayment" class="form-control" />
+                                    <span asp-validation-for="totalVendorPayment" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group hidden">
-                            <label asp-for="totalOrderAmount" class="control-label"></label>
-                            <input disabled asp-for="totalOrderAmount" class="form-control" />
-                            <span asp-validation-for="totalOrderAmount" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label asp-for="InvoiceBalance" class="control-label"></label>
+                                    <input disabled asp-for="InvoiceBalance" class="form-control" />
+                                    <span asp-validation-for="InvoiceBalance" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label asp-for="totalOrderAmount" class="control-label"></label>
+                                    <input disabled asp-for="totalOrderAmount" class="form-control" />
+                                    <span asp-validation-for="totalOrderAmount" class="text-danger"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group hidden">
                             <label asp-for="purchaseReceiveNumber" class="control-label"></label>
@@ -145,7 +160,11 @@
                 <div class="form-group">
                     <a asp-action="Edit" asp-route-id="@Model.purchaseOrderId" class="btn btn-primary">Επεξεργασία</a>
                     <a asp-action="ShowPurchaseOrder" asp-route-id="@Model.purchaseOrderId" class="btn btn-primary pull-right"><i class="fa fa-print"></i> Εκτύπωση Παραγγελίας Αγοράς</a>
-                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                    @if (Model.InvoiceBalance != 0)
+                    {
+                        <a asp-action="Create" asp-controller="VendorPayment" asp-route-Id="@Model.purchaseOrderId" class="btn btn-primary"><i class="fa fa-money"></i>  Νέα Είσπραξη</a>
+                    }
+                    <a asp-action="Index" class="btn btn-default"> Επιστροφή στη λίστα</a>
                 </div>
             </div>
             <!-- /.box-footer-->
@@ -189,7 +208,7 @@
                                 <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("Create","PurchaseOrderLine", new { masterid = Model.purchaseOrderId })')"><i class="fa fa-plus"></i> Προσθήκη προϊόντος</a>
 
                             }
-                            
+
                         </div>
                     </div>
                 </div>
@@ -205,15 +224,15 @@
 
 
 
-    <!--modal placeholder-->
-    <div class="modal modal-primary fade" id="modalDefault">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            </div>
+<!--modal placeholder-->
+<div class="modal modal-primary fade" id="modalDefault">
+    <div class="modal-dialog">
+        <div class="modal-content">
         </div>
     </div>
+</div>
 @section Scripts{
-      <script>
+    <script>
         var popup, dataTable;
         var entity = 'PurchaseOrderLine';
         var apiurl = '/api/' + entity;
@@ -316,6 +335,6 @@
 
         }
 
-      </script>
+    </script>
 }
 

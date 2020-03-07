@@ -1,0 +1,75 @@
+﻿@model netcore.Models.Invent.VendorCatalog
+
+@inject netcore.Data.ApplicationDbContext _context;
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-building-o";
+    ViewData["DeleteInfo"] = "Κατάλογος που περιέχει εκπτώσεις προϊόντων, δεν μπορεί να διαγραφεί.";
+    netcore.Models.Invent.VendorCatalogLine cl = _context.VendorCatalogLine.Where(x => x.VendorCatalogId.Equals(Model.VendorCatalogId)).FirstOrDefault();
+    ViewData["IsCanDeleted"] = false;
+    if (cl == null)
+    {
+        ViewData["IsCanDeleted"] = true;
+    }
+}
+
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="VendorCatalogId" />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-success">
+                        <label asp-for="VendorCatalogName" class="control-label"></label>
+                        <input asp-for="VendorCatalogName" class="form-control" disabled />
+                        <span asp-validation-for="VendorCatalogName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="VendorId" class="control-label">Προμηθευτής</label>
+                        <select asp-for="VendorId" id="vendorList" class="form-control select2" asp-items="ViewBag.VendorId" disabled></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-success">
+                        <label asp-for="createdAt" class="control-label"></label>
+                        <input asp-for="createdAt" class="form-control" disabled />
+                        <span asp-validation-for="createdAt" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Styles{
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
+
+}
+@section Scripts {
+    <!-- iCheck -->
+    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+
+}

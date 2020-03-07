@@ -96,5 +96,10 @@ namespace netcore.Data
 
         public DbSet<netcore.Models.Invent.VendorPayment> VendorPayment { get; set; }
 
+        public DbSet<netcore.Models.Invent.VendorCatalog> VendorCatalog { get; set; }
+
+        public DbSet<netcore.Models.Invent.VendorCatalogLine> VendorCatalogLine { get; set; }
+
+
     }
 }

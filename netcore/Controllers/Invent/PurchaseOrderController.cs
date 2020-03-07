@@ -80,6 +80,7 @@ namespace netcore.Controllers.Invent
 
             purchaseOrder.totalOrderAmount = purchaseOrder.purchaseOrderLine.Sum(x => x.totalAmount);
             purchaseOrder.totalDiscountAmount = purchaseOrder.purchaseOrderLine.Sum(x => x.discountAmount);
+            purchaseOrder.InvoiceBalance = purchaseOrder.totalOrderAmount - purchaseOrder.totalVendorPayment;
             _context.Update(purchaseOrder);
             await _context.SaveChangesAsync();
 
@@ -105,7 +106,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("purchaseOrderId,purchaseOrderNumber,top,poDate,deliveryDate,deliveryAddress,referenceNumberInternal,referenceNumberExternal,description,vendorId,branchId,picInternal,picVendor,purchaseOrderStatus,totalDiscountAmount,totalOrderAmount,purchaseReceiveNumber,HasChild,createdAt")] PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Create([Bind("purchaseOrderId,HasChild,branchId,createdAt,deliveryDate,description,picInternal,picVendor,poDate,purchaseOrderNumber,purchaseOrderStatus,purchaseReceiveNumber,referenceNumberExternal,top,totalDiscountAmount,totalOrderAmount,vendorId,InvoiceBalance,Paid,totalVendorPayment")] PurchaseOrder purchaseOrder)
         {
             if (ModelState.IsValid)
             {
@@ -149,7 +150,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("purchaseOrderId,purchaseOrderNumber,top,poDate,deliveryDate,deliveryAddress,referenceNumberInternal,referenceNumberExternal,description,vendorId,branchId,picInternal,picVendor,purchaseOrderStatus,totalDiscountAmount,totalOrderAmount,purchaseReceiveNumber,HasChild,createdAt")] PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Edit(string id, [Bind("purchaseOrderId,HasChild,branchId,createdAt,deliveryDate,description,picInternal,picVendor,poDate,purchaseOrderNumber,purchaseOrderStatus,purchaseReceiveNumber,referenceNumberExternal,top,totalDiscountAmount,totalOrderAmount,vendorId,InvoiceBalance,Paid,totalVendorPayment")] PurchaseOrder purchaseOrder)
         {
             if (id != purchaseOrder.purchaseOrderId)
             {

@@ -37,16 +37,8 @@ namespace netcore.Models.Invent
         [Display(Name = "Ημ. Παράδοσης")]
         public DateTime deliveryDate { get; set; }
 
-        [StringLength(50)]
-        [Display(Name = "Διεύθυνση παράδοσης")]
-        public string deliveryAddress { get; set; }
-
         [StringLength(30)]
-        [Display(Name = "Αριθμός Αναφοράς (Εσωτερικός)")]
-        public string referenceNumberInternal { get; set; }
-
-        [StringLength(30)]
-        [Display(Name = "Αριθμός Αναφοράς (Εξωτερικός)")]
+        [Display(Name = "Αριθμός Αναφοράς")]
         public string referenceNumberExternal { get; set; }
 
         [StringLength(100)]
@@ -88,10 +80,22 @@ namespace netcore.Models.Invent
         [Display(Name = "Σύνολο Παραγγελίας")]
         public decimal totalOrderAmount { get; set; }
 
+        [Display(Name = "Σύνολο Πληρωμών")]
+        public decimal totalVendorPayment { get; set; }
+
         [Display(Name = "Αριθμός παραλαβής")]
         public string purchaseReceiveNumber { get; set; }
 
+        [Display(Name = "Υπόλοιπο Τιμολογίου")]
+        public decimal InvoiceBalance { get; set; }
+
+        [Display(Name = "Εξοφλημένο")]
+        public Boolean Paid { get; set; }
+
         [Display(Name = "Στοιχεία Παραγγελίας")]
         public List<PurchaseOrderLine> purchaseOrderLine { get; set; } = new List<PurchaseOrderLine>();
+
+        [Display(Name = "Πληρωμές")]
+        public List<VendorPayment> vendorPayment { get; set; } = new List<VendorPayment>();
     }
 }

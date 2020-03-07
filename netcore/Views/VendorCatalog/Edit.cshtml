@@ -1,0 +1,48 @@
+﻿@model netcore.Models.Invent.VendorCatalog
+
+@{
+    ViewData["Title"] = "Επεξεργασία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreEdit.cshtml";
+    ViewData["EntityIcon"] = "fa fa-building-o";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="VendorCatalogId" />
+            <div class="form-group">
+                <label asp-for="VendorCatalogName" class="control-label"></label>
+                <input asp-for="VendorCatalogName" class="form-control" />
+                <span asp-validation-for="VendorCatalogName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VendorId" class="control-label"></label>
+                <select asp-for="VendorId" class="form-control" asp-items="ViewBag.VendorId"></select>
+                <span asp-validation-for="VendorId" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles{
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
+}
+
+@section Scripts {
+    <!-- iCheck -->
+    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+}

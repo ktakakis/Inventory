@@ -12,9 +12,10 @@ using System;
 namespace netcore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200305110036_purchorder")]
+    partial class purchorder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,10 +237,6 @@ namespace netcore.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
-
-                    b.Property<bool>("VendorCatalogLineRole");
-
-                    b.Property<bool>("VendorCatalogRole");
 
                     b.Property<bool>("VendorLineRole");
 
@@ -1052,6 +1049,9 @@ namespace netcore.Migrations
 
                     b.Property<DateTime>("createdAt");
 
+                    b.Property<string>("deliveryAddress")
+                        .HasMaxLength(50);
+
                     b.Property<DateTime>("deliveryDate");
 
                     b.Property<string>("description")
@@ -1078,13 +1078,14 @@ namespace netcore.Migrations
                     b.Property<string>("referenceNumberExternal")
                         .HasMaxLength(30);
 
+                    b.Property<string>("referenceNumberInternal")
+                        .HasMaxLength(30);
+
                     b.Property<int>("top");
 
                     b.Property<decimal>("totalDiscountAmount");
 
                     b.Property<decimal>("totalOrderAmount");
-
-                    b.Property<decimal>("totalVendorPayment");
 
                     b.Property<string>("vendorId")
                         .IsRequired()
@@ -1752,60 +1753,6 @@ namespace netcore.Migrations
                     b.ToTable("Vendor");
                 });
 
-            modelBuilder.Entity("netcore.Models.Invent.VendorCatalog", b =>
-                {
-                    b.Property<string>("VendorCatalogId")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(38);
-
-                    b.Property<string>("HasChild");
-
-                    b.Property<string>("VendorCatalogName")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<string>("VendorId")
-                        .IsRequired()
-                        .HasMaxLength(38);
-
-                    b.Property<DateTime>("createdAt");
-
-                    b.HasKey("VendorCatalogId");
-
-                    b.HasIndex("VendorId");
-
-                    b.ToTable("VendorCatalog");
-                });
-
-            modelBuilder.Entity("netcore.Models.Invent.VendorCatalogLine", b =>
-                {
-                    b.Property<string>("VendorCatalogLineId")
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(38);
-
-                    b.Property<decimal?>("Discount");
-
-                    b.Property<DateTime>("EndDate");
-
-                    b.Property<decimal>("Price");
-
-                    b.Property<string>("ProductId")
-                        .HasMaxLength(38);
-
-                    b.Property<string>("VendorCatalogId")
-                        .HasMaxLength(38);
-
-                    b.Property<DateTime>("createdAt");
-
-                    b.HasKey("VendorCatalogLineId");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("VendorCatalogId");
-
-                    b.ToTable("VendorCatalogLine");
-                });
-
             modelBuilder.Entity("netcore.Models.Invent.VendorLine", b =>
                 {
                     b.Property<string>("vendorLineId")
@@ -2355,25 +2302,6 @@ namespace netcore.Migrations
                         .HasForeignKey("transferOutId");
                 });
 
-            modelBuilder.Entity("netcore.Models.Invent.VendorCatalog", b =>
-                {
-                    b.HasOne("netcore.Models.Invent.Vendor", "Vendor")
-                        .WithMany()
-                        .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("netcore.Models.Invent.VendorCatalogLine", b =>
-                {
-                    b.HasOne("netcore.Models.Invent.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.HasOne("netcore.Models.Invent.VendorCatalog", "VendorCatalog")
-                        .WithMany("VendorCatalogLine")
-                        .HasForeignKey("VendorCatalogId");
-                });
-
             modelBuilder.Entity("netcore.Models.Invent.VendorLine", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Vendor", "vendor")
@@ -2396,7 +2324,7 @@ namespace netcore.Migrations
                         .HasForeignKey("PaymentTypeId");
 
                     b.HasOne("netcore.Models.Invent.PurchaseOrder", "purchaseOrder")
-                        .WithMany("vendorPayment")
+                        .WithMany()
                         .HasForeignKey("purchaseOrderId");
                 });
 

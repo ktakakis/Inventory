@@ -98,6 +98,7 @@
             <td>
                 @if (item.purchaseOrderStatus == netcore.Models.Invent.PurchaseOrderStatus.Completed)
                 {
+                    @Html.DisplayFor(modelItem => item.Paid)
                     <span class="label label-success">
                         @Html.DisplayFor(modelItem => item.purchaseOrderStatus)
                     </span>

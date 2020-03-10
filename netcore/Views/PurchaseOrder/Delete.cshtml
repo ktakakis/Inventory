@@ -26,18 +26,11 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="purchaseOrderNumber" class="control-label"></label>
-                        <input disabled asp-for="purchaseOrderNumber" class="form-control" />
+                        <input disabled asp-for="purchaseOrderNumber" class="form-control" disabled />
                         <span asp-validation-for="purchaseOrderNumber" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
-                        <select disabled asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()"></select>
-                        <span asp-validation-for="top" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="vendorId" class="control-label">Προμηθευτής</label>
                         <select disabled asp-for="vendorId" class="form-control select2" asp-items="ViewBag.vendorId"></select>
@@ -77,20 +70,27 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="purchaseOrderStatus" class="control-label"></label>
-                        <select disabled asp-for="purchaseOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.PurchaseOrderStatus>()"></select>
+                        <select disabled asp-for="purchaseOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.PurchaseOrderStatus>()" ></select>
                         <span asp-validation-for="purchaseOrderStatus" class="text-danger"></span>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="branchId" class="control-label">Υποκατάστημα</label>
                         <select disabled asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId"></select>
                         <span asp-validation-for="branchId" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
+                        <select disabled asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()"></select>
+                        <span asp-validation-for="top" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="Paid" class="control-label"></label>
                         <input disabled type="checkbox" asp-for="Paid" class="checkbox" />
@@ -99,27 +99,57 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="referenceNumberExternal" class="control-label"></label>
                         <input disabled asp-for="referenceNumberExternal" class="form-control" />
                         <span asp-validation-for="referenceNumberExternal" class="text-danger"></span>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="picInternal" class="control-label">Υπεύθυνος (Εσωτερικός)</label>
+                <div class="col-md-4">
+                    <div class="form-group has-success">
+                        <label asp-for="picInternal" class="control-label">Υπεύθυνος Παραλαβής</label>
                         <input disabled asp-for="picInternal" class="form-control" />
                         <span asp-validation-for="picInternal" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="picVendor" class="control-label">Υπεύθυνος (Προμηθευτής)</label>
+                <div class="col-md-4">
+                    <div class="form-group has-success">
+                        <label asp-for="picVendor" class="control-label">Υπεύθυνος Αποστολής</label>
                         <input disabled asp-for="picVendor" class="form-control" />
                         <span asp-validation-for="picVendor" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label asp-for="totalOrderAmount" class="control-label"></label>
+                        <input disabled asp-for="totalOrderAmount" class="form-control" />
+                        <span asp-validation-for="totalOrderAmount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label asp-for="totalVendorPayment" class="control-label"></label>
+                        <input disabled asp-for="totalVendorPayment" class="form-control" />
+                        <span asp-validation-for="totalVendorPayment" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label asp-for="totalDiscountAmount" class="control-label"></label>
+                        <input disabled asp-for="totalDiscountAmount" class="form-control" />
+                        <span asp-validation-for="totalDiscountAmount" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group ">
+                        <label asp-for="InvoiceBalance" class="control-label"></label>
+                        <input disabled asp-for="InvoiceBalance" class="form-control" />
+                        <span asp-validation-for="InvoiceBalance" class="text-danger"></span>
                     </div>
                 </div>
             </div>

@@ -218,11 +218,11 @@ namespace netcore.Services
                 superAdmin.EmailConfirmed = true;
                 superAdmin.isSuperAdmin = true;
 
-                
-                    var roleName = "Secretary";
-                    if (!await _roleManager.RoleExistsAsync(roleName)) { await _roleManager.CreateAsync(new IdentityRole(roleName)); }
 
-                    await _userManager.AddToRoleAsync(superAdmin, roleName);
+                var roleName = "Secretary";
+                if (!await _roleManager.RoleExistsAsync(roleName)) { await _roleManager.CreateAsync(new IdentityRole(roleName)); }
+
+                await _userManager.AddToRoleAsync(superAdmin, roleName);
             }
             catch (Exception)
             {
@@ -255,7 +255,7 @@ namespace netcore.Services
                     result = stock;
                 }
 
-                
+
             }
             catch (Exception)
             {
@@ -283,7 +283,7 @@ namespace netcore.Services
                     foreach (var wh in warehouses)
                     {
                         VMStock stock = stock = GetStockByProductAndWarehouse(item.productId, wh.warehouseId);
-                        
+
                         if (stock != null) stocks.Add(stock);
 
                     }
@@ -377,7 +377,7 @@ namespace netcore.Services
                 {
                     times.Add(new TimelineViewModel { Header = item.poDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Αγοράς: " + item.purchaseOrderNumber + " ", Icon = "fa-file-text", CreatedDate = item.poDate, ItemId = item.purchaseOrderId, Controler = "PurchaseOrder" });
                 }
-                
+
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
             }
@@ -398,7 +398,7 @@ namespace netcore.Services
             {
                 List<TimelineViewModel> times = new List<TimelineViewModel>();
                 List<SalesOrder> solist = _context.SalesOrder.Where(x => x.customerId.Equals(customerId)).OrderByDescending(x => x.soDate).Take(3).ToList();
-                
+
                 foreach (var item in solist)
                 {
                     times.Add(new TimelineViewModel { Header = item.soDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα παραγγελία Πώλησης: " + item.salesOrderNumber + " ", Icon = "fa-cart-plus", CreatedDate = item.soDate, ItemId = item.salesOrderId, Controler = "SalesOrder" });
@@ -453,12 +453,15 @@ namespace netcore.Services
             {
                 List<TimelineViewModel> times = new List<TimelineViewModel>();
                 List<Receiving> list = _context.Receiving.Where(x => x.purchaseOrderId.Equals(purchaseId)).ToList();
-
+                List<VendorPayment> payments = _context.VendorPayment.Where(x => x.purchaseOrderId.Equals(purchaseId)).ToList();
                 foreach (var item in list)
                 {
                     times.Add(new TimelineViewModel { Header = item.receivingDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα Παραλαβή: " + item.receivingNumber + " ", Icon = "fa-truck", CreatedDate = item.receivingDate, ItemId = item.receivingId, Controler = "Receiving" });
                 }
-
+                foreach (var item in payments)
+                {
+                    times.Add(new TimelineViewModel { Header = item.PaymentDate.ToString("dd-MMM-yyyy"), Body = "Δημιουργήθηκε νέα Πληρωμή: " + item.PaymentNumber + " Ποσόν: " + item.PaymentAmount + "€", Icon = "fa-money", CreatedDate = item.PaymentDate, ItemId = item.VendorPaymentId, Controler = "VendorPayment" });
+                }
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
             }
             catch (Exception)
@@ -506,7 +509,7 @@ namespace netcore.Services
 
                 foreach (var item in invoiceslist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.InvoiceDate.ToString("dd-MMM-yyyy"), Body = "Αρ. ΤΔΑ-ΔΑΠ: " + item.InvoiceNumber + " Ποσόν: " + item.totalOrderAmount +" €", Icon = "fa-money", CreatedDate = item.createdAt, ItemId = item.InvoiceId, Controler= "Invoice" });
+                    times.Add(new TimelineViewModel { Header = item.InvoiceDate.ToString("dd-MMM-yyyy"), Body = "Αρ. ΤΔΑ-ΔΑΠ: " + item.InvoiceNumber + " Ποσόν: " + item.totalOrderAmount + " €", Icon = "fa-money", CreatedDate = item.createdAt, ItemId = item.InvoiceId, Controler = "Invoice" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
@@ -530,7 +533,7 @@ namespace netcore.Services
 
                 foreach (var item in paymentslist)
                 {
-                    times.Add(new TimelineViewModel { Header = item.PaymentDate.ToString("dd-MMM-yyyy"), Body = "Αρ. Είσπραξης: " + item.PaymentReceiveName + " Ποσόν: " + item.PaymentAmount +" €", Icon = "fa-money", CreatedDate = item.createdAt, ItemId = item.PaymentReceiveId, Controler= "PaymentReceive" });
+                    times.Add(new TimelineViewModel { Header = item.PaymentDate.ToString("dd-MMM-yyyy"), Body = "Αρ. Είσπραξης: " + item.PaymentReceiveName + " Ποσόν: " + item.PaymentAmount + " €", Icon = "fa-money", CreatedDate = item.createdAt, ItemId = item.PaymentReceiveId, Controler = "PaymentReceive" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();

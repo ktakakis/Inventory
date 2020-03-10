@@ -74,6 +74,7 @@ namespace netcore.Controllers.Invent
         // GET: VendorPayment/Create
         public IActionResult Create(string id)
         {
+            ViewData["StatusMessage"] = TempData["StatusMessage"];
             VendorPayment vp = new VendorPayment();
             var username = HttpContext.User.Identity.Name;
 
@@ -115,7 +116,6 @@ namespace netcore.Controllers.Invent
                 ViewData["purchaseOrderId"] = new SelectList(purchaseorder, "purchaseOrderId", "description", id);
                 vp.PaymentDate = DateTime.Today;
                 vp.purchaseOrderId = id;
-                vp.EmployeeId = _context.Invoice.Where(x => x.InvoiceId == id).Include(x => x.Shipment).FirstOrDefault().Shipment.EmployeeId;
                 vp.PaymentAmount = _context.PurchaseOrder.Where(x => x.purchaseOrderId == id).FirstOrDefault().InvoiceBalance;
 
             }
@@ -124,12 +124,12 @@ namespace netcore.Controllers.Invent
                 ViewData["purchaseOrderId"] = new SelectList(purchaseorder, "purchaseOrderId", "description");
             }
 
-            var cashrepository = _context.CashRepository.Include(x=>x.Employee).Where(x => x.MainRepository == true).FirstOrDefault();
-            List<PurchaseOrder> poList = _context.PurchaseOrder.Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Completed && x.Paid==false).ToList();
+            var cashrepository = _context.CashRepository.Include(x => x.Employee).Where(x => x.MainRepository == true).FirstOrDefault();
+            List<PurchaseOrder> poList = _context.PurchaseOrder.Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Completed && x.Paid == false).ToList();
             poList.Insert(0, new PurchaseOrder { purchaseOrderId = "0", purchaseOrderNumber = "Επιλέξτε" });
-            
-            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName",cashrepository.CashRepositoryId);
-            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",cashrepository.Employee.EmployeeId);
+
+            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName", cashrepository.CashRepositoryId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName", cashrepository.Employee.EmployeeId);
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName");
             ViewData["purchaseOrderId"] = new SelectList(poList, "purchaseOrderId", "purchaseOrderNumber");
             vp.PaymentDate = DateTime.Today;
@@ -144,7 +144,13 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Create([Bind("VendorPaymentId,CashRepositoryId,EmployeeId,PaymentAmount,PaymentDate,PaymentNumber,PaymentTypeId,createdAt,purchaseOrderId")] VendorPayment vendorPayment)
         {
             var username = HttpContext.User.Identity.Name;
+            var cashrepository = await _context.CashRepository.Where(x => x.CashRepositoryId == vendorPayment.CashRepositoryId).FirstOrDefaultAsync();
 
+            if (cashrepository.Balance < vendorPayment.PaymentAmount)
+            {
+                TempData["StatusMessage"] = "Σφάλμα. Υπάρχει πρόβλημα στα ταμειακά διαθέσιμα. Το υπόλοιπο του ταμείου σας (" + cashrepository.Balance + "€), δεν επαρκεί για να καλύψει το ποσόν της πληρωμής(" + vendorPayment.PaymentAmount + "€). Αλλάξτε ταμείο ή πληρώστε λιγότερα.";
+                return RedirectToAction(nameof(Create));
+            }
             if (ModelState.IsValid)
             {
                 vendorPayment.PaymentNumber = _numberSequence.GetNumberSequence("ΠΛΠ");
@@ -153,12 +159,6 @@ namespace netcore.Controllers.Invent
                 var purchaseorder = await _context.PurchaseOrder
                     .Include(p => p.vendorPayment)
                     .SingleOrDefaultAsync(m => m.purchaseOrderId == vendorPayment.purchaseOrderId);
-
-                var cashRepository = await _context.CashRepository.Where(x => x.CashRepositoryId == vendorPayment.CashRepositoryId).FirstOrDefaultAsync();
-                cashRepository.TotalReceipts += vendorPayment.PaymentAmount;
-                cashRepository.Balance = cashRepository.TotalReceipts - cashRepository.TotalPayments;
-                _context.Update(cashRepository);
-                await _context.SaveChangesAsync();
                 purchaseorder.totalVendorPayment = purchaseorder.vendorPayment.Sum(x => x.PaymentAmount);
                 purchaseorder.InvoiceBalance = purchaseorder.totalOrderAmount - purchaseorder.totalVendorPayment;
 
@@ -168,7 +168,7 @@ namespace netcore.Controllers.Invent
                 }
                 _context.Update(purchaseorder);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "purchaseOrder", new { id = vendorPayment.purchaseOrderId });
+                return RedirectToAction("Details", "purchaseOrder", new { id = purchaseorder.purchaseOrderId });
             }
             var query =
                 from PurchaseOrder in _context.PurchaseOrder
@@ -281,7 +281,13 @@ namespace netcore.Controllers.Invent
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var vendorPayment = await _context.VendorPayment.SingleOrDefaultAsync(m => m.VendorPaymentId == id);
+            var vendorPayment = await _context.VendorPayment
+                .Include(x => x.purchaseOrder)
+                .SingleOrDefaultAsync(m => m.VendorPaymentId == id);
+            vendorPayment.purchaseOrder.Paid = false;
+            vendorPayment.purchaseOrder.totalVendorPayment = vendorPayment.purchaseOrder.totalVendorPayment - vendorPayment.PaymentAmount;
+            vendorPayment.purchaseOrder.InvoiceBalance = vendorPayment.purchaseOrder.InvoiceBalance + vendorPayment.PaymentAmount;
+            _context.Update(vendorPayment.purchaseOrder);
             _context.VendorPayment.Remove(vendorPayment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -306,7 +312,7 @@ namespace netcore.Controllers.Invent
             var poBalance = _context.PurchaseOrder.Where(c => c.purchaseOrderId == purchaseOrderId).FirstOrDefault();
             var result = new
             {
-                paymentAmount = poBalance.totalOrderAmount
+                paymentAmount = poBalance.InvoiceBalance
             };
             return Json(result);
 

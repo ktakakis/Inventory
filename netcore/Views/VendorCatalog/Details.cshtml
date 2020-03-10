@@ -71,7 +71,6 @@
                                     <th class="col-lg-3">Προϊόν</th>
                                     <th class="col-lg-3">Τιμή</th>
                                     <th class="col-lg-3">Έκπτωση</th>
-                                    <th class="col-lg-3">Ημερομηνία</th>
                                     <th class="col-lg-1"></th>
                                 </tr>
                             </thead>
@@ -132,7 +131,6 @@
                         "data": "discount",
                         render: $.fn.dataTable.render.number( '.', ',', 2, '' )
                     },
-                    { "data": "createdAt"},
                     {
                         "data": "vendorCatalogLineId",
                         "render": function (data) {

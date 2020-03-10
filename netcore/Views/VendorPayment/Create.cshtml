@@ -6,6 +6,8 @@
     ViewData["EntityIcon"] = "fa fa-money";
     ViewData["CreateInfo"] = "Με τον όρο 'Πληρωμές Προμηθευτών' εννούμε την εξόφληση μέρους ή ολόκληρης της αξίας του τιμολογίου ενός προμηθευτή με βάση την Παραγγελία Αγοράς.";
 }
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
 <div class="row">
     <div class="col-md-12">
         <div class="row">

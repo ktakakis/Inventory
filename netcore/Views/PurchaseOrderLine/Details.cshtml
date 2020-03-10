@@ -1,7 +1,7 @@
 ﻿@model netcore.Models.Invent.PurchaseOrderLine
 
 @{
-    ViewData["Title"] = "Λεπτομέρειες";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
 }
 
@@ -62,8 +62,8 @@
             <!-- /.box-body -->
             <div class="box-footer">
                 <div class="form-group">
-                    <a asp-action="Edit" asp-route-id="@Model.purchaseOrderLineId" class="btn btn-primary">Επεξεργασία</a>
-                    <a asp-action="Index" class="btn btn-default">Επιστροφή στη λίστα</a>
+                    <a asp-action="Edit" asp-route-id="@Model.purchaseOrderLineId" class="btn btn-primary">Edit</a>
+                    <a asp-action="Index" class="btn btn-default">Back to List</a>
                 </div>
             </div>
             <!-- /.box-footer-->

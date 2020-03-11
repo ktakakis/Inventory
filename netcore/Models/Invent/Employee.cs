@@ -55,8 +55,23 @@ namespace netcore.Models.Invent
         public string country { get; set; }
         //IBaseAddress
 
-        [Display(Name ="Προμήθεια")]
-        public decimal? Commission { get; set; }
+        [Display(Name ="Προμήθεια %")]
+        public decimal Commission { get; set; }
+
+        [Display(Name ="Σύνολο Πωλήσεων")]
+        public decimal TotalSales { get; set; }
+
+        [Display(Name ="Σύνολο Προμήθειας")]
+        public decimal TotalCommission { get; set; }
+        
+        [Display(Name = "Μισθός")]
+        public decimal Salary { get; set; }
+
+        [Display(Name = "Σύνολο Πληρωμών")]
+        public decimal TotalEmployeePayment { get; set; }
+
+        [Display(Name = "Υπόλοιπο")]
+        public decimal EmployeeBalance { get; set; }
 
         [Display(Name = "Κινητό Τηλέφωνο")]
         public string mobilePhone { get; set; }

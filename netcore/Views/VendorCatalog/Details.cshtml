@@ -24,9 +24,10 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
-                                    <label asp-for="VendorId" class="control-label">Προμηθευτής</label>
-                                    <select asp-for="VendorId" id="vendorList" class="form-control select2" disabled asp-items="ViewBag.VendorId" role="combobox"></select>
+                                <div class="form-group has-success">
+                                    <label asp-for="Vendor.vendorName" class="control-label"></label>
+                                    <input asp-for="Vendor.vendorName" class="form-control" disabled />
+                                    <span asp-validation-for="Vendor.vendorName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">

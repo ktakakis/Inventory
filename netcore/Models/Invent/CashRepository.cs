@@ -30,8 +30,11 @@ namespace netcore.Models.Invent
         [Display(Name = "Εισπράξεις")]
         public decimal TotalReceipts { get; set; } 
 
-        [Display(Name = "Πληρωμές")]
+        [Display(Name = "Πλ. Προμ.")]
         public decimal TotalPayments { get; set; }
+
+        [Display(Name = "Πλ. Συν.")]
+        public decimal TotalEmployeePayments { get; set; }
 
         [Display(Name = "Εισροές")]
         public decimal TotalCashflowIn { get; set; }
@@ -51,6 +54,9 @@ namespace netcore.Models.Invent
 
         [Display(Name = "Εισπράξεις")]
         public List<PaymentReceive> paymentReceive { get; set; } = new List<PaymentReceive>();
+
+        [Display(Name = "Πληρωμές Συνεργατών")]
+        public List<EmployeePayment> EmployeePayment { get; set; } = new List<EmployeePayment>();
 
     }
 }

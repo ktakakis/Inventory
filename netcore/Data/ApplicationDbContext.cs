@@ -100,6 +100,9 @@ namespace netcore.Data
 
         public DbSet<netcore.Models.Invent.VendorCatalogLine> VendorCatalogLine { get; set; }
 
+        public DbSet<netcore.Models.Invent.EmployeePayment> EmployeePayment { get; set; }
+
+        public DbSet<netcore.Models.Invent.ProductLine> ProductLine { get; set; }
 
     }
 }

@@ -20,21 +20,16 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="purchaseOrderNumber" class="control-label"></label>
-                                    <input disabled  asp-for="purchaseOrderNumber" class="form-control" />
+                                    <input disabled asp-for="purchaseOrderNumber" class="form-control" />
                                     <span asp-validation-for="purchaseOrderNumber" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="vendorId" class="control-label">Προμηθευτής</label>
-                                    <select disabled  asp-for="vendorId" class="form-control select2" asp-items="ViewBag.vendorId"></select>
+                                    <input disabled asp-for="vendor.vendorName" class="form-control" />
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="description" class="control-label"></label>
-                            <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
-                            <span asp-validation-for="description" class="text-danger"></span>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
@@ -44,7 +39,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input  disabled asp-for="poDate" value="@Model.poDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                                        <input disabled asp-for="poDate" value="@Model.poDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
                                     </div>
                                     <span asp-validation-for="poDate" class="text-danger"></span>
                                 </div>
@@ -56,7 +51,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <input disabled  asp-for="deliveryDate" value="@Model.deliveryDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                                        <input disabled asp-for="deliveryDate" value="@Model.deliveryDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
                                     </div>
                                     <span asp-validation-for="deliveryDate" class="text-danger"></span>
                                 </div>
@@ -64,7 +59,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="purchaseOrderStatus" class="control-label"></label>
-                                    <select disabled  asp-for="purchaseOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.PurchaseOrderStatus>()"></select>
+                                    <input disabled asp-for="purchaseOrderStatus" class="form-control" />
                                     <span asp-validation-for="purchaseOrderStatus" class="text-danger"></span>
                                 </div>
                             </div>
@@ -72,22 +67,22 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label asp-for="branchId" class="control-label">Υποκατάστημα</label>
-                                    <select disabled  asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId"></select>
-                                    <span asp-validation-for="branchId" class="text-danger"></span>
+                                    <label asp-for="branch" class="control-label">Υποκατάστημα</label>
+                                    <input disabled asp-for="branch.branchName" class="form-control" />
+                                    <span asp-validation-for="branch.branchName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
-                                    <select disabled  asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()"></select>
+                                    <input disabled asp-for="top" class="form-control" />
                                     <span asp-validation-for="top" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="Paid" class="control-label"></label>
-                                    <input disabled  type="checkbox" asp-for="Paid" class="checkbox" />
+                                    <input disabled type="checkbox" asp-for="Paid" class="checkbox" />
                                     <span asp-validation-for="Paid" class="text-danger"></span>
                                 </div>
                             </div>
@@ -96,24 +91,29 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label asp-for="referenceNumberExternal" class="control-label"></label>
-                                    <input disabled  asp-for="referenceNumberExternal" class="form-control" />
+                                    <input disabled asp-for="referenceNumberExternal" class="form-control" />
                                     <span asp-validation-for="referenceNumberExternal" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group has-success">
                                     <label asp-for="picInternal" class="control-label">Υπεύθυνος Παραλαβής</label>
-                                    <input  disabled asp-for="picInternal" class="form-control" />
+                                    <input disabled asp-for="picInternal" class="form-control" />
                                     <span asp-validation-for="picInternal" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group has-success">
                                     <label asp-for="picVendor" class="control-label">Υπεύθυνος Αποστολής</label>
-                                    <input  disabled asp-for="picVendor" class="form-control" />
+                                    <input disabled asp-for="picVendor" class="form-control" />
                                     <span asp-validation-for="picVendor" class="text-danger"></span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="description" class="control-label"></label>
+                            <textarea disabled asp-for="description" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="description" class="text-danger"></span>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -147,13 +147,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="File" class="control-label"></label>
+                            @if (Model.File != null)
+                            {
+                                <h5 class="timeline-header"><a asp-controller="PurchaseOrder" asp-action="ByteArrayToFile" asp-route-id="@Model.purchaseOrderId">@(Model.purchaseOrderNumber + Model.vendor.vendorName + ".pdf")</a></h5>
+                            }
+                            <span asp-validation-for="File" class="text-danger"></span>
+                        </div>
                         <div class="form-group hidden">
                             <label asp-for="purchaseReceiveNumber" class="control-label"></label>
                             <input disabled asp-for="purchaseReceiveNumber" class="form-control" />
                             <span asp-validation-for="purchaseReceiveNumber" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
+                    </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer">
@@ -165,7 +173,13 @@
                         <a asp-action="Create" asp-controller="VendorPayment" asp-route-Id="@Model.purchaseOrderId" class="btn btn-primary"><i class="fa fa-money"></i>  Νέα Πληρωμή</a>
                     }
                     <a asp-action="Index" class="btn btn-default"> Επιστροφή στη λίστα</a>
+                    @if (Model.purchaseOrderStatus == netcore.Models.Invent.PurchaseOrderStatus.Open)
+                    {
+                        <a asp-action="Create" asp-controller="Receiving" asp-route-Id="@Model.purchaseOrderId" class="btn btn-primary"><i class="fa fa-plane"></i>Δημιουργία Παραλαβής</a>
+                    }
+
                 </div>
+
             </div>
             <!-- /.box-footer-->
         </div>
@@ -231,6 +245,12 @@
         </div>
     </div>
 </div>
+@section Styles{
+
+    <!--blueimp file upload-->
+    <link rel="stylesheet" href="~/lib/jQuery-File-Upload-9.21.0/css/jquery.fileupload.css" />
+}
+
 @section Scripts{
     <script>
         var popup, dataTable;
@@ -336,5 +356,6 @@
         }
 
     </script>
+
 }
 

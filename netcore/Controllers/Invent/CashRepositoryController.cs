@@ -25,18 +25,20 @@ namespace netcore.Controllers.Invent
         // GET: CashRepository
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.CashRepository.Include(c => c.Employee).ThenInclude(x=>x.PaymentReceive);
+            var applicationDbContext = _context.CashRepository.Include(x=>x.EmployeePayment).Include(c => c.Employee).ThenInclude(x=>x.PaymentReceive);
             
             foreach (var cashRepository in applicationDbContext)
             {
                 var mto = _context.MoneyTransferOrder.Where(x => x.CashRepositoryIdFrom == cashRepository.CashRepositoryId && x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Completed);
                 var mti = _context.MoneyTransferOrder.Where(x => x.CashRepositoryIdTo == cashRepository.CashRepositoryId && x.MoneyTransferOrderStatus == MoneyTransferOrderStatus.Completed);
                 var vp = _context.VendorPayment.Where(x=>x.CashRepositoryId==cashRepository.CashRepositoryId);
+                var ep = _context.EmployeePayment.Where(x => x.CashRepositoryId == cashRepository.CashRepositoryId);
                 cashRepository.TotalReceipts = cashRepository.Employee.PaymentReceive.Sum(x => x.PaymentAmount);
                 cashRepository.TotalCashflowOut = mto.Sum(x => x.PaymentAmount);
                 cashRepository.TotalCashflowIn = mti.Sum(x => x.PaymentAmount);
                 cashRepository.TotalPayments = vp.Sum(x => x.PaymentAmount);
-                cashRepository.Balance = cashRepository.TotalReceipts + cashRepository.TotalCashflowIn - cashRepository.TotalCashflowOut- cashRepository.TotalPayments;
+                cashRepository.TotalEmployeePayments = ep.Sum(x => x.PaymentAmount);
+                cashRepository.Balance = cashRepository.TotalReceipts + cashRepository.TotalCashflowIn - cashRepository.TotalCashflowOut- cashRepository.TotalPayments-cashRepository.TotalEmployeePayments;
                 _context.Update(cashRepository);
                 await _context.SaveChangesAsync();
             }
@@ -58,6 +60,7 @@ namespace netcore.Controllers.Invent
             }
 
             var cashRepository = await _context.CashRepository
+                .Include(x => x.EmployeePayment)
                 .Include(c => c.Employee).ThenInclude(x=>x.PaymentReceive)
                 .SingleOrDefaultAsync(m => m.CashRepositoryId == id);
             if (cashRepository == null)
@@ -101,7 +104,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CashRepositoryId,Balance,CashRepositoryName,Description,EmployeeId,TotalPayments,TotalReceipts,createdAt,TotalCashflowIn,TotalCashflowOut,MainRepository")] CashRepository cashRepository)
+        public async Task<IActionResult> Create([Bind("CashRepositoryId,Balance,CashRepositoryName,Description,EmployeeId,TotalPayments,TotalReceipts,createdAt,TotalCashflowIn,TotalCashflowOut,MainRepository,TotalEmployeePayments")] CashRepository cashRepository)
         {
             if (ModelState.IsValid)
             {
@@ -135,7 +138,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CashRepositoryId,Balance,CashRepositoryName,Description,EmployeeId,TotalPayments,TotalReceipts,createdAt,TotalCashflowIn,TotalCashflowOut,MainRepository")] CashRepository cashRepository)
+        public async Task<IActionResult> Edit(string id, [Bind("CashRepositoryId,Balance,CashRepositoryName,Description,EmployeeId,TotalPayments,TotalReceipts,createdAt,TotalCashflowIn,TotalCashflowOut,MainRepository,TotalEmployeePayments")] CashRepository cashRepository)
         {
             if (id != cashRepository.CashRepositoryId)
             {
@@ -175,6 +178,7 @@ namespace netcore.Controllers.Invent
             }
 
             var cashRepository = await _context.CashRepository
+                .Include(x => x.EmployeePayment)
                 .Include(c => c.Employee)
                 .SingleOrDefaultAsync(m => m.CashRepositoryId == id);
             if (cashRepository == null)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace netcore.Models.Invent
 {
-    public class Product: INetcoreBasic
+    public class Product: INetcoreMasterChild
     {
         public Product()
         {
@@ -68,6 +68,7 @@ namespace netcore.Models.Invent
         
         [Display(Name = "Ενεργό Προϊόν")]
         public Boolean  Discontinued { get; set; }
+
 
     }
 }

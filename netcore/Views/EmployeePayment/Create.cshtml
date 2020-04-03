@@ -1,0 +1,70 @@
+﻿@model netcore.Models.Invent.EmployeePayment
+
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
+    ViewData["EntityIcon"] = "fa fa-money";
+    ViewData["CreateInfo"] = "Με τον όρο 'Πληρωμές Συνεργατών' εννούμε τις πληρωμές που γίνονται για την εξόφληση του μισθού και των προμηθειών(αν υπάρχουν).";
+}
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="PaymentNumber" class="control-label"></label>
+                    <input asp-for="PaymentNumber" class="form-control" />
+                    <span asp-validation-for="PaymentNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
+                    <select asp-for="EmployeeId" id="EmployeeList" class="form-control select2" asp-items="ViewBag.EmployeeId"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PaymentDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="PaymentDate" value="@Model.PaymentDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PaymentTypeId" class="control-label"></label>
+                    <select asp-for="PaymentTypeId" class="form-control" asp-items="ViewBag.PaymentTypeId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="PaymentAmount" class="control-label"></label>
+                    <input asp-for="PaymentAmount" id="paymentAmount" class="form-control" />
+                    <span asp-validation-for="PaymentAmount" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="CashRepositoryId" class="control-label">Ταμείο</label>
+                    <select asp-for="CashRepositoryId" id="CashRepository" class="form-control select2" asp-items="ViewBag.CashRepositoryId"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

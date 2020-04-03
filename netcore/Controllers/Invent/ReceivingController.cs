@@ -31,7 +31,7 @@ namespace netcore.Controllers.Invent
                 .Include(x => x.branch)
                 .Where(x => x.purchaseOrderId.Equals(purchaseOrderId)).FirstOrDefault();
 
-            List<Warehouse> warehouseList = _context.Warehouse.Where(x => x.branchId.Equals(po.branch.branchId)).ToList();
+            List<Warehouse> warehouseList = _context.Warehouse.Where(x => x.branchId.Equals(po.branchId)).ToList();
             warehouseList.Insert(0, new Warehouse { warehouseId = "0", warehouseName = "Select" });
 
             return Json(new SelectList(warehouseList, "warehouseId", "warehouseName"));
@@ -53,7 +53,7 @@ namespace netcore.Controllers.Invent
             Receiving obj = await _context.Receiving
                 .Include(x => x.vendor)
                 .Include(x => x.purchaseOrder)
-                    .ThenInclude(x => x.branch)
+                .ThenInclude(x => x.branch)
                 .Include(x => x.receivingLine).ThenInclude(x => x.product)
                 .SingleOrDefaultAsync(x => x.receivingId.Equals(id));
             return View(obj);
@@ -62,7 +62,12 @@ namespace netcore.Controllers.Invent
         // GET: Receiving
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Receiving.OrderByDescending(x => x.createdAt).Include(r => r.branch).Include(r => r.purchaseOrder).Include(r => r.vendor).Include(r => r.warehouse);
+            var applicationDbContext = _context.Receiving
+                .OrderByDescending(x => x.createdAt)
+                .Include(r => r.branch)
+                .Include(r => r.purchaseOrder)
+                .Include(r => r.vendor)
+                .Include(r => r.warehouse);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -95,20 +100,33 @@ namespace netcore.Controllers.Invent
 
 
         // GET: Receiving/Create
-        public IActionResult Create()
+        public IActionResult Create(string id)
         {
+           Receiving rcv = new Receiving();
             ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName");
-            List<PurchaseOrder> poList = _context.PurchaseOrder.Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Open).ToList();
+            PurchaseOrder po = _context.PurchaseOrder
+            .Include(x => x.branch)
+            .Where(x => x.purchaseOrderId.Equals(id)).FirstOrDefault();
+            List<Warehouse> warehouseList = _context.Warehouse.Where(x => x.branchId.Equals(po.branchId)).ToList();
+          if (id != null)
+            {
+                rcv.purchaseOrderId = id;
+
+                warehouseList.Insert(0, new Warehouse { warehouseId = "0", warehouseName = "Select" });
+                ViewData["warehouseId"] = new SelectList(warehouseList, "warehouseId", "warehouseName");
+            }
+            else
+            {
+                ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
+            }
+
+            List<PurchaseOrder> poList = _context.PurchaseOrder.Include(x=>x.vendor).Where(x => x.purchaseOrderStatus == PurchaseOrderStatus.Open).ToList();
             poList.Insert(0, new PurchaseOrder { purchaseOrderId = "0", purchaseOrderNumber = "Select" });
             ViewData["purchaseOrderId"] = new SelectList(poList, "purchaseOrderId", "purchaseOrderNumber");
             ViewData["vendorId"] = new SelectList(_context.Vendor, "vendorId", "vendorName");
-            ViewData["warehouseId"] = new SelectList(_context.Warehouse, "warehouseId", "warehouseName");
-            Receiving rcv = new Receiving();
             return View(rcv);
         }
-
-
 
 
         // POST: Receiving/Create

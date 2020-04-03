@@ -10,6 +10,10 @@ using System.ComponentModel.DataAnnotations;
 
 using netcore.Data;
 using netcore.Models.Invent;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace netcore.Controllers.Invent
 {
@@ -19,12 +23,11 @@ namespace netcore.Controllers.Invent
     public class PurchaseOrderController : Controller
     {
         private readonly ApplicationDbContext _context;
-
         public PurchaseOrderController(ApplicationDbContext context)
         {
             _context = context;
         }
-
+        [HttpPost]
         public async Task<IActionResult> ShowPurchaseOrder(string id)
         {
             PurchaseOrder obj = await _context.PurchaseOrder
@@ -39,7 +42,6 @@ namespace netcore.Controllers.Invent
 
             return View(obj);
         }
-
         public async Task<IActionResult> PrintPurchaseOrder(string id)
         {
             PurchaseOrder obj = await _context.PurchaseOrder
@@ -48,6 +50,20 @@ namespace netcore.Controllers.Invent
                 .Include(x => x.branch)
                 .SingleOrDefaultAsync(x => x.purchaseOrderId.Equals(id));
             return View(obj);
+        }
+
+        public ActionResult ByteArrayToFile(string id)
+        {
+            var po = _context.PurchaseOrder.Include(x=>x.vendor).Where(x => x.purchaseOrderId == id).FirstOrDefault();
+            string fileName = po.purchaseOrderNumber + po.vendor.vendorName + ".pdf";
+
+            if (po == null)
+            {
+                return NotFound();
+            }
+
+            Response.Headers.Append("content-disposition", "inline; filename=" + fileName);
+            return new FileStreamResult(new MemoryStream(po.File.ToArray()), "application/pdf");
         }
 
         // GET: PurchaseOrder
@@ -91,6 +107,7 @@ namespace netcore.Controllers.Invent
         // GET: PurchaseOrder/Create
         public IActionResult Create()
         {
+
             PurchaseOrder po = new PurchaseOrder();
             ViewData["vendorId"] = new SelectList(_context.Vendor, "vendorId", "vendorName");
             Branch defaultBranch = _context.Branch.Where(x => x.isDefaultBranch.Equals(true)).FirstOrDefault();
@@ -100,14 +117,22 @@ namespace netcore.Controllers.Invent
 
 
 
-
         // POST: PurchaseOrder/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("purchaseOrderId,HasChild,branchId,createdAt,deliveryDate,description,picInternal,picVendor,poDate,purchaseOrderNumber,purchaseOrderStatus,purchaseReceiveNumber,referenceNumberExternal,top,totalDiscountAmount,totalOrderAmount,vendorId,InvoiceBalance,Paid,totalVendorPayment")] PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Create([Bind("purchaseOrderId,HasChild,branchId,createdAt,deliveryDate,description,picInternal,picVendor,poDate,purchaseOrderNumber,purchaseOrderStatus,purchaseReceiveNumber,referenceNumberExternal,top,totalDiscountAmount,totalOrderAmount,vendorId,InvoiceBalance,Paid,totalVendorPayment,File")] PurchaseOrder purchaseOrder, IFormFile File)
         {
+            if (File != null)
+            {
+                using (var stream=new MemoryStream())
+                {
+                    await File.CopyToAsync(stream);
+                    purchaseOrder.File = stream.ToArray();
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(purchaseOrder);
@@ -150,13 +175,21 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("purchaseOrderId,HasChild,branchId,createdAt,deliveryDate,description,picInternal,picVendor,poDate,purchaseOrderNumber,purchaseOrderStatus,purchaseReceiveNumber,referenceNumberExternal,top,totalDiscountAmount,totalOrderAmount,vendorId,InvoiceBalance,Paid,totalVendorPayment")] PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Edit(string id, [Bind("purchaseOrderId,HasChild,branchId,createdAt,deliveryDate,description,picInternal,picVendor,poDate,purchaseOrderNumber,purchaseOrderStatus,purchaseReceiveNumber,referenceNumberExternal,top,totalDiscountAmount,totalOrderAmount,vendorId,InvoiceBalance,Paid,totalVendorPayment,File")] PurchaseOrder purchaseOrder, IFormFile File)
         {
             if (id != purchaseOrder.purchaseOrderId)
             {
                 return NotFound();
             }
-            
+
+            if (File != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await File.CopyToAsync(stream);
+                    purchaseOrder.File = stream.ToArray();
+                }
+            }
 
             if ((PurchaseOrderStatus)TempData["PurchaseOrderStatus"] == PurchaseOrderStatus.Completed)
             {
@@ -174,8 +207,10 @@ namespace netcore.Controllers.Invent
             {
                 try
                 {
+                    TempData["TransMessage"] = "Η Επεξεργασία της ΠΑ " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία";
                     _context.Update(purchaseOrder);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -188,13 +223,12 @@ namespace netcore.Controllers.Invent
                         throw;
                     }
                 }
-                TempData["TransMessage"] = "Η Επεξεργασία της ΠΑ " + purchaseOrder.purchaseOrderNumber + " έγινε με Επιτυχία";
-                return RedirectToAction(nameof(Index));
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", purchaseOrder.branchId);
             ViewData["vendorId"] = new SelectList(_context.Vendor, "vendorId", "vendorName", purchaseOrder.vendorId);
             return View(purchaseOrder);
         }
+
 
         // GET: PurchaseOrder/Delete/5
         public async Task<IActionResult> Delete(string id)

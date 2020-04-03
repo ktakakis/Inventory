@@ -166,6 +166,8 @@ namespace netcore.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool>("EmployeePaymentRole");
+
                     b.Property<bool>("EmployeeRole");
 
                     b.Property<bool>("HomeRole");
@@ -197,6 +199,8 @@ namespace netcore.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
+
+                    b.Property<bool>("ProductLineRole");
 
                     b.Property<bool>("ProductRole");
 
@@ -430,6 +434,8 @@ namespace netcore.Migrations
                     b.Property<decimal>("TotalCashflowIn");
 
                     b.Property<decimal>("TotalCashflowOut");
+
+                    b.Property<decimal>("TotalEmployeePayments");
 
                     b.Property<decimal>("TotalPayments");
 
@@ -700,6 +706,40 @@ namespace netcore.Migrations
                     b.HasKey("EmployeeId");
 
                     b.ToTable("Employee");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.EmployeePayment", b =>
+                {
+                    b.Property<string>("EmployeePaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("CashRepositoryId")
+                        .HasMaxLength(38);
+
+                    b.Property<string>("EmployeeId")
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("PaymentAmount");
+
+                    b.Property<DateTime>("PaymentDate");
+
+                    b.Property<string>("PaymentNumber");
+
+                    b.Property<string>("PaymentTypeId")
+                        .HasMaxLength(38);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("EmployeePaymentId");
+
+                    b.HasIndex("CashRepositoryId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PaymentTypeId");
+
+                    b.ToTable("EmployeePayment");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.Invoice", b =>
@@ -1002,6 +1042,8 @@ namespace netcore.Migrations
 
                     b.Property<bool>("Discontinued");
 
+                    b.Property<string>("HasChild");
+
                     b.Property<decimal>("ProductVAT");
 
                     b.Property<decimal?>("ProductVolume");
@@ -1044,11 +1086,38 @@ namespace netcore.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.ProductLine", b =>
+                {
+                    b.Property<string>("ProductLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("ComponentId")
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("Percentage");
+
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(38);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("ProductLineId");
+
+                    b.HasIndex("ComponentId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductLine");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.PurchaseOrder", b =>
                 {
                     b.Property<string>("purchaseOrderId")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
+
+                    b.Property<byte[]>("File");
 
                     b.Property<string>("HasChild");
 
@@ -1235,6 +1304,8 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
+                    b.Property<decimal>("Commission");
+
                     b.Property<string>("EmployeeId")
                         .HasMaxLength(38);
 
@@ -1303,9 +1374,11 @@ namespace netcore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(38);
 
-                    b.Property<decimal?>("Discount");
+                    b.Property<decimal>("Discount");
 
                     b.Property<decimal>("DiscountAmount");
+
+                    b.Property<int>("IsGift");
 
                     b.Property<decimal>("Price");
 
@@ -1316,7 +1389,7 @@ namespace netcore.Migrations
 
                     b.Property<decimal>("ProductVATAmount");
 
-                    b.Property<float>("Qty");
+                    b.Property<int>("Qty");
 
                     b.Property<string>("SalesOrderId")
                         .HasMaxLength(38);
@@ -1325,7 +1398,7 @@ namespace netcore.Migrations
 
                     b.Property<decimal>("SpecialTaxDiscount");
 
-                    b.Property<decimal?>("TotalAfterDiscount");
+                    b.Property<decimal>("TotalAfterDiscount");
 
                     b.Property<decimal>("TotalAmount");
 
@@ -2075,6 +2148,21 @@ namespace netcore.Migrations
                         .HasForeignKey("customerId");
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.EmployeePayment", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.CashRepository", "CashRepository")
+                        .WithMany("EmployeePayment")
+                        .HasForeignKey("CashRepositoryId");
+
+                    b.HasOne("netcore.Models.Invent.Employee", "Employee")
+                        .WithMany("EmployeePayment")
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("netcore.Models.Invent.PaymentType", "paymentType")
+                        .WithMany()
+                        .HasForeignKey("PaymentTypeId");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.Invoice", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Shipment", "Shipment")
@@ -2122,6 +2210,17 @@ namespace netcore.Migrations
                     b.HasOne("netcore.Models.Invent.PaymentType", "paymentType")
                         .WithMany("PaymentReceive")
                         .HasForeignKey("PaymentTypeId");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.ProductLine", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Product", "Component")
+                        .WithMany()
+                        .HasForeignKey("ComponentId");
+
+                    b.HasOne("netcore.Models.Invent.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.PurchaseOrder", b =>

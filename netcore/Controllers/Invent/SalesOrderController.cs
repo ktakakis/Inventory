@@ -93,6 +93,7 @@ namespace netcore.Controllers.Invent
             salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
             salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
             salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
+            salesOrder.Commission = salesOrder.salesOrderLine.Sum(x => x.TotalAfterDiscount) * salesOrder.Employee.Commission;
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
 
@@ -123,13 +124,13 @@ namespace netcore.Controllers.Invent
             var username = HttpContext.User.Identity.Name;
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
-                ViewData["customerId"] = new SelectList(_context.Customer.Where(c=>c.Employee.UserName==username), "customerId", "customerName");
+                ViewData["customerId"] = new SelectList(_context.Customer.Where(c=>c.Employee.UserName==username && c.Active==true), "customerId", "customerName");
                 ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName");
           }
             else
             {
-                ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName");
-                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+                ViewData["customerId"] = new SelectList(_context.Customer.Where(c=>c.Active == true), "customerId", "customerName");
+                ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName"); 
             }
             Branch defaultBranch = _context.Branch.Where(x => x.isDefaultBranch.Equals(true)).FirstOrDefault();
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", defaultBranch != null ? defaultBranch.branchId : null);
@@ -145,7 +146,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId,TotalBeforeDiscount,SalesOrderName")] SalesOrder salesOrder)
+        public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId,TotalBeforeDiscount,SalesOrderName,Commission")] SalesOrder salesOrder)
         {
 
             if (ModelState.IsValid)
@@ -189,7 +190,10 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
 
-            var salesOrder = await _context.SalesOrder.Include(x => x.salesOrderLine).SingleOrDefaultAsync(m => m.salesOrderId == id);
+            var salesOrder = await _context.SalesOrder
+                .Include(x => x.salesOrderLine)
+                .Include(x=>x.Employee)
+                .SingleOrDefaultAsync(m => m.salesOrderId == id);
             if (salesOrder == null)
             {
                 return NotFound();
@@ -200,18 +204,19 @@ namespace netcore.Controllers.Invent
             salesOrder.TotalProductVAT = salesOrder.salesOrderLine.Sum(x => x.ProductVATAmount);
             salesOrder.TotalWithSpecialTax = salesOrder.salesOrderLine.Sum(x => x.TotalWithSpecialTax);
             salesOrder.TotalBeforeDiscount = salesOrder.salesOrderLine.Sum(x => x.TotalBeforeDiscount);
+            salesOrder.Commission = salesOrder.salesOrderLine.Sum(x => x.TotalAfterDiscount) * salesOrder.Employee.Commission;
 
             _context.Update(salesOrder);
             await _context.SaveChangesAsync();
             var username = HttpContext.User.Identity.Name;
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
-                ViewData["customerId"] = new SelectList(_context.Customer.Where(c => c.Employee.UserName == username), "customerId", "customerName", salesOrder.customerId);
+                ViewData["customerId"] = new SelectList(_context.Customer.Where(c => c.Employee.UserName == username && c.Active == true), "customerId", "customerName", salesOrder.customerId);
                 ViewData["employeeId"] = new SelectList(_context.Employee.Where(e => e.UserName == username), "EmployeeId", "DisplayName",salesOrder.EmployeeId);
             }
             else
             {
-                ViewData["customerId"] = new SelectList(_context.Customer, "customerId", "customerName", salesOrder.customerId);
+                ViewData["customerId"] = new SelectList(_context.Customer.Where(c=>c.Active==true), "customerId", "customerName", salesOrder.customerId);
                 ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName",salesOrder.EmployeeId);
             }
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName", salesOrder.branchId);
@@ -228,7 +233,7 @@ namespace netcore.Controllers.Invent
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId,TotalBeforeDiscount,SalesOrderName")] SalesOrder salesOrder)
+        public async Task<IActionResult> Edit(string id, [Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId,TotalBeforeDiscount,SalesOrderName,Commission")] SalesOrder salesOrder)
         {
             if (id != salesOrder.salesOrderId)
             {
@@ -325,10 +330,6 @@ namespace netcore.Controllers.Invent
 
             return View(salesOrder);
         }
-
-
-
-
         // POST: SalesOrder/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -380,9 +381,6 @@ namespace netcore.Controllers.Invent
 
     }
 }
-
-
-
 
 
 namespace netcore.MVC

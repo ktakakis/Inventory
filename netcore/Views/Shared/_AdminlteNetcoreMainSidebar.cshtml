@@ -102,6 +102,14 @@
                 </a>
             </li>
         }
+        @if (appUser.EmployeePaymentRole)
+        {
+            <li class="@Html.IsSelected(controller: "EmployeePayment")">
+                <a href="@Url.Action("Index", "EmployeePayment")">
+                    <i class="fa fa-money"></i> <span> Πληρωμές Συνεργατών</span>
+                </a>
+            </li>
+        }
         @if (appUser.ShipmentRole)
         {
             <li class="@Html.IsSelected(controller: "Shipment")">

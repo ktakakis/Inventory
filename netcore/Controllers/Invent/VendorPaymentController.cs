@@ -338,7 +338,7 @@ namespace netcore.Models
 {
     public partial class ApplicationUser
     {
-        [Display(Name = "Vendor")]
+        [Display(Name = "Πληρωμές Προμηθευτών")]
         public bool VendorPaymentRole { get; set; } = false;
     }
 }

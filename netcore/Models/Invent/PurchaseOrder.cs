@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -92,10 +93,14 @@ namespace netcore.Models.Invent
         [Display(Name = "Εξοφλημένο")]
         public Boolean Paid { get; set; }
 
+        [Display(Name = "Συνημμένο pdf")]
+        public byte[] File { get; set; }
+
         [Display(Name = "Στοιχεία Παραγγελίας")]
         public List<PurchaseOrderLine> purchaseOrderLine { get; set; } = new List<PurchaseOrderLine>();
 
         [Display(Name = "Πληρωμές")]
         public List<VendorPayment> vendorPayment { get; set; } = new List<VendorPayment>();
+
     }
 }

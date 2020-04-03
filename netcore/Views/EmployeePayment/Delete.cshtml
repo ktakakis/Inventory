@@ -1,0 +1,56 @@
+﻿@model netcore.Models.Invent.EmployeePayment
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-money";
+    ViewData["DeleteInfo"] = "Διαγράφοντας μία Πληρωμή Συνεργάτη γίνεται αυτόματα αλλαγή του υπολοίπου στην καρτέλα του.";
+    ViewData["IsCanDeleted"] = true;
+
+}
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CashRepository)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CashRepository.CashRepositoryName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.DisplayName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.paymentType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.paymentType.PaymentTypeName)
+        </dd>
+    </dl>
+</div>

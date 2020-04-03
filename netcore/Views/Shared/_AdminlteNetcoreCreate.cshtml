@@ -29,7 +29,7 @@
         <!-- Left side column. contains the logo and sidebar -->
         @Html.Partial("_AdminlteNetcoreMainSidebar", appUser)
         <!-- Content Wrapper. Contains page content -->
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
                 <section class="content-header text-primary">

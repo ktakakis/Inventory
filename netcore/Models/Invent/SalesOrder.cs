@@ -82,6 +82,9 @@ namespace netcore.Models.Invent
         [Display(Name = "Έκδοση Τιμολογίου")]
         public Boolean Invoicing { get; set; } 
 
+        [Display(Name = "Προμήθεια")] 
+        public decimal Commission { get; set; }
+
         [Display(Name = "Αξία με Ε. Φόρο")] 
         public decimal TotalWithSpecialTax { get; set; }  
 

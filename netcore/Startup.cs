@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.IO;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.FileProviders;
 
 namespace netcore
 {
@@ -97,6 +98,7 @@ namespace netcore
 
             // Get Super Admin Default options
             services.Configure<SuperAdminDefaultOptions>(Configuration.GetSection("SuperAdminDefaultOptions"));
+
 
             services.AddMvc();
         }

@@ -35,11 +35,15 @@ namespace netcore.Controllers.Invent
             }
 
             var employee = await _context.Employee
+                .Include(x=>x.SalesOrder)
                 .SingleOrDefaultAsync(m => m.EmployeeId == id);
             if (employee == null)
             {
                 return NotFound();
             }
+            employee.TotalCommission = employee.SalesOrder.Sum(x => x.Commission);
+            _context.Update(employee);
+            await _context.SaveChangesAsync();
             return View(employee);
         }
 
@@ -58,6 +62,7 @@ namespace netcore.Controllers.Invent
         {
             if (ModelState.IsValid)
             {
+                employee.TotalCommission = employee.SalesOrder.Sum(x => x.Commission);
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -21,7 +21,10 @@
                 @Html.DisplayNameFor(model => model.TotalPayments)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalCashflowIn)                
+                @Html.DisplayNameFor(model => model.TotalEmployeePayments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalCashflowIn)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TotalCashflowOut)
@@ -50,6 +53,9 @@
             </td>
             <td>
                 <a asp-controller="VendorPayment" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalPayments)</a>
+            </td>
+            <td>
+                <a asp-controller="EmployeePayment" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalEmployeePayments)</a>
             </td>
             <td>
                 <a asp-controller="CashflowIn" asp-action="Index" asp-route-id="@item.CashRepositoryId">@Html.DisplayFor(modelItem => item.TotalCashflowIn)</a>

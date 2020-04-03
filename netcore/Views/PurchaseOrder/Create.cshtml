@@ -31,11 +31,6 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="description" class="control-label"></label>
-            <textarea asp-for="description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="description" class="text-danger"></span>
-        </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group">
@@ -56,7 +51,7 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input asp-for="deliveryDate" value="@Model.deliveryDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text"  />
+                        <input asp-for="deliveryDate" value="@Model.deliveryDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
                     </div>
                     <span asp-validation-for="deliveryDate" class="text-danger"></span>
                 </div>
@@ -115,6 +110,16 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <label asp-for="description" class="control-label"></label>
+            <textarea asp-for="description" class="form-control" rows="2"></textarea>
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="File" class="control-label"></label>
+            <input type="file" id="files" asp-for="File" accept=".pdf, PDF Files"/>
+            <span asp-validation-for="File" class="text-danger"></span>
+        </div>
         <div class="form-group hidden">
             <label asp-for="totalDiscountAmount" class="control-label"></label>
             <input asp-for="totalDiscountAmount" class="form-control" />
@@ -130,8 +135,6 @@
             <input asp-for="purchaseReceiveNumber" class="form-control" />
             <span asp-validation-for="purchaseReceiveNumber" class="text-danger"></span>
         </div>
-
-
     </div>
 </div>
 

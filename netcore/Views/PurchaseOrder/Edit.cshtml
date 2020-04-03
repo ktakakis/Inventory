@@ -21,24 +21,12 @@
                     <span asp-validation-for="purchaseOrderNumber" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-6">
                 <div class="form-group">
-                    <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
-                    <select asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()"></select>
-                    <span asp-validation-for="top" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label asp-for="vendorId" class="control-label">Vendor</label>
+                    <label asp-for="vendorId" class="control-label">Προμηθευτής</label>
                     <select asp-for="vendorId" class="form-control select2" asp-items="ViewBag.vendorId"></select>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="description" class="control-label"></label>
-            <textarea asp-for="description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="description" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -74,14 +62,21 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="branchId" class="control-label">Υποκατάστημα</label>
                     <select asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId"></select>
                     <span asp-validation-for="branchId" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
+                    <select asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()"></select>
+                    <span asp-validation-for="top" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="Paid" class="control-label"></label>
                     <input type="checkbox" asp-for="Paid" class="checkbox" />
@@ -90,29 +85,41 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="form-group">
                     <label asp-for="referenceNumberExternal" class="control-label"></label>
                     <input asp-for="referenceNumberExternal" class="form-control" />
                     <span asp-validation-for="referenceNumberExternal" class="text-danger"></span>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group">
+            <div class="col-md-4">
+                <div class="form-group has-success">
                     <label asp-for="picInternal" class="control-label">Υπεύθυνος Παραλαβής</label>
                     <input asp-for="picInternal" class="form-control" />
                     <span asp-validation-for="picInternal" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
+            <div class="col-md-4">
+                <div class="form-group has-success">
                     <label asp-for="picVendor" class="control-label">Υπεύθυνος Αποστολής</label>
                     <input asp-for="picVendor" class="form-control" />
                     <span asp-validation-for="picVendor" class="text-danger"></span>
                 </div>
             </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="description" class="control-label"></label>
+            <textarea asp-for="description" class="form-control" rows="2"></textarea>
+            <span asp-validation-for="description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="File" class="control-label"></label>
+            <input asp-for="File" id="files" type="file" accept=".pdf, PDF Files" />
+            @if (Model.File != null)
+            {
+                <h5 class="timeline-header"><a asp-controller="PurchaseOrder" asp-action="ByteArrayToFile" asp-route-id="@Model.purchaseOrderId">@(Model.purchaseOrderNumber + Model.vendor.vendorName + ".pdf")</a></h5>
+            }
+            <span asp-validation-for="File" class="text-danger"></span>
         </div>
         <div class="form-group hidden">
             <label asp-for="totalDiscountAmount" class="control-label"></label>
@@ -129,10 +136,9 @@
             <input asp-for="purchaseReceiveNumber" class="form-control" />
             <span asp-validation-for="purchaseReceiveNumber" class="text-danger"></span>
         </div>
-
-
     </div>
 </div>
+<img src="" widht="50" height="50" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

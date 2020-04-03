@@ -1,0 +1,36 @@
+﻿@model netcore.Models.Invent.ProductLine
+
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcorePopup.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ProductLineId" />
+        <div class="form-group hidden">
+            <label asp-for="ProductId" class="control-label"></label>
+            <select asp-for="ProductId" class="form-control select2" asp-items="ViewBag.ProductId"></select>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ComponentId" class="control-label"></label>
+                    <select asp-for="ComponentId" class="form-control select2" asp-items="ViewBag.componentId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Percentage" class="control-label"></label>
+                    <input asp-for="Percentage" class="form-control" />
+                    <span asp-validation-for="Percentage" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

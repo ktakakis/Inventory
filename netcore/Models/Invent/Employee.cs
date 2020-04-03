@@ -103,6 +103,8 @@ namespace netcore.Models.Invent
         [Display(Name = "Εισπράξεις")]
         public List<PaymentReceive> PaymentReceive { get; set; } = new List<PaymentReceive>();
 
+        [Display(Name = "Πληρωμές")]
+        public List<EmployeePayment> EmployeePayment { get; set; } = new List<EmployeePayment>();
 
     }
 }

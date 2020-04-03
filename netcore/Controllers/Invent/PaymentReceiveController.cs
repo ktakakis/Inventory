@@ -36,7 +36,12 @@ namespace netcore.Controllers.Invent
                 .Include(p => p.paymentType);
            if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
-                applicationDbContext = _context.PaymentReceive.Where(s => s.Employee.UserName == username).OrderByDescending(x => x.createdAt).Include(e => e.Employee).Include(p => p.invoice).Include(p => p.paymentType);
+                applicationDbContext = _context.PaymentReceive
+                    .Where(s => s.Employee.UserName == username)
+                    .OrderByDescending(x => x.createdAt)
+                    .Include(e => e.Employee)
+                    .Include(p => p.invoice)
+                    .Include(p => p.paymentType);
             }
             if (id != null)
             {
@@ -121,7 +126,6 @@ namespace netcore.Controllers.Invent
                 ViewData["InvoiceId"] = new SelectList(invoice, "InvoiceId", "description");
             }
 
-            ViewData["InvoiceId"] = new SelectList(invoice.Where(x=>x.Paid==false), "InvoiceId", "description");
             ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName");
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
@@ -200,16 +204,6 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Edit(string id)
         {
             var username = HttpContext.User.Identity.Name;
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var paymentReceive = await _context.PaymentReceive.SingleOrDefaultAsync(m => m.PaymentReceiveId == id);
-            if (paymentReceive == null)
-            {
-                return NotFound();
-            }
             var query =
                 from Invoice in _context.Invoice
                 select new
@@ -218,9 +212,17 @@ namespace netcore.Controllers.Invent
                     description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
                     Invoice.Paid
                 };
-            ViewData["InvoiceId"] = new SelectList(query.Where(x => x.Paid == false), "InvoiceId", "description", paymentReceive.InvoiceId);
-            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", paymentReceive.PaymentTypeId);
-            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");            
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var paymentReceive = await _context.PaymentReceive.SingleOrDefaultAsync(m => m.PaymentReceiveId == id);
+             ViewData["InvoiceId"] = new SelectList(query, "InvoiceId", "description");
+           if (paymentReceive == null)
+            {
+                return NotFound();
+            }
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x => x.PaymentReceiver == true && x.UserName == username), "EmployeeId", "DisplayName");
@@ -228,6 +230,8 @@ namespace netcore.Controllers.Invent
 
             }
 
+            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", paymentReceive.PaymentTypeId);
+            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");            
             return View(paymentReceive);
         }
 
@@ -239,6 +243,14 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Edit(string id, [Bind("PaymentReceiveId,InvoiceId,IsFullPayment,PaymentAmount,PaymentDate,PaymentReceiveName,PaymentTypeId,createdAt,EmployeeId,CashRepositoryId")] PaymentReceive paymentReceive)
         {
             var username = HttpContext.User.Identity.Name;
+            var query =
+                from Invoice in _context.Invoice
+                select new
+                {
+                    Invoice.InvoiceId,
+                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
+                    Invoice.Paid
+                };
             if (id != paymentReceive.PaymentReceiveId)
             {
                 return NotFound();
@@ -264,26 +276,19 @@ namespace netcore.Controllers.Invent
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var query =
-                from Invoice in _context.Invoice
-                select new
-                {
-                    Invoice.InvoiceId,
-                    description = (Invoice.InvoiceNumber + " (" + Invoice.customerName + ")"),
-                    Invoice.Paid
-                };
 
-            ViewData["InvoiceId"] = new SelectList(query.Where(x => x.Paid == false), "InvoiceId", "description", paymentReceive.InvoiceId);
-            ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", paymentReceive.PaymentTypeId);
-            ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
-            ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName",paymentReceive.CashRepositoryId);
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 ViewData["EmployeeId"] = new SelectList(_context.Employee.Where(x => x.PaymentReceiver == true && x.UserName == username), "EmployeeId", "DisplayName");
                 ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository.Where(x=>x.Employee.UserName==username), "CashRepositoryId", "CashRepositoryName", paymentReceive.CashRepositoryId);
             }
 
-            return View(paymentReceive);
+   
+        ViewData["InvoiceId"] = new SelectList(query.Where(x => x.Paid == false), "InvoiceId", "description", paymentReceive.InvoiceId);
+        ViewData["PaymentTypeId"] = new SelectList(_context.PaymentType, "PaymentTypeId", "PaymentTypeName", paymentReceive.PaymentTypeId);
+        ViewData["employeeId"] = new SelectList(_context.Employee, "EmployeeId", "DisplayName");
+        ViewData["CashRepositoryId"] = new SelectList(_context.CashRepository, "CashRepositoryId", "CashRepositoryName",paymentReceive.CashRepositoryId);
+         return View(paymentReceive);
         }
 
         // GET: PaymentReceive/Delete/5

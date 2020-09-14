@@ -1,0 +1,108 @@
+﻿@model netcore.Models.Invent.RoastingLog
+
+@{
+    ViewData["Title"] = "Λεπτομέρειες";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
+    ViewData["EntityIcon"] = "fa fa-truck";
+}
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RoasterName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RoasterName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RoastingDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RoastingDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartWeight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartWeight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FinishWeight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FinishWeight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LossPercent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LossPercent)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartTemp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartTemp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AmbientTemp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AmbientTemp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AfterFillingTemp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AfterFillingTemp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstCrackTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FirstCrackTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SecondCrackTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SecondCrackTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HasChild)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HasChild)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Product)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.productId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RoastingLevel)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RoastingLevel.RoastingLevelId)
+        </dd>
+    </dl>
+</div>

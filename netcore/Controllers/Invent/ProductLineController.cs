@@ -57,7 +57,7 @@ namespace netcore.Controllers.Invent
             var check = _context.ProductLine.SingleOrDefault(m => m.ProductLineId == id);
             var selected = _context.Product.SingleOrDefault(m => m.productId == masterid);
             ViewData["productId"] = new SelectList(_context.Product, "productId", "productId");
-            ViewData["componentId"] = new SelectList(_context.Product, "productId", "productName");
+            ViewData["componentId"] = new SelectList(_context.Product.Where(x => x.IsMaterial == true), "productId", "productName");
            if (check == null)
             {
                 ProductLine objline = new ProductLine();
@@ -86,7 +86,7 @@ namespace netcore.Controllers.Invent
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductId"] = new SelectList(_context.Product, "productId", "productName", productLine.ProductId);
-            ViewData["componentId"] = new SelectList(_context.Product, "productId", "productName", productLine.ComponentId);
+            ViewData["componentId"] = new SelectList(_context.Product.Where(x => x.IsMaterial == true), "productId", "productName", productLine.ComponentId);
             return View(productLine);
         }
 
@@ -104,7 +104,7 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
             ViewData["ProductId"] = new SelectList(_context.Product, "productId", "productName", productLine.ProductId);
-            ViewData["componentId"] = new SelectList(_context.Product, "productId", "productName", productLine.ComponentId);
+            ViewData["componentId"] = new SelectList(_context.Product.Where(x => x.IsMaterial == true), "productId", "productName", productLine.ComponentId);
             return View(productLine);
         }
 
@@ -141,7 +141,7 @@ namespace netcore.Controllers.Invent
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ProductId"] = new SelectList(_context.Product, "productId", "productName", productLine.ProductId);
-            ViewData["componentId"] = new SelectList(_context.Product, "productId", "productName", productLine.ComponentId);
+            ViewData["componentId"] = new SelectList(_context.Product.Where(x => x.IsMaterial == true), "productId", "productName", productLine.ComponentId);
             return View(productLine);
         }
 

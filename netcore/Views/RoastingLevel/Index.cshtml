@@ -1,0 +1,47 @@
+﻿@model IEnumerable<netcore.Models.Invent.RoastingLevel>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-truck";
+    ViewData["ListTitle"] = "Λίστα Παραλαβών";
+    ViewData["IndexInfo"] = "Ο πιο συνηθισμένος τρόπος για να περιγράψουμε τα επίπεδα του ψημένου καφέ, είναι από το χρώμα των κόκκων, που κυμαίνεται από ανοιχτό έως σκοτεινό (ή πολύ σκοτεινό).";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoastingLevelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.File)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.RoastingLevelId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.RoastingLevelId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.RoastingLevelId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoastingLevelName)
+            </td>
+            <td>
+                @if (item.File != null)
+                {
+                    String img64 = Convert.ToBase64String(item.File);
+                    String img64Url = string.Format("data:image/jpg;base64,{0}", img64); //imagetype can be e.g. gif, jpeg, png etc.
+                    <img src="@img64Url" width="80" height="80" />
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

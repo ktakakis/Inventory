@@ -153,7 +153,10 @@ namespace netcore.Controllers.Invent
                 return NotFound();
             }
 
-            var purchaseOrder = await _context.PurchaseOrder.Include(x => x.purchaseOrderLine).SingleOrDefaultAsync(m => m.purchaseOrderId == id);
+            var purchaseOrder = await _context.PurchaseOrder
+                .Include(x => x.purchaseOrderLine)
+                .SingleOrDefaultAsync(m => m.purchaseOrderId == id);
+
             if (purchaseOrder == null)
             {
                 return NotFound();

@@ -1,0 +1,133 @@
+﻿@model netcore.Models.Invent.RoastingLog
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
+    ViewData["EntityIcon"] = "fa fa-truck";
+    ViewData["CreateInfo"] = "Ο πιο συνηθισμένος τρόπος για να περιγράψουμε τα επίπεδα του ψημένου καφέ, είναι από το χρώμα των κόκκων, που κυμαίνεται από ανοιχτό έως σκοτεινό (ή πολύ σκοτεινό).";
+}
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="RoastingLogId" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="RoasterName" class="control-label"></label>
+                    <input asp-for="RoasterName" class="form-control" />
+                    <span asp-validation-for="RoasterName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="RoastingLevelId" class="control-label"></label>
+                    <select asp-for="RoastingLevelId" class="form-control" asp-items="ViewBag.RoastingLevelId"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="RoastingDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="RoastingDate" value="@Model.RoastingDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                    </div>
+                    <span asp-validation-for="RoastingDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="StartTime" class="control-label"></label>
+                    <input type="time" asp-for="StartTime" id="starttime"class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="EndTime" class="control-label"></label>
+                    <input type="time" asp-for="EndTime" id="endtime" class="form-control" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="StartWeight" class="control-label"></label>
+                    <input asp-for="StartWeight" class="form-control" />
+                    <span asp-validation-for="StartWeight" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="FinishWeight" class="control-label"></label>
+                    <input asp-for="FinishWeight" class="form-control" />
+                    <span asp-validation-for="FinishWeight" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="LossPercent" class="control-label"></label>
+                    <input asp-for="LossPercent" class="form-control" />
+                    <span asp-validation-for="LossPercent" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductId" class="control-label"></label>
+                    <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="StartTemp" class="control-label"></label>
+                    <input asp-for="StartTemp" class="form-control" />
+                    <span asp-validation-for="StartTemp" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="AmbientTemp" class="control-label"></label>
+                    <input asp-for="AmbientTemp" class="form-control" />
+                    <span asp-validation-for="AmbientTemp" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="AfterFillingTemp" class="control-label"></label>
+                    <input asp-for="AfterFillingTemp" class="form-control" />
+                    <span asp-validation-for="AfterFillingTemp" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="FirstCrackTime" class="control-label"></label>
+                    <input type="time" asp-for="FirstCrackTime" class="form-control" />
+                    <span asp-validation-for="FirstCrackTime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="SecondCrackTime" class="control-label"></label>
+                    <input type="time" asp-for="SecondCrackTime" class="form-control" />
+                    <span asp-validation-for="SecondCrackTime" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

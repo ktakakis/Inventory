@@ -1,0 +1,87 @@
+﻿@model netcore.Models.Invent.ProductionOrder
+
+@{
+    ViewData["Title"] = "Επεξεργασία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreEdit.cshtml";
+    ViewData["EntityIcon"] = "fa fa-file-code-o";
+    ViewData["EditInfo"] = "Η παραγγελία Παραγωγής (ΠΠΡ) είναι ένα έγγραφο που αποστέλλεται στο εργαστήριο για την παραγωγή των Προϊόντων. Υπάρχουν τρεις καταστάσεις ΠΠΡ: 1. Πρόχειρο (Ανεπιβεβαίωτη ΠΠΡ, δεν είναι έτοιμη για Παραγωγή), 2. Ανοιχτό (Επιβεβαιωμένη ΠΠΡ, έτοιμη για Παραγωγή) και 3. Ολοκληρωμένο (Κλειστή ΠΠΡ, έχουν ήδη παραχθεί τα προϊόντα).";
+}
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ProductionOrderId" />
+        <input type="hidden" asp-for="ProductionOrderNumber" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductionOrderNumber" class="control-label"></label>
+                    <input asp-for="ProductionOrderNumber" class="form-control" />
+                    <span asp-validation-for="ProductionOrderNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <label asp-for="branchId" class="control-label"></label>
+                    <select asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId"></select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductionOrderDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="ProductionOrderDate" value="@Model.ProductionOrderDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                    </div>
+                    <span asp-validation-for="ProductionOrderDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="RequiredDeliveryDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="RequiredDeliveryDate" value="@Model.RequiredDeliveryDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" lang="el" type="text" />
+                    </div>
+                    <span asp-validation-for="RequiredDeliveryDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductionOrderStatus" class="control-label"></label>
+                    <select asp-for="ProductionOrderStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.ProductionOrderStatus>()"></select>
+                    <span asp-validation-for="ProductionOrderStatus" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Notes" class="control-label"></label>
+                    <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

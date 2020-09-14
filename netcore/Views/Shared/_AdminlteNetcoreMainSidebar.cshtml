@@ -36,6 +36,40 @@
                 </a>
             </li>
         }
+        <li class="header">ΔΙΑΧΕΙΡΙΣΗ ΠΑΡΑΓΩΓΗΣ</li>
+        @if (appUser.ProductionOrderRole)
+        {
+            <li class="@Html.IsSelected(controller: "ProductionOrder")">
+                <a href="@Url.Action("Index", "ProductionOrder")">
+                    <i class="fa fa-file-code-o"></i> <span> Παραγγελίες Παραγωγής</span>
+                </a>
+            </li>
+        }
+        @if (appUser.ProductionRole)
+        {
+            <li class="@Html.IsSelected(controller: "Production")">
+                <a href="@Url.Action("Index", "Production")">
+                    <i class="fa fa-gift"></i> <span> Παραγωγή Προϊόντων</span>
+                </a>
+            </li>
+        }
+        @if (appUser.RoastingLevelRole)
+        {
+            <li class="@Html.IsSelected(controller: "RoastingLevel")">
+                <a href="@Url.Action("Index", "RoastingLevel")">
+                    <i class="fa fa-gift"></i> <span> Επίπεδα Ψησίματος</span>
+                </a>
+            </li>
+        }
+        @if (appUser.RoastingLogRole)
+        {
+            <li class="@Html.IsSelected(controller: "RoastingLog")">
+                <a href="@Url.Action("Index", "RoastingLog")">
+                    <i class="fa fa-gift"></i> <span> Καταγραφή Roasting</span>
+                </a>
+            </li>
+        }
+
         <li class="header">ΔΙΑΧΕΙΡΙΣΗ ΑΓΟΡΩΝ</li>
         @if (appUser.VendorRole)
         {

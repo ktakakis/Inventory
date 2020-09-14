@@ -30,7 +30,10 @@ namespace netcore.Controllers.Invent
         public async Task<IActionResult> Index()
         {
             var username = HttpContext.User.Identity.Name;
-            var applicationDbContext = _context.Customer.OrderByDescending(x => x.createdAt);
+            var applicationDbContext = _context.Customer
+                .Include(x=>x.Employee)
+                .OrderByDescending(x => x.Active)
+                .ThenBy(x=>x.customerName);
             if (!(HttpContext.User.IsInRole("ApplicationUser") || HttpContext.User.IsInRole("Secretary")))
             {
                 applicationDbContext = _context.Customer.Where(x => x.Employee.UserName == username).OrderByDescending(x => x.createdAt);
@@ -56,7 +59,6 @@ namespace netcore.Controllers.Invent
             return View(customer);
         }
 
-
         // GET: Customer/Create
         public IActionResult Create()
         {
@@ -64,8 +66,6 @@ namespace netcore.Controllers.Invent
             Customer customer = new Customer();
             return View(customer);
         }
-
-
 
         // POST: Customer/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for

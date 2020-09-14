@@ -23,7 +23,6 @@ namespace netcore.Controllers.Invent
         private readonly INetcoreService _netcoreService;
         private readonly INumberSequence _numberSequence;
 
-
         public ShipmentController(ApplicationDbContext context, INetcoreService netcoreService,
                         INumberSequence numberSequence)
         {

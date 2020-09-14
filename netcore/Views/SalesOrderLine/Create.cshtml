@@ -137,77 +137,39 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="IsGift" class="control-label"></label>
-                    <input asp-for="IsGift" id="isgift" class="form-control" />
+                    <input type="number" asp-for="IsGift" id="isgift" class="number" min="0" max="1"/>
                     <span asp-validation-for="IsGift" class="text-danger"></span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@section Styles{
 
+@section Styles{
     <!-- iCheck -->
     <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
-
 }
 
 @section Scripts {
-    <!-- iCheck -->
-    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' /* optional */
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <!-- iCheck -->
+        <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
+    }
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
         });
-    });
-</script>
-<script type="text/javascript">
-    var productId = $("#productList").val();
-    var salesorderId = $("#salesorderId").val();
-    var qty = $("#qty").val();
-    var isgift = $("#isgift").val();
+    </script>
 
-    $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty, isgift: isgift }, function (data) {
-        data['Price'] = data['Price'].toString().replace('.', ',');
-        $("#price").val(data.Price);
-        data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace('.', ',');
-        $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
-        data['SpecialTaxAmount'] = data['SpecialTaxAmount'].toString().replace('.', ',');
-        $("#specialtaxamount").val(data.SpecialTaxAmount);
-        data['ProductVAT'] = data['ProductVAT'].toString().replace('.', ',');
-        $("#productVAT").val(data.ProductVAT);
-        data['Qty'] = data['Qty'].toString().replace('.', ',');
-        $("#qty").val(data.Qty);
-        data['IsGift'] = data['IsGift'].toString().replace('.', ',');
-        $("#isgift").val(data.IsGift);
-        data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
-        $("#productvatamount").val(data.ProductVATAmount);
-        data['Discount'] = data['Discount'].toString().replace('.', ',');
-        $("#discount").val(data.Discount);
-        data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
-        $("#discountamount").val(data.DiscountAmount);
-        data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
-        $("#totalamount").val(data.TotalAmount);
-        data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
-        $("#totalbeforediscount").val(data.TotalBeforeDiscount);
-        data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
-        $("#totalafterdiscount").val(data.TotalAfterDiscount);
-        data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace('.', ',');
-        $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
-        data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
-        $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
-
-    });
-
-    $("#productList").change(function () {
+    <script type="text/javascript">
         var productId = $("#productList").val();
         var salesorderId = $("#salesorderId").val();
         var qty = $("#qty").val();
         var isgift = $("#isgift").val();
-
         $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty, isgift: isgift }, function (data) {
             data['Price'] = data['Price'].toString().replace('.', ',');
             $("#price").val(data.Price);
@@ -219,8 +181,6 @@
             $("#productVAT").val(data.ProductVAT);
             data['Qty'] = data['Qty'].toString().replace('.', ',');
             $("#qty").val(data.Qty);
-            data['IsGift'] = data['IsGift'].toString().replace('.', ',');
-            $("#isgift").val(data.IsGift);
             data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
             $("#productvatamount").val(data.ProductVATAmount);
             data['Discount'] = data['Discount'].toString().replace('.', ',');
@@ -228,7 +188,7 @@
             data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
             $("#discountamount").val(data.DiscountAmount);
             data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
-            $("#totalamount").val(data.TotalAmount * !isgift);
+            $("#totalamount").val(data.TotalAmount);
             data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
             $("#totalbeforediscount").val(data.TotalBeforeDiscount);
             data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
@@ -237,14 +197,84 @@
             $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
             data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
             $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
-        });
-    });
 
-    $("#qty").change(function () {
+        });
+
+        $("#productList").change(function () {
+            var productId = $("#productList").val();
+            var salesorderId = $("#salesorderId").val();
+            var qty = $("#qty").val();
+            var isgift = $("#isgift").val();
+            $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty, isgift: isgift }, function (data) {
+                data['Price'] = data['Price'].toString().replace('.', ',');
+                $("#price").val(data.Price);
+                data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace('.', ',');
+                $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
+                data['SpecialTaxAmount'] = data['SpecialTaxAmount'].toString().replace('.', ',');
+                $("#specialtaxamount").val(data.SpecialTaxAmount);
+                data['ProductVAT'] = data['ProductVAT'].toString().replace('.', ',');
+                $("#productVAT").val(data.ProductVAT);
+                data['Qty'] = data['Qty'].toString().replace('.', ',');
+                $("#qty").val(data.Qty);
+                data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
+                $("#productvatamount").val(data.ProductVATAmount);
+                data['Discount'] = data['Discount'].toString().replace('.', ',');
+                $("#discount").val(data.Discount);
+                data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
+                $("#discountamount").val(data.DiscountAmount);
+                data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
+                $("#totalamount").val(data.TotalAmount);
+                data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
+                $("#totalbeforediscount").val(data.TotalBeforeDiscount);
+                data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
+                $("#totalafterdiscount").val(data.TotalAfterDiscount);
+                data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace('.', ',');
+                $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
+                data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
+                $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
+            });
+        });
+
+        $("#qty").change(function () {
+            var productId = $("#productList").val();
+            var salesorderId = $("#salesorderId").val();
+            var qty = $("#qty").val();
+            var isgift = $("#isgift").val();
+            $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty, isgift: isgift }, function (data) {
+                data['Price'] = data['Price'].toString().replace('.', ',');
+                $("#price").val(data.Price);
+                data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace('.', ',');
+                $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
+                data['SpecialTaxAmount'] = data['SpecialTaxAmount'].toString().replace('.', ',');
+                $("#specialtaxamount").val(data.SpecialTaxAmount);
+                data['ProductVAT'] = data['ProductVAT'].toString().replace('.', ',');
+                $("#productVAT").val(data.ProductVAT);
+                data['Qty'] = data['Qty'].toString().replace('.', ',');
+                $("#qty").val(data.Qty);
+                data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
+                $("#productvatamount").val(data.ProductVATAmount);
+                data['Discount'] = data['Discount'].toString().replace('.', ',');
+                $("#discount").val(data.Discount);
+                data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
+                $("#discountamount").val(data.DiscountAmount);
+                data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
+                $("#totalamount").val(data.TotalAmount);
+                data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
+                $("#totalbeforediscount").val(data.TotalBeforeDiscount);
+                data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
+                $("#totalafterdiscount").val(data.TotalAfterDiscount);
+                data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace('.', ',');
+                $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
+                data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
+                $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
+            });
+        });
+        $("#isgift").change(function () {
         var productId = $("#productList").val();
         var salesorderId = $("#salesorderId").val();
         var qty = $("#qty").val();
         var isgift = $("#isgift").val();
+
         $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty, isgift: isgift }, function (data) {
             data['Price'] = data['Price'].toString().replace('.', ',');
             $("#price").val(data.Price);
@@ -256,8 +286,6 @@
             $("#productVAT").val(data.ProductVAT);
             data['Qty'] = data['Qty'].toString().replace('.', ',');
             $("#qty").val(data.Qty);
-            data['IsGift'] = data['IsGift'].toString().replace('.', ',');
-            $("#isgift").val(data.IsGift);
             data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
             $("#productvatamount").val(data.ProductVATAmount);
             data['Discount'] = data['Discount'].toString().replace('.', ',');
@@ -275,42 +303,8 @@
             data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
             $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
         });
+            
     });
-    $("#isgift").change(function () {
-        var productId = $("#productList").val();
-        var salesorderId = $("#salesorderId").val();
-        var qty = $("#qty").val();
-        var isgift = $("#isgift").val();
-        $.getJSON("/SalesOrderLine/GetOrderLineNumbers", { productId: productId, salesorderId: salesorderId, qty: qty, isgift: isgift }, function (data) {
-            data['Price'] = data['Price'].toString().replace('.', ',');
-            $("#price").val(data.Price);
-            data['SpecialTaxDiscount'] = data['SpecialTaxDiscount'].toString().replace('.', ',');
-            $("#specialtaxdiscount").val(data.SpecialTaxDiscount);
-            data['SpecialTaxAmount'] = data['SpecialTaxAmount'].toString().replace('.', ',');
-            $("#specialtaxamount").val(data.SpecialTaxAmount);
-            data['ProductVAT'] = data['ProductVAT'].toString().replace('.', ',');
-            $("#productVAT").val(data.ProductVAT);
-            data['Qty'] = data['Qty'].toString().replace('.', ',');
-            $("#qty").val(data.Qty);
-            data['IsGift'] = data['IsGift'].toString().replace('.', ',');
-            $("#isgift").val(data.IsGift);
-            data['ProductVATAmount'] = data['ProductVATAmount'].toString().replace('.', ',');
-            $("#productvatamount").val(data.ProductVATAmount);
-            data['Discount'] = data['Discount'].toString().replace('.', ',');
-            $("#discount").val(data.Discount);
-            data['DiscountAmount'] = data['DiscountAmount'].toString().replace('.', ',');
-            $("#discountamount").val(data.DiscountAmount);
-            data['TotalAmount'] = data['TotalAmount'].toString().replace('.', ',');
-            $("#totalamount").val(data.TotalAmount);
-            data['TotalBeforeDiscount'] = data['TotalBeforeDiscount'].toString().replace('.', ',');
-            $("#totalbeforediscount").val(data.TotalBeforeDiscount);
-            data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace('.', ',');
-            $("#totalafterdiscount").val(data.TotalAfterDiscount);
-            data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace('.', ',');
-            $("#totalspecialtaxamount").val(data.TotalSpecialTaxAmount);
-            data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace('.', ',');
-            $("#totalwithspecialtax").val(data.TotalWithSpecialTax);
-        });
-    });
-</script>
+
+    </script>
 }

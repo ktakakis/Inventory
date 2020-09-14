@@ -4,148 +4,189 @@
     Layout = "~/Views/Shared/_AdminlteNetcoreDetails.cshtml";
     ViewData["EntityIcon"] = "fa fa-tags";
 }
+<div class="row">
+    <div class="col-md-9">
+        <!-- Default box -->
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="productId" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <label asp-for="productCode" class="control-label"></label>
+                                    <input disabled asp-for="productCode" class="form-control" />
+                                    <span asp-validation-for="productCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group has-success">
+                                    <label asp-for="productName" class="control-label"></label>
+                                    <input disabled asp-for="productName" class="form-control" />
+                                    <span asp-validation-for="productName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="description" class="control-label"></label>
+                                    <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
+                                    <span asp-validation-for="description" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="barcode" class="control-label"></label>
+                                    <input disabled asp-for="barcode" class="form-control" />
+                                    <span asp-validation-for="barcode" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="serialNumber" class="control-label"></label>
+                                    <input disabled asp-for="serialNumber" class="form-control" />
+                                    <span asp-validation-for="serialNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="productType" class="control-label"></label>
+                                    <select disabled asp-for="productType" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.ProductType>()"></select>
+                                    <span asp-validation-for="productType" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="uom" class="control-label"></label>
+                                    <select disabled asp-for="uom" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.UOM>()"></select>
+                                    <span asp-validation-for="uom" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="UnitPrice" class="control-label"></label>
+                                    <input disabled asp-for="UnitPrice" class="form-control" />
+                                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="UnitCost" class="control-label"></label>
+                                    <input disabled asp-for="UnitCost" class="form-control" />
+                                    <span asp-validation-for="UnitCost" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="SpecialTaxValue" class="control-label"></label>
+                                    <input disabled asp-for="SpecialTaxValue" class="form-control" />
+                                    <span asp-validation-for="SpecialTaxValue" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ProductVAT" class="control-label"></label>
+                                    <input disabled asp-for="ProductVAT" class="form-control" />
+                                    <span asp-validation-for="ProductVAT" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ProductWeight" class="control-label"></label>
+                                    <input disabled asp-for="ProductWeight" class="form-control" />
+                                    <span asp-validation-for="ProductWeight" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ProductVolume" class="control-label"></label>
+                                    <input disabled asp-for="ProductVolume" class="form-control" />
+                                    <span asp-validation-for="ProductVolume" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="ReorderLevel" class="control-label"></label>
+                                    <input disabled asp-for="ReorderLevel" class="form-control" />
+                                    <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="Discontinued" class="control-label"></label>
+                                    <input disabled type="checkbox" asp-for="Discontinued" class="checkbox" />
+                                    <span asp-validation-for="Discontinued" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="IsMaterial" class="control-label"></label>
+                                    <input disabled type="checkbox" asp-for="IsMaterial" class="checkbox" />
+                                    <span asp-validation-for="IsMaterial" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="form-group">
+                    <a asp-action="Edit" asp-route-id="@Model.productId" class="btn btn-primary">Επεξεργασία</a>
+                    <a asp-action="Index" class="btn btn-default">Επιστροφή στην λίστα</a>
+                </div>
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+    </div>
+    <div class="col-md-3">
+        @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
+    </div>
+    <!--Discount Child-->
     <div class="row">
         <div class="col-md-9">
             <!-- Default box -->
             <div class="box box-primary">
+
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-md-12">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input type="hidden" asp-for="productId" />
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group has-success">
-                                        <label asp-for="productCode" class="control-label"></label>
-                                        <input disabled asp-for="productCode" class="form-control" />
-                                        <span asp-validation-for="productCode" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group has-success">
-                                        <label asp-for="productName" class="control-label"></label>
-                                        <input disabled asp-for="productName" class="form-control" />
-                                        <span asp-validation-for="productName" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="description" class="control-label"></label>
-                                <textarea disabled asp-for="description" class="form-control" rows="3"></textarea>
-                                <span asp-validation-for="description" class="text-danger"></span>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="barcode" class="control-label"></label>
-                                        <input disabled asp-for="barcode" class="form-control" />
-                                        <span asp-validation-for="barcode" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="serialNumber" class="control-label"></label>
-                                        <input disabled asp-for="serialNumber" class="form-control" />
-                                        <span asp-validation-for="serialNumber" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="productType" class="control-label"></label>
-                                        <select disabled asp-for="productType" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.ProductType>()"></select>
-                                        <span asp-validation-for="productType" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="uom" class="control-label"></label>
-                                        <select disabled asp-for="uom" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.UOM>()"></select>
-                                        <span asp-validation-for="uom" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="UnitPrice" class="control-label"></label>
-                                                <input disabled asp-for="UnitPrice" class="form-control" />
-                                                <span asp-validation-for="UnitPrice" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="ProductVAT" class="control-label"></label>
-                                                <input disabled asp-for="ProductVAT" class="form-control" />
-                                                <span asp-validation-for="ProductVAT" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="UnitCost" class="control-label"></label>
-                                                <input disabled asp-for="UnitCost" class="form-control" />
-                                                <span asp-validation-for="UnitCost" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label asp-for="SpecialTaxValue" class="control-label"></label>
-                                                <input disabled asp-for="SpecialTaxValue" class="form-control" />
-                                                <span asp-validation-for="SpecialTaxValue" class="text-danger"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="ProductWeight" class="control-label"></label>
-                                        <input disabled asp-for="ProductWeight" class="form-control" />
-                                        <span asp-validation-for="ProductWeight" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="ProductVolume" class="control-label"></label>
-                                        <input disabled asp-for="ProductVolume" class="form-control" />
-                                        <span asp-validation-for="ProductVolume" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="ReorderLevel" class="control-label"></label>
-                                        <input disabled asp-for="ReorderLevel" class="form-control" />
-                                        <span asp-validation-for="ReorderLevel" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label asp-for="Discontinued" class="control-label"></label>
-                                        <input disabled type="checkbox" asp-for="Discontinued" class="checkbox" />
-                                        <span asp-validation-for="Discontinued" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div class="col-lg-12">
+                            <table id="grid" name="grid" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-lg-5">1η ύλη</th>
+                                        <th class="col-lg-5">Ποσοστό</th>
+                                        <th class="col-lg-2"></th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="form-group">
-                        <a asp-action="Edit" asp-route-id="@Model.productId" class="btn btn-primary">Επεξεργασία</a>
-                        <a asp-action="Index" class="btn btn-default">Επιστροφή στην λίστα</a>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("Create","ProductLine", new { masterid = Model.productId})')"><i class="fa fa-plus"></i> Προσθήκη Υλικού</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.box-footer-->
@@ -153,49 +194,9 @@
             <!-- /.box -->
         </div>
         <div class="col-md-3">
-            @await Html.PartialAsync("~/Views/Shared/_AdminlteNetcoreTimeline.cshtml")
-        </div>
-        <!--Discount Child-->
-        <div class="row">
-            <div class="col-md-9">
-                <!-- Default box -->
-                <div class="box box-primary">
-
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <table id="grid" name="grid" class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-lg-5">1η ύλη</th>
-                                            <th class="col-lg-5">Ποσοστό</th>
-                                            <th class="col-lg-2"></th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <a class="btn btn-success" style="margin-bottom:10px" onclick="ShowPopup('@Url.Action("Create","ProductLine", new { masterid = Model.productId})')"><i class="fa fa-plus"></i> Προσθήκη Προϊόντος</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.box-footer-->
-                </div>
-                <!-- /.box -->
-            </div>
-            <div class="col-md-3">
-            </div>
         </div>
     </div>
-
-
+</div>
 <!--modal placeholder-->
 <div class="modal modal-primary fade" id="modalDefault">
     <div class="modal-dialog">
@@ -203,8 +204,24 @@
         </div>
     </div>
 </div>
-@section Scripts{
 
+@section Styles{
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
+}
+@section Scripts{
+    <!-- iCheck -->
+    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
     <!--ProductLine-->
     <script>
         var popup, dataTable;
@@ -308,11 +325,7 @@
                     }
                 });
             });
-
-
         }
-
-
     </script>
 }
 

@@ -1,0 +1,63 @@
+﻿@model netcore.Models.Invent.ProductionOrder
+
+@{
+    ViewData["Title"] = "Διαγραφή";
+    Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
+    ViewData["EntityIcon"] = "fa fa-file-code-o";
+    ViewData["DeleteInfo"] = "[Completed] Παραγγελία Παραγωγής(ΠΠΡ) δεν μπορεί να διαγραφεί. Επαναφορά της κατάστασης σε [Open] με διαγραφή της σχετικής Παραγωγής Προϊόντων";
+    ViewData["IsCanDeleted"] = false;
+    if (Model.ProductionOrderStatus != netcore.Models.Invent.ProductionOrderStatus.Completed)
+    {
+        ViewData["IsCanDeleted"] = true;
+    }
+
+}
+
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionOrderNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductionOrderNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionOrderDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductionOrderDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RequiredDeliveryDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RequiredDeliveryDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductionOrderStatus)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProductionOrderStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.createdAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.createdAt)
+        </dd>
+    </dl>
+</div>

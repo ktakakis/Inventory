@@ -1,0 +1,113 @@
+﻿@model IEnumerable<netcore.Models.Invent.RoastingLog>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-truck";
+    ViewData["ListTitle"] = "Λίστα Παραλαβών";
+    ViewData["IndexInfo"] = "Ο πιο συνηθισμένος τρόπος για να περιγράψουμε τα επίπεδα του ψημένου καφέ, είναι από το χρώμα των κόκκων, που κυμαίνεται από ανοιχτό έως σκοτεινό (ή πολύ σκοτεινό).";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoasterName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoastingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinishWeight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LossPercent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTemp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmbientTemp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AfterFillingTemp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstCrackTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SecondCrackTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoastingLevel)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Details" asp-route-id="@item.RoastingLogId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.RoastingLogId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoasterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoastingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinishWeight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LossPercent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTemp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmbientTemp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AfterFillingTemp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstCrackTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecondCrackTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.productId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoastingLevel.RoastingLevelId)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

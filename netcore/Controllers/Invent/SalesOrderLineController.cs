@@ -28,7 +28,9 @@ namespace netcore.Controllers.Invent
         // GET: SalesOrderLine
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.SalesOrderLine.Include(s => s.Product).Include(s => s.SalesOrder);
+            var applicationDbContext = _context.SalesOrderLine
+                .Include(s => s.Product)
+                .Include(s => s.SalesOrder);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -81,7 +83,6 @@ namespace netcore.Controllers.Invent
                     SalesOrder = selected,
                     SalesOrderId = masterid,
                     Qty = 1,
-                    IsGift = 1
                 };
                 catalogId = _context.Catalog.Where(c => c.CustomerId == selected.customerId).FirstOrDefault().CatalogId;
                 ViewData["productId"] = new SelectList(catalogProducts.Where(p => p.CatalogId == catalogId), "ProductId", "productCode");
@@ -233,12 +234,13 @@ namespace netcore.Controllers.Invent
             return _context.SalesOrderLine.Any(e => e.SalesOrderLineId == id);
         }
         [HttpGet]
-        public JsonResult GetOrderLineNumbers(string productId, string salesorderId, decimal qty, decimal isgift)
+        public JsonResult GetOrderLineNumbers(string productId, string salesorderId, decimal qty, int isgift)
         {
             var sa = new JsonSerializerSettings();
             var so = _context.SalesOrder.Where(s => s.salesOrderId == salesorderId).FirstOrDefault();
             var custId = so.customerId;
-            
+            var mult = 1 - isgift;
+
             var catalogId = _context.Catalog.Where(c => c.CustomerId == custId).FirstOrDefault().CatalogId;
             var productPrice = _context.Product.Where(p => p.productId == productId).FirstOrDefault().UnitPrice;
             var discount = _context.CatalogLine.Where(d => d.CatalogId == catalogId && d.ProductId == productId).FirstOrDefault().Discount.GetValueOrDefault(0);
@@ -253,7 +255,7 @@ namespace netcore.Controllers.Invent
             var result = new
             {
                 Qty = qty,
-                IsGift=isgift,
+                IsGift = isgift,
                 Price = productPrice,
                 BeforeDiscountAmount = productPrice * qty,
                 Discount = discount,
@@ -267,17 +269,16 @@ namespace netcore.Controllers.Invent
                 ProductCost = productCost,
                 TotalAfterDiscount = qty * productPrice * (1 - discount),
                 TotalSpecialTaxAmount = qty * specialtaxamount* (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))),
-                TotalAmount = ((qty * productPrice * (1 - discount)) + (qty * specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))))) * (1 + productVAT) * isgift,
+                TotalAmount = ((qty * productPrice * (1 - discount)) + (qty * specialtaxamount * (1 - (specialtaxDiscount * Convert.ToInt32(!invoicing))))) * (1 + productVAT)*mult,
                 TotalBeforeDiscount = qty * productPrice,
                 TotalWithSpecialTax = totalwithspecialtax
             };
+            
             return Json(result, sa);
         }
 
     }
 }
-
-
 namespace netcore.MVC
 {
     public static partial class Pages

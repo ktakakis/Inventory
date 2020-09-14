@@ -105,12 +105,12 @@ namespace netcore.Controllers.Invent
            Receiving rcv = new Receiving();
             ViewData["StatusMessage"] = TempData["StatusMessage"];
             ViewData["branchId"] = new SelectList(_context.Branch, "branchId", "branchName");
-            PurchaseOrder po = _context.PurchaseOrder
-            .Include(x => x.branch)
-            .Where(x => x.purchaseOrderId.Equals(id)).FirstOrDefault();
-            List<Warehouse> warehouseList = _context.Warehouse.Where(x => x.branchId.Equals(po.branchId)).ToList();
           if (id != null)
             {
+                PurchaseOrder po = _context.PurchaseOrder
+                .Include(x => x.branch)
+                .Where(x => x.purchaseOrderId.Equals(id)).FirstOrDefault();
+                List<Warehouse> warehouseList = _context.Warehouse.Where(x => x.branchId.Equals(po.branchId)).ToList();
                 rcv.purchaseOrderId = id;
 
                 warehouseList.Insert(0, new Warehouse { warehouseId = "0", warehouseName = "Select" });

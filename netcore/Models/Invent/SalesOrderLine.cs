@@ -13,6 +13,7 @@ namespace netcore.Models.Invent
             this.createdAt = DateTime.UtcNow;
             this.DiscountAmount = 0;
             this.TotalAmount = 0;
+            this.IsGift = 0;
         }
 
         [StringLength(38)]
@@ -69,7 +70,7 @@ namespace netcore.Models.Invent
         [Display(Name = "Ειδικός Φόρος")]
         public decimal SpecialTaxAmount { get; set; }
 
-        [Display(Name = "Είναι Δώρο")]
+        [Display(Name = "Δώρο")]
         public int IsGift { get; set; }
 
         [Display(Name = "Σύνολο Ειδικού Φόρου")]

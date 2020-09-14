@@ -91,6 +91,7 @@ namespace netcore.Controllers.Invent
                         Shipment.shipmentId,
                         ShipmentName = (Shipment.shipmentNumber + " ( " + Customer.customerName + ")")
                     }).ToList();
+
             shipment.Insert(0,
              new
              {

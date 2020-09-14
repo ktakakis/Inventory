@@ -104,5 +104,17 @@ namespace netcore.Data
 
         public DbSet<netcore.Models.Invent.ProductLine> ProductLine { get; set; }
 
+        public DbSet<netcore.Models.Invent.ProductionOrder> ProductionOrder { get; set; }
+
+        public DbSet<netcore.Models.Invent.ProductionOrderLine> ProductionOrderLine { get; set; } 
+
+        public DbSet<netcore.Models.Invent.Production> Production { get; set; }
+
+        public DbSet<netcore.Models.Invent.ProductionLine> ProductionLine { get; set; } 
+
+        public DbSet<netcore.Models.Invent.RoastingLevel> RoastingLevel { get; set; }
+
+        public DbSet<netcore.Models.Invent.RoastingLog> RoastingLog { get; set; }  
+
     }
 }

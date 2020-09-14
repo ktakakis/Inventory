@@ -57,7 +57,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label asp-for="IsGift" class="control-label"></label>
-                    <input asp-for="IsGift" id="isgift" class="form-control" />
+                    <input type="number" asp-for="IsGift" id="isgift" class="number" min="0" max="1" />
                     <span asp-validation-for="IsGift" class="text-danger"></span>
                 </div>
             </div>
@@ -74,8 +74,25 @@
         </div>
     </div>
 </div>
+@section Styles{
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
+}
+
 @section Scripts {
+    <!-- iCheck -->
+    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+
 }
 
 

@@ -1,0 +1,42 @@
+﻿@model netcore.Models.Invent.RoastingLevel
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
+    ViewData["EntityIcon"] = "fa fa-truck";
+    ViewData["CreateInfo"] = "Ο πιο συνηθισμένος τρόπος για να περιγράψουμε τα επίπεδα του ψημένου καφέ, είναι από το χρώμα των κόκκων, που κυμαίνεται από ανοιχτό έως σκοτεινό (ή πολύ σκοτεινό).";
+}
+
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="RoastingLevelId" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group has-success">
+                    <label asp-for="RoastingLevelName" class="control-label"></label>
+                    <input asp-for="RoastingLevelName" class="form-control" />
+                    <span asp-validation-for="RoastingLevelName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="File" class="control-label"></label>
+                <input type="file" id="files" asp-for="File" accept=".jpg, jpg Files" />
+                <span asp-validation-for="File" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

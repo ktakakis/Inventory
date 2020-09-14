@@ -1,0 +1,80 @@
+﻿@model IEnumerable<netcore.Models.Invent.ProductionOrder>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+    ViewData["EntityIcon"] = "fa fa-file-code-o";
+    ViewData["ListTitle"] = "Λίστα Παραγγελιών Παραγωγής";
+    ViewData["IndexInfo"] = "Η παραγγελία Παραγωγής (ΠΠΡ) είναι ένα έγγραφο που αποστέλλεται στο εργαστήριο για την παραγωγή των Προϊόντων. Υπάρχουν τρεις καταστάσεις ΠΠΡ: 1. Πρόχειρο (Ανεπιβεβαίωτη ΠΠΡ, δεν είναι έτοιμη για Παραγωγή), 2. Ανοιχτό (Επιβεβαιωμένη ΠΠΡ, έτοιμη για Παραγωγή) και 3. Ολοκληρωμένο (Κλειστή ΠΠΡ, έχουν ήδη παραχθεί τα προϊόντα).";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionOrderNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionOrderDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RequiredDeliveryDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionOrderStatus)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <div class="tools">
+                    <a asp-action="Edit" asp-route-id="@item.ProductionOrderId" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                    <a asp-action="Details" asp-route-id="@item.ProductionOrderId" class="btn btn-primary btn-xs"><i class="fa fa-list"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.ProductionOrderId" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                </div>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionOrderNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionOrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequiredDeliveryDate)
+            </td>
+            <td>
+                @if (item.ProductionOrderStatus == netcore.Models.Invent.ProductionOrderStatus.Completed)
+                {
+                    <span class="label label-success">
+                        @Html.DisplayFor(modelItem => item.ProductionOrderStatus)
+                    </span>
+
+                }
+                @if (item.ProductionOrderStatus == netcore.Models.Invent.ProductionOrderStatus.Open)
+                {
+                    <span class="label label-primary">
+                        @Html.DisplayFor(modelItem => item.ProductionOrderStatus)
+                    </span>
+
+                }
+                @if (item.ProductionOrderStatus == netcore.Models.Invent.ProductionOrderStatus.Draft)
+                {
+                    <span class="label label-warning">
+                        @Html.DisplayFor(modelItem => item.ProductionOrderStatus)
+                    </span>
+
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

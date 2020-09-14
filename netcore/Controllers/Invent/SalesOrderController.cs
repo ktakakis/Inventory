@@ -6,15 +6,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
-
 using netcore.Data;
 using netcore.Models.Invent;
 using netcore.Services;
 
 namespace netcore.Controllers.Invent
 {
-
-
     [Authorize(Roles = "SalesOrder")]
     public class SalesOrderController : Controller
     {
@@ -140,7 +137,6 @@ namespace netcore.Controllers.Invent
             return View(so);
         }
 
-
         // POST: SalesOrder/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -148,7 +144,6 @@ namespace netcore.Controllers.Invent
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("salesOrderId,HasChild,branchId,createdAt,customerId,customerLineId,deliveryDate,description,salesOrderNumber,salesOrderStatus,salesShipmentNumber,soDate,top,totalDiscountAmount,totalOrderAmount,Invoicing,TotalProductVAT,TotalWithSpecialTax,EmployeeId,TotalBeforeDiscount,SalesOrderName,Commission")] SalesOrder salesOrder)
         {
-
             if (ModelState.IsValid)
             {
                 string customerName = _context.Customer.Where(x => x.customerId == salesOrder.customerId).FirstOrDefault().customerName;
@@ -180,7 +175,6 @@ namespace netcore.Controllers.Invent
             return Json(customerLinelist);
 
         }
-
 
         // GET: SalesOrder/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -246,11 +240,6 @@ namespace netcore.Controllers.Invent
                 return RedirectToAction(nameof(Edit), new { id = salesOrder.salesOrderId});
             }
 
-            if (salesOrder.salesOrderStatus== SalesOrderStatus.Completed)
-            {
-                TempData["StatusMessage"] = "Σφάλμα. Δεν είναι δυνατή η επεξεργασία της κατάστασης μιας [Ολοκληρωμένης] Παραγγελίας.";
-                return RedirectToAction(nameof(Edit), new { id = salesOrder.salesOrderId});
-            }
            if (ModelState.IsValid)
             {
 

@@ -5,19 +5,19 @@
     ViewData["Title"] = "KAFFA HELLAS E.E.";
     Layout = "_AdminlteNetcore";
     var username = User.Identity.Name;
-    
+
     int so = Context.SalesOrder.Where(x=>x.salesOrderStatus==SalesOrderStatus.Open).Count();
     if (!(User.IsInRole("ApplicationUser") || User.IsInRole("Secretary")))    {
         so = Context.SalesOrder.Where(s=>s.Employee.UserName==username && s.salesOrderStatus==SalesOrderStatus.Open).Count();
     }
-    var query = 
+    var query =
             from Shipment in Context.Shipment
             join Invoice in Context.Invoice on Shipment.shipmentId equals Invoice.shipmentId into Invoice_join
             from Invoice in Invoice_join.DefaultIfEmpty()
             where
               Invoice.shipmentId == null
             select new {
-              Shipment.shipmentId 
+                Shipment.shipmentId
             };
 
     int po = Context.PurchaseOrder.Where(x=>x.purchaseOrderStatus==PurchaseOrderStatus.Open).Count();
@@ -36,7 +36,9 @@
         stock.QtyReceiving = Context.ReceivingLine.Where(x => x.productId.Equals(item.productId)).Sum(x => x.qtyReceive);
         stock.QtySO = Context.SalesOrderLine.Where(x => x.ProductId.Equals(item.productId)).Sum(x => x.Qty);
         stock.QtyShipment = Context.ShipmentLine.Where(x => x.productId.Equals(item.productId)).Sum(x => x.qtyShipment);
-        stock.QtyOnhand = stock.QtyReceiving - stock.QtyShipment;
+        stock.QtyProduction = Context.ProductionOrderLine.Include(x=>x.ProductionOrder).Where(x => x.ProductId.Equals(item.productId) && x.ProductionOrder.ProductionOrderStatus==ProductionOrderStatus.Completed).Sum(x => x.Qty);
+        stock.QtyRoasting = Context.ProductionLine.Where(x => x.productId.Equals(item.productId)).Sum(x => x.qty);
+        stock.QtyOnhand = stock.QtyReceiving + stock.QtyProduction - stock.QtyShipment-stock.QtyRoasting;
 
         stocks.Add(stock);
     }
@@ -54,7 +56,6 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-
     <!-- Main content -->
     <section class="content">
 
@@ -186,6 +187,8 @@
                                         <th><i class="fa fa-file-text"></i> Αγορές</th>
                                         <th><i class="fa fa-truck"></i> Παραλαβές</th>
                                         <th><i class="fa fa-cart-plus"></i> Πωλήσεις</th>
+                                        <th><i class="fa fa-plane"></i> Παραγωγή</th>
+                                        <th><i class="fa fa-plane"></i> Ψήσιμο</th>
                                         <th><i class="fa fa-plane"></i> Αποστολές</th>
                                         <th class="text-aqua"><i class="fa fa-check-circle"></i> στο χέρι</th>
                                     </tr>
@@ -193,16 +196,18 @@
                                 <tbody>
                                     @foreach (var item in stocks)
                                     {
-                                        <tr>
+                                    <tr>
 
-                                            <td>@item.Product</td>
-                                            <td>@item.QtyPO</td>
-                                            <td>@item.QtyReceiving</td>
-                                            <td>@item.QtySO</td>
-                                            <td>@item.QtyShipment</td>
-                                            <td>@item.QtyOnhand</td>
+                                        <td>@item.Product</td>
+                                        <td>@item.QtyPO</td>
+                                        <td>@item.QtyReceiving</td>
+                                        <td>@item.QtySO</td>
+                                        <td>@item.QtyProduction</td>
+                                        <td>@item.QtyRoasting</td>
+                                        <td>@item.QtyShipment</td>
+                                        <td>@item.QtyOnhand</td>
 
-                                        </tr>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>

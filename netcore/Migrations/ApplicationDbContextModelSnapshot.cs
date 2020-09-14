@@ -204,6 +204,12 @@ namespace netcore.Migrations
 
                     b.Property<bool>("ProductRole");
 
+                    b.Property<bool>("ProductionOrderLineRole");
+
+                    b.Property<bool>("ProductionOrderRole");
+
+                    b.Property<bool>("ProductionRole");
+
                     b.Property<bool>("PurchaseOrderLineRole");
 
                     b.Property<bool>("PurchaseOrderRole");
@@ -211,6 +217,10 @@ namespace netcore.Migrations
                     b.Property<bool>("ReceivingLineRole");
 
                     b.Property<bool>("ReceivingRole");
+
+                    b.Property<bool>("RoastingLevelRole");
+
+                    b.Property<bool>("RoastingLogRole");
 
                     b.Property<bool>("SalesOrderLineRole");
 
@@ -1044,6 +1054,8 @@ namespace netcore.Migrations
 
                     b.Property<string>("HasChild");
 
+                    b.Property<bool>("IsMaterial");
+
                     b.Property<decimal>("ProductVAT");
 
                     b.Property<decimal?>("ProductVolume");
@@ -1084,6 +1096,146 @@ namespace netcore.Migrations
                     b.HasKey("productId");
 
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.Production", b =>
+                {
+                    b.Property<string>("ProductionId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("HasChild");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("ProductionDate");
+
+                    b.Property<string>("ProductionNumber")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("ProductionOrderId")
+                        .IsRequired()
+                        .HasMaxLength(38);
+
+                    b.Property<int>("ProductionStatus");
+
+                    b.Property<string>("branchId")
+                        .HasMaxLength(38);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.Property<string>("warehouseId")
+                        .IsRequired()
+                        .HasMaxLength(38);
+
+                    b.HasKey("ProductionId");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.HasIndex("branchId");
+
+                    b.HasIndex("warehouseId");
+
+                    b.ToTable("Production");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.ProductionLine", b =>
+                {
+                    b.Property<string>("ProductionLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("ProductionId")
+                        .HasMaxLength(38);
+
+                    b.Property<string>("branchId")
+                        .HasMaxLength(38);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.Property<string>("productId")
+                        .HasMaxLength(38);
+
+                    b.Property<float>("qty");
+
+                    b.Property<string>("warehouseId")
+                        .HasMaxLength(38);
+
+                    b.HasKey("ProductionLineId");
+
+                    b.HasIndex("ProductionId");
+
+                    b.HasIndex("branchId");
+
+                    b.HasIndex("productId");
+
+                    b.HasIndex("warehouseId");
+
+                    b.ToTable("ProductionLine");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.ProductionOrder", b =>
+                {
+                    b.Property<string>("ProductionOrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("HasChild");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("ProductionOrderDate");
+
+                    b.Property<string>("ProductionOrderNumber");
+
+                    b.Property<int>("ProductionOrderStatus");
+
+                    b.Property<DateTime>("RequiredDeliveryDate");
+
+                    b.Property<string>("branchId")
+                        .IsRequired()
+                        .HasMaxLength(38);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("ProductionOrderId");
+
+                    b.HasIndex("branchId");
+
+                    b.ToTable("ProductionOrder");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.ProductionOrderLine", b =>
+                {
+                    b.Property<string>("ProductionOrderLineId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(38);
+
+                    b.Property<string>("ProductionOrderId")
+                        .HasMaxLength(38);
+
+                    b.Property<float>("Qty");
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("ProductionOrderLineId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductionOrderId");
+
+                    b.ToTable("ProductionOrderLine");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.ProductLine", b =>
@@ -1296,6 +1448,79 @@ namespace netcore.Migrations
                     b.HasIndex("warehouseId");
 
                     b.ToTable("ReceivingLine");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.RoastingLevel", b =>
+                {
+                    b.Property<string>("RoastingLevelId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<string>("Description");
+
+                    b.Property<byte[]>("File");
+
+                    b.Property<string>("RoastingLevelName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("RoastingLevelId");
+
+                    b.ToTable("RoastingLevel");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.RoastingLog", b =>
+                {
+                    b.Property<string>("RoastingLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(38);
+
+                    b.Property<decimal>("AfterFillingTemp");
+
+                    b.Property<decimal>("AmbientTemp");
+
+                    b.Property<DateTime>("EndTime");
+
+                    b.Property<int>("FinishWeight");
+
+                    b.Property<DateTime>("FirstCrackTime");
+
+                    b.Property<string>("HasChild");
+
+                    b.Property<decimal>("LossPercent");
+
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(38);
+
+                    b.Property<string>("RoasterName")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("RoastingDate");
+
+                    b.Property<string>("RoastingLevelId")
+                        .IsRequired()
+                        .HasMaxLength(38);
+
+                    b.Property<DateTime?>("SecondCrackTime");
+
+                    b.Property<decimal>("StartTemp");
+
+                    b.Property<DateTime>("StartTime");
+
+                    b.Property<int>("StartWeight");
+
+                    b.Property<DateTime>("createdAt");
+
+                    b.HasKey("RoastingLogId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("RoastingLevelId");
+
+                    b.ToTable("RoastingLog");
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.SalesOrder", b =>
@@ -2212,6 +2437,61 @@ namespace netcore.Migrations
                         .HasForeignKey("PaymentTypeId");
                 });
 
+            modelBuilder.Entity("netcore.Models.Invent.Production", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.ProductionOrder", "ProductionOrder")
+                        .WithMany()
+                        .HasForeignKey("ProductionOrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("netcore.Models.Invent.Branch", "branch")
+                        .WithMany()
+                        .HasForeignKey("branchId");
+
+                    b.HasOne("netcore.Models.Invent.Warehouse", "warehouse")
+                        .WithMany()
+                        .HasForeignKey("warehouseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.ProductionLine", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Production", "Production")
+                        .WithMany("ProductionLine")
+                        .HasForeignKey("ProductionId");
+
+                    b.HasOne("netcore.Models.Invent.Branch", "branch")
+                        .WithMany()
+                        .HasForeignKey("branchId");
+
+                    b.HasOne("netcore.Models.Invent.Product", "product")
+                        .WithMany()
+                        .HasForeignKey("productId");
+
+                    b.HasOne("netcore.Models.Invent.Warehouse", "warehouse")
+                        .WithMany()
+                        .HasForeignKey("warehouseId");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.ProductionOrder", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Branch", "branch")
+                        .WithMany()
+                        .HasForeignKey("branchId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.ProductionOrderLine", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("netcore.Models.Invent.ProductionOrder", "ProductionOrder")
+                        .WithMany("ProductionOrderLine")
+                        .HasForeignKey("ProductionOrderId");
+                });
+
             modelBuilder.Entity("netcore.Models.Invent.ProductLine", b =>
                 {
                     b.HasOne("netcore.Models.Invent.Product", "Component")
@@ -2285,6 +2565,18 @@ namespace netcore.Migrations
                     b.HasOne("netcore.Models.Invent.Warehouse", "warehouse")
                         .WithMany()
                         .HasForeignKey("warehouseId");
+                });
+
+            modelBuilder.Entity("netcore.Models.Invent.RoastingLog", b =>
+                {
+                    b.HasOne("netcore.Models.Invent.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("netcore.Models.Invent.RoastingLevel", "RoastingLevel")
+                        .WithMany()
+                        .HasForeignKey("RoastingLevelId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("netcore.Models.Invent.SalesOrder", b =>

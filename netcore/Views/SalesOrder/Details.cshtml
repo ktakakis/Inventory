@@ -44,7 +44,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="customerLineId" class="control-label">Διεύθυνση</label>
-                                    <select disabled asp-for="customerLineId" id="customerLineList" class="form-control select2" asp-items="ViewBag.customerLineId" role="combobox"></select>
+                                    <input asp-for="customerLine.street1" class="form-control" disabled />
                                 </div>
                             </div>
                         </div>
@@ -84,13 +84,12 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="branchId" class="control-label">Υποκατάστημα</label>
-                                    <select disabled asp-for="branchId" class="form-control select2" asp-items="ViewBag.branchId" role="combobox"></select>
-                                </div>
+                                    <input asp-for="branch.branchName" class="form-control" disabled />                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="top" class="control-label">Τρόπος Πληρωμής</label>
-                                    <select disabled asp-for="top" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.TOP>()" role="combobox"></select>
+                                    <input asp-for="top" class="form-control" disabled />
                                 </div>
                             </div>
 
@@ -99,7 +98,7 @@
                             <div class="col-md-6">
                                 <div class="form-group has-success">
                                     <label asp-for="EmployeeId" class="control-label">Συνεργάτης</label>
-                                    <select disabled asp-for="EmployeeId" class="form-control select2" asp-items="ViewBag.employeeId"></select>
+                                    <input asp-for="Employee.DisplayName" class="form-control" disabled />
                                     <span asp-validation-for="EmployeeId" class="text-danger"></span>
                                 </div>
                             </div>
@@ -182,10 +181,9 @@
                         <table id="grid" name="grid" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="col-md-3">Προϊόν</th>
-                                    <th class="col-md-2">Ποσ</th>
+                                    <th class="col-md-5">Προϊόν</th>
+                                    <th class="col-md-3">Ποσ</th>
                                     <th class="col-md-3">Τιμή</th>
-                                    <th class="col-md-3">Δώρο</th>
                                     <th class="col-md-1"></th>
                                 </tr>
                             </thead>
@@ -245,9 +243,6 @@
                         "data": "price",
                         render: $.fn.dataTable.render.number( '.', ',', 2, '€' )
                     },
-                    { "data": "isGift",
-                        render: $.fn.dataTable.render.number('.', ',', 2, '')
-                    },
                     {
                         "data": "salesOrderLineId",
                         "render": function (data) {
@@ -295,7 +290,6 @@
                 data['TotalAfterDiscount'] = data['TotalAfterDiscount'].toString().replace(',', '.');
                 data['TotalSpecialTaxAmount'] = data['TotalSpecialTaxAmount'].toString().replace(',', '.');
                 data['TotalWithSpecialTax'] = data['TotalWithSpecialTax'].toString().replace(',', '.');
-                data['IsGift'] = data['IsGift'].toString().replace(',', '.');
                 data = JSON.stringify(data);
                 $.ajax({
                     type: 'POST',

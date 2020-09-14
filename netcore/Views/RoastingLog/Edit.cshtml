@@ -1,0 +1,95 @@
+﻿@model netcore.Models.Invent.RoastingLog
+
+@{
+    ViewData["Title"] = "Επεξεργασία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreEdit.cshtml";
+    ViewData["EntityIcon"] = "fa fa-truck";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RoastingLogId" />
+            <div class="form-group">
+                <label asp-for="RoasterName" class="control-label"></label>
+                <input asp-for="RoasterName" class="form-control" />
+                <span asp-validation-for="RoasterName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoastingLevelId" class="control-label"></label>
+                <select asp-for="RoastingLevelId" class="form-control" asp-items="ViewBag.RoastingLevelId"></select>
+                <span asp-validation-for="RoastingLevelId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoastingDate" class="control-label"></label>
+                <input asp-for="RoastingDate" class="form-control" />
+                <span asp-validation-for="RoastingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="control-label"></label>
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartWeight" class="control-label"></label>
+                <input asp-for="StartWeight" class="form-control" />
+                <span asp-validation-for="StartWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinishWeight" class="control-label"></label>
+                <input asp-for="FinishWeight" class="form-control" />
+                <span asp-validation-for="FinishWeight" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LossPercent" class="control-label"></label>
+                <input asp-for="LossPercent" class="form-control" />
+                <span asp-validation-for="LossPercent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label"></label>
+                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTemp" class="control-label"></label>
+                <input asp-for="StartTemp" class="form-control" />
+                <span asp-validation-for="StartTemp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AmbientTemp" class="control-label"></label>
+                <input asp-for="AmbientTemp" class="form-control" />
+                <span asp-validation-for="AmbientTemp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AfterFillingTemp" class="control-label"></label>
+                <input asp-for="AfterFillingTemp" class="form-control" />
+                <span asp-validation-for="AfterFillingTemp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstCrackTime" class="control-label"></label>
+                <input asp-for="FirstCrackTime" class="form-control" />
+                <span asp-validation-for="FirstCrackTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SecondCrackTime" class="control-label"></label>
+                <input asp-for="SecondCrackTime" class="form-control" />
+                <span asp-validation-for="SecondCrackTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HasChild" class="control-label"></label>
+                <input asp-for="HasChild" class="form-control" />
+                <span asp-validation-for="HasChild" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="createdAt" class="control-label"></label>
+                <input asp-for="createdAt" class="form-control" />
+                <span asp-validation-for="createdAt" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>

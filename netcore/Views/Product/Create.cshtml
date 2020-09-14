@@ -14,11 +14,6 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="productId" />
         <div class="row">
-            <div class="col-md-12">
-                <small class="text-yellow"><i>Περίληψη</i></small>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-6">
                 <div class="form-group has-success">
                     <label asp-for="productCode" class="control-label"></label>
@@ -34,14 +29,13 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="description" class="control-label"></label>
-            <textarea asp-for="description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="description" class="text-danger"></span>
-        </div>
         <div class="row">
             <div class="col-md-12">
-                <small class="text-yellow"><i>Property</i></small>
+                <div class="form-group">
+                    <label asp-for="description" class="control-label"></label>
+                    <textarea asp-for="description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="description" class="text-danger"></span>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -78,39 +72,33 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="UnitPrice" class="control-label"></label>
-                            <input asp-for="UnitPrice" class="form-control" />
-                            <span asp-validation-for="UnitPrice" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ProductVAT" class="control-label"></label>
-                            <input asp-for="ProductVAT" class="form-control" />
-                            <span asp-validation-for="ProductVAT" class="text-danger"></span>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label asp-for="UnitPrice" class="control-label"></label>
+                    <input asp-for="UnitPrice" class="form-control" />
+                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="UnitCost" class="control-label"></label>
-                            <input asp-for="UnitCost" class="form-control" />
-                            <span asp-validation-for="UnitCost" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="SpecialTaxValue" class="control-label"></label>
-                            <input asp-for="SpecialTaxValue" class="form-control" />
-                            <span asp-validation-for="SpecialTaxValue" class="text-danger"></span>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label asp-for="UnitCost" class="control-label"></label>
+                    <input asp-for="UnitCost" class="form-control" />
+                    <span asp-validation-for="UnitCost" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="SpecialTaxValue" class="control-label"></label>
+                    <input asp-for="SpecialTaxValue" class="form-control" />
+                    <span asp-validation-for="SpecialTaxValue" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductVAT" class="control-label"></label>
+                    <input asp-for="ProductVAT" class="form-control" />
+                    <span asp-validation-for="ProductVAT" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -130,7 +118,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
@@ -139,17 +126,39 @@
                     <span asp-validation-for="ReorderLevel" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label asp-for="Discontinued" class="control-label"></label>
                     <input type="checkbox" asp-for="Discontinued" class="checkbox" />
                     <span asp-validation-for="Discontinued" class="text-danger"></span>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label asp-for="IsMaterial" class="control-label"></label>
+                    <input type="checkbox" asp-for="IsMaterial" class="checkbox" />
+                    <span asp-validation-for="IsMaterial" class="text-danger"></span>
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
-
-
+@section Styles{
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/iCheck/all.css" />
+}
+@section Scripts {
+    <!-- iCheck -->
+    <script src="~/adminlte/plugins/iCheck/icheck.min.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+}
 

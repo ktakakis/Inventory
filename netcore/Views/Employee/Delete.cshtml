@@ -5,7 +5,7 @@
     ViewData["Title"] = "Διαγραφή";
     Layout = "~/Views/Shared/_AdminlteNetcoreDelete.cshtml";
     ViewData["EntityIcon"] = "fa fa-user";
-    ViewData["DeleteInfo"] = "Το υποκατάστημα που διαθέτει ήδη αποθήκες δεν μπορεί να διαγραφεί.";
+    ViewData["DeleteInfo"] = "Ο Συνεργάτης που έχει πελάτες δεν μπορεί να διαγραφεί.";
     netcore.Models.Invent.Customer cs = _context.Customer.Where(x => x.EmployeeId.Equals(Model.EmployeeId)).FirstOrDefault();
     ViewData["IsCanDeleted"] = false;
     if (cs == null)

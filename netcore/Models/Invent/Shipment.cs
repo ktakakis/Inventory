@@ -11,7 +11,6 @@ namespace netcore.Models.Invent
         public Shipment()
         {
             this.createdAt = DateTime.UtcNow;
-            //this.shipmentNumber = DateTime.UtcNow.Date.ToString("yyyyMMdd") + Guid.NewGuid().ToString().Substring(0, 5).ToUpper() + "#DO";
             this.shipmentDate = DateTime.UtcNow;
             this.expeditionType = ExpeditionType.Internal;
             this.expeditionMode = ExpeditionMode.Land;

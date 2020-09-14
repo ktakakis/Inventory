@@ -1,0 +1,83 @@
+﻿@model netcore.Models.Invent.Production
+
+@{
+    ViewData["Title"] = "Δημιουργία";
+    Layout = "~/Views/Shared/_AdminlteNetcoreCreate.cshtml";
+    ViewData["EntityIcon"] = "fa fa-gift";
+    ViewData["CreateInfo"] = "Η Παραγωγή είναι...";
+}
+@Html.Partial("_StatusMessage", (string)ViewBag.StatusMessage)
+<div class="row">
+    <div class="col-md-12">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ProductionId" />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductionOrderId" class="control-label"></label>
+                    <select asp-for="ProductionOrderId" id="productionOrderId" class="form-control" asp-items="ViewBag.ProductionOrderId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductionNumber" class="control-label"></label>
+                    <input asp-for="ProductionNumber" class="form-control" />
+                    <span asp-validation-for="ProductionNumber" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductionDate" class="control-label"></label>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input asp-for="ProductionDate" value="@Model.ProductionDate.ToString("dd/MM/yyyy")" class="form-control pull-right datepicker" type="text" />
+                    </div>
+                    <span asp-validation-for="ProductionDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="warehouseId" class="control-label"></label>
+                    <select asp-for="warehouseId" id="warehouseId" class="form-control" asp-items="ViewBag.warehouseId"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="ProductionStatus" class="control-label"></label>
+                    <select asp-for="ProductionStatus" class="form-control select2" asp-items="Html.GetEnumSelectList<netcore.Models.Invent.ProductionStatus>()" disabled></select>
+                    <span asp-validation-for="ProductionStatus" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function() {
+
+            $('#productionOrderId').change(function () {
+                var items = "<option value='0'>Select</option>";
+                $('#warehouseId').html(items);
+                var url = '@Url.Content("~/")' + "Production/GetWarehouseByOrder";
+                var ddlsource = '#productionOrderId';
+                $.getJSON(url, { productionOrderId: $(ddlsource).val() }, function (data) {
+                    var items = '';
+                    $.each(data, function (i, warehouse) {
+                        items += "<option value='" + warehouse.value + "'>" + warehouse.text + "</option>";
+                    });
+                    $('#warehouseId').html(items);
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<netcore.Models.Invent.ProductionOrderLine>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminlteNetcoreIndex.cshtml";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Qty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.createdAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductionOrder)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.createdAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.productId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductionOrder.ProductionOrderId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductionOrderLineId"><i class="fa fa-pencil"></i></a> |
+                <a asp-action="Details" asp-route-id="@item.ProductionOrderLineId"><i class="fa fa-list"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductionOrderLineId"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -69,6 +69,8 @@ namespace netcore.Models.Invent
         [Display(Name = "Ενεργό Προϊόν")]
         public Boolean  Discontinued { get; set; }
 
+        [Display(Name = "Α' ΥΛΗ")]
+        public Boolean  IsMaterial { get; set; }
 
     }
 }

@@ -238,7 +238,19 @@ namespace netcore.Services
             {
                 Product product = _context.Product.Where(x => x.productId.Equals(productId)).FirstOrDefault();
                 Warehouse warehouse = _context.Warehouse.Where(x => x.warehouseId.Equals(warehouseId)).FirstOrDefault();
-
+                var productionorderline =
+                    from ProductionOrderLine in _context.ProductionOrderLine
+                    join ProductionOrder in _context.ProductionOrder on ProductionOrderLine.ProductionOrderId equals ProductionOrder.ProductionOrderId
+                    join Production in _context.Production on ProductionOrder.ProductionOrderId equals Production.ProductionOrderId
+                    select new
+                    {
+                        ProductionOrderLine.ProductionOrderLineId,
+                        ProductionOrderLine.ProductId,
+                        ProductionOrderLine.ProductionOrderId,
+                        ProductionOrderLine.Qty,
+                        ProductionOrderLine.createdAt,
+                        Production.warehouseId
+                    };
                 if (product != null && warehouse != null)
                 {
                     VMStock stock = new VMStock
@@ -248,9 +260,11 @@ namespace netcore.Services
                         QtyReceiving = _context.ReceivingLine.Where(x => x.productId.Equals(product.productId) && x.warehouseId.Equals(warehouse.warehouseId)).Sum(x => x.qtyReceive),
                         QtyShipment = _context.ShipmentLine.Where(x => x.productId.Equals(product.productId) && x.warehouseId.Equals(warehouse.warehouseId)).Sum(x => x.qtyShipment),
                         QtyTransferIn = _context.TransferInLine.Where(x => x.productId.Equals(product.productId) && x.transferIn.warehouseIdTo.Equals(warehouse.warehouseId)).Sum(x => x.qty),
-                        QtyTransferOut = _context.TransferOutLine.Where(x => x.productId.Equals(product.productId) && x.transferOut.warehouseIdFrom.Equals(warehouse.warehouseId)).Sum(x => x.qty)
+                        QtyTransferOut = _context.TransferOutLine.Where(x => x.productId.Equals(product.productId) && x.transferOut.warehouseIdFrom.Equals(warehouse.warehouseId)).Sum(x => x.qty),
+                        QtyRoasting = _context.ProductionLine.Where(x => x.productId.Equals(product.productId) && x.warehouseId.Equals(warehouse.warehouseId)).Sum(x => x.qty),
+                        QtyProduction = productionorderline.Where(x => x.ProductId.Equals(product.productId) && x.warehouseId.Equals(warehouse.warehouseId)).Sum(x => x.Qty)
                     };
-                    stock.QtyOnhand = stock.QtyReceiving + stock.QtyTransferIn - stock.QtyShipment - stock.QtyTransferOut;
+                    stock.QtyOnhand = stock.QtyReceiving + stock.QtyTransferIn - stock.QtyRoasting - stock.QtyShipment - stock.QtyTransferOut+ stock.QtyProduction;
 
                     result = stock;
                 }
@@ -510,6 +524,30 @@ namespace netcore.Services
                 foreach (var item in invoiceslist)
                 {
                     times.Add(new TimelineViewModel { Header = item.InvoiceDate.ToString("dd-MMM-yyyy"), Body = "Αρ. ΤΔΑ-ΔΑΠ: " + item.InvoiceNumber + " Ποσόν: " + item.totalOrderAmount + " €", Icon = "fa-money", CreatedDate = item.createdAt, ItemId = item.InvoiceId, Controler = "Invoice" });
+                }
+
+                results = times.OrderByDescending(x => x.CreatedDate).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return results;
+        }
+        public List<TimelineViewModel> GetTimelinesByProductionOrderId(string productionOrderId)
+        {
+            List<TimelineViewModel> results = new List<TimelineViewModel>();
+
+            try
+            {
+                List<TimelineViewModel> times = new List<TimelineViewModel>();
+                List<Production> productionlist = _context.Production.Where(x => x.ProductionOrderId.Equals(productionOrderId)).OrderByDescending(x => x.ProductionDate).Take(3).ToList();
+
+                foreach (var item in productionlist)
+                {
+                    times.Add(new TimelineViewModel { Header = item.ProductionDate.ToString("dd-MMM-yyyy"), Body = "Αρ. ΠΠΡ: " + item.ProductionNumber, CreatedDate = item.createdAt, Icon= "fa-gift", ItemId = item.ProductionId, Controler = "Production" });
                 }
 
                 results = times.OrderByDescending(x => x.CreatedDate).ToList();
